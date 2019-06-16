@@ -31,32 +31,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    android/AndroidManifest.xml \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradlew \
-    android/res/values/libs.xml \
-    android/build.gradle \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat \
-    android/res/drawable-hdpi/ic_stat_onesignal_default.png \
-    android/res/drawable-mdpi/ic_stat_onesignal_default.png \
-    android/res/drawable-xhdpi/ic_stat_onesignal_default.png \
-    android/res/drawable-xxhdpi/ic_stat_onesignal_default.png \
-    android/res/drawable-xxxhdpi/ic_stat_onesignal_default.png \
-    java/LocationService.java \
-    java/HttpURLCon.java
-
-android {
-    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-    ANDROID_JAVA_SOURCES.path = /src/org/versalityclub
-    ANDROID_JAVA_SOURCES.files = $$files($$PWD/java/*.java)
-    INSTALLS += ANDROID_JAVA_SOURCES
-    include(../thirdparty/onesignal/qtonesignal.pri)
-}
-else {
-    QT += widgets
-}
+# uncomment after... i do not know when
+# include(../thirdparty/onesignal/qtonesignal.pri)
 
 HEADERS += \
     networkinfo.h \
@@ -65,8 +41,4 @@ HEADERS += \
     promotion.h \
     pagenameholder.h \
     promotionclusters.h \
-    cppmethodcall.h \
-    sslsafenetworkaccessmanager.h \
-    sslsafenetworkfactory.h
-
-include(android-openssl.pri)
+    cppmethodcall.h

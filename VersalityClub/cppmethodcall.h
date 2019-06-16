@@ -25,22 +25,18 @@
 #define CPPMETHODCALL_H
 
 #include "appsettings.h"
-#include "jni.h"
 
 #include <QObject>
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
 #include <QStandardPaths>
-#ifdef __ANDROID__
-#include <QtAndroid>
-#endif
 
 class CppMethodCall : public QObject
 {
     Q_OBJECT
 public:
-    explicit CppMethodCall(QObject *parent = nullptr) { }
+    explicit CppMethodCall([[maybe_unused]] QObject *parent = nullptr) { }
 
     static bool locationServiceStarted;
 
@@ -76,9 +72,9 @@ public:
                 locationServiceStarted = true;
 
                 // starting location service
-                QAndroidJniObject::callStaticMethod<void>(
+                /*QAndroidJniObject::callStaticMethod<void>(
                 "org.versalityclub.LocationService", "startLocationService",
-                "(Landroid/content/Context;)V", QtAndroid::androidActivity().object());
+                "(Landroid/content/Context;)V", QtAndroid::androidActivity().object());*/
             }
             else qDebug() << "CppMethodCall::startLocationService: locationServiceStarted is TRUE";
         }

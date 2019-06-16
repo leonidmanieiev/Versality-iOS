@@ -20,7 +20,6 @@
         <file>qml/CustomTextField.qml</file>
         <file>qml/selectCategoryPage.qml</file>
         <file>qml/userLocation.qml</file>
-        <file>output_new.nmea</file>
         <file>PageNameHolder.qml</file>
         <file>qml/listViewPage.qml</file>
         <file>qml/FooterButtons.qml</file>

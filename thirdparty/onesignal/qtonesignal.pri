@@ -6,13 +6,9 @@ SOURCES += \
 HEADERS += \
     $$PWD/qonesignal.h
 
-android {
-    QT += androidextras
-    SOURCES += $$PWD/qonesignal_android.cpp
-
-    QONESIGNAL_JAVASRC.path = /src/org/pwf/qtonesignal
-    QONESIGNAL_JAVASRC.files += $$files($$PWD/android/src/org/pwf/qtonesignal/*)
-    INSTALLS += QONESIGNAL_JAVASRC
+ios {
+    OBJECTIVE_SOURCES += \
+        $$PWD/qonesignal_ios.mm
 }
 
 OTHER_FILES += \
@@ -22,4 +18,3 @@ OTHER_FILES += \
 DISTFILES += \
     $$PWD/android/src/org/pwf/qtonesignal/QOneSignalNotificationReceivedHandler.java \
     $$PWD/android/src/org/pwf/qtonesignal/QOneSignalNotificationOpenedHandler.java
-

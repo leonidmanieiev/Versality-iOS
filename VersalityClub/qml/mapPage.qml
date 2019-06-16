@@ -31,8 +31,8 @@ import QtLocation 5.9
 import QtPositioning 5.8
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
-import OneSignal 1.0 // TODO REMOVE COMMENTS BEFORE BUILD FOR ANDROID
-import CppCall 0.8
+//import OneSignal 1.0
+//import CppCall 0.8
 
 Page
 {
@@ -579,7 +579,7 @@ Page
         }
     }
 
-    CppMethodCall { id: cppCall }
+    //CppMethodCall { id: cppCall }
 
     Component.onCompleted:
     {        
@@ -587,7 +587,7 @@ Page
         if(AppSettings.value("user/hash") !== undefined)
         {
             //sending user hash for identification for notifs.
-            QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
+            //QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
 
             // start location service if user has secret and this is app first lauch
             if(AppSettings.value("user/first_launch") === undefined)
@@ -596,7 +596,7 @@ Page
                 AppSettings.setValue("first_launch", 1);
                 AppSettings.endGroup();
                 //if mapPage loaded -> user chosen cats -> we can start service
-                cppCall.startLocationService();
+                //cppCall.startLocationService();
             }
         }
 
