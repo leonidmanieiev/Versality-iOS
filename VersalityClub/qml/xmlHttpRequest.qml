@@ -49,7 +49,7 @@ Item
     //flags
     property string functionalFlag: ''
     property bool allGood: false
-    property bool newUser: false
+    property bool newUser: Vars.fromSignUp
     property bool requestFromADP: false
     //beg and end possition of code of error from server
     readonly property int errorFlagBeg: 0
@@ -163,8 +163,7 @@ Item
                                                                { "strCatsJSON": request.responseText });
                                 break;
                             case 'register':
-                                xmlHttpRequestLoader.setSource("passwordInputPage.qml",
-                                                               {"fromSignUpRequest": true });
+                                xmlHttpRequestLoader.source = "passwordInputPage.qml";
                                 break;
                             case 'login':
                                 //saving hash(secret) for further auto authentication
@@ -221,6 +220,10 @@ Item
                                                                    { "api": Vars.userMarkedProms,
                                                                      "functionalFlag": 'user/marked'
                                                                    });
+                                }
+                                else if(nextPageAfterCatsSave === 'appInfoPage.qml')
+                                {
+                                    appWindowLoader.source = nextPageAfterCatsSave;
                                 }
                                 else
                                 {

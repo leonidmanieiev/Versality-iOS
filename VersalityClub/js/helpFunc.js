@@ -20,12 +20,10 @@
 **
 ****************************************************************************/
 
-//coverts pixels to device-independent pixels using device dpi
-function toDp(px, dpi)
+//apply ratio between physical pixels and device-independent pixels
+function applyDpr(px, dpr)
 {
-    if(dpi < 120)
-        return px;
-    else return Math.round(px*(dpi/160.0));
+    return px*dpr;
 }
 
 //HTTP status code decoder

@@ -34,7 +34,7 @@ Page
     width: Vars.screenWidth
 
     //checking internet connetion
-    Network { toastMessage: toastMessage }
+    Network { toastMessage: networkToastMessage }
 
     Image
     {
@@ -91,6 +91,8 @@ Page
 
             onPressed:
             {
+                toastMessage.close();
+
                 if(color === Vars.errorRed)
                 {
                     text = '';
@@ -142,16 +144,27 @@ Page
             }
         }
 
-        CustomLabel
+        ControlBackButton
         {
-            id: checkEmailLabel
-            labelColor: "#ff3333"
-            labelText: Vars.checkYourEmail
-            Layout.topMargin: -parent.spacing*0.5
+            id: backButton
+            Layout.topMargin: -Vars.pageHeight*0.045//0.035
+            onClicked:
+            {
+                toastMessage.close();
+                changePasswordPageLoader.source = "passwordInputPage.qml";
+            }
         }
     }//middleLayout
 
-    ToastMessage { id: toastMessage }
+    ToastMessage
+    {
+        id: toastMessage
+        closePolicy: Popup.NoAutoClose
+    }
+
+    ToastMessage { id: networkToastMessage }
+
+    Component.onCompleted: toastMessage.setText("Проверьте e-mail");
 
     Loader
     {

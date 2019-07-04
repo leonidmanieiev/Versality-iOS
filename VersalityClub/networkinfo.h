@@ -38,6 +38,7 @@ public:
         //workaround for initial network flag setting
         QNetworkAccessManager::NetworkAccessibility currNetworkStatus =
             QNetworkAccessManager::networkAccessible();
+
         oldNetworkStatus = currNetworkStatus == QNetworkAccessManager::Accessible ?
                                                 QNetworkAccessManager::NotAccessible :
                                                 QNetworkAccessManager::Accessible;

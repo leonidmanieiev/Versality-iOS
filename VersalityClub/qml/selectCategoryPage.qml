@@ -83,7 +83,7 @@ Page
                 Rectangle
                 {
                     id: catsItem
-                    height: Vars.screenHeight*0.09
+                    height: Vars.screenHeight*0.09*Vars.iconHeightFactor
                     width: parent.width
                     radius: height*0.5
                     color: Vars.whiteColor
@@ -149,8 +149,7 @@ Page
                         x: parent.radius*2
                         color: Vars.blackColor
                         font.family: mediumText.name
-                        font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize,
-                                                    Vars.dpi)
+                        font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -245,7 +244,7 @@ Page
                 {
                     id: subCatsItem
                     radius: height*0.5
-                    height: Vars.screenHeight*0.07
+                    height: Vars.screenHeight*0.07*Vars.iconHeightFactor
                     width: parent.width
                     color: Vars.whiteColor
 
@@ -271,8 +270,7 @@ Page
                         width: parent.width*0.7
                         anchors.verticalCenter: parent.verticalCenter
                         font.family: mediumText.name
-                        font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize,
-                                                    Vars.dpi)
+                        font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
                         color: AppSettings.contains(subid) ? Vars.whiteColor :
                                                              Vars.blackColor
                         wrapMode: Text.WordWrap

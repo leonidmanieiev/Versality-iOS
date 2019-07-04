@@ -49,8 +49,8 @@ QtObject
 
     //OTHERS
     readonly property int defaultDay: 15
-    readonly property int defaultFontPixelSize: 15
-    readonly property int defaultRadius: 20
+    readonly property int defaultFontPixelSize: 8
+    readonly property int defaultRadius: (isXR || dpr > 2) ? 30 : 20
     readonly property int defaultYear: new Date().getYear()-30
     readonly property real defaultOpacity: 0.8
     readonly property string defaultMonth: '06'
@@ -69,21 +69,28 @@ QtObject
     property string fullCompanyData: ''
 
     //FOOTERBUTTONS CONSTANTS
-    readonly property int footerButtonsFieldHeight: screenHeight*0.125
-    readonly property int footerButtonsHeight: screenHeight*0.08
+    readonly property int footerButtonsFieldHeight: screenHeight*0.125*footerHeightFactor
+    readonly property int footerButtonsHeight: screenHeight*0.08*footerHeightFactor
 
     //HEADERBUTTONS CONSTANTS
-    readonly property int headerButtonsHeight: screenHeight*0.08
+    readonly property int headerButtonsHeight: footerButtonsHeight
 
     //SCREEN CONSTANTS
-    readonly property int dpi: Screen.pixelDensity * 25.4
+    readonly property real dpr: isXR ? 2.5 : (Screen.devicePixelRatio > 2 ? 2.2 : Screen.devicePixelRatio)
+    readonly property real controlHeightFactor: 3.5
+    readonly property real footerHeightFactor: (isXR || dpr > 2) ? 0.8 : 1
+    readonly property real iconHeightFactor: (isXR || dpr > 2) ? 0.9 : 1
     readonly property int pageHeight: screenHeight-footerButtonsFieldHeight
     readonly property int companyPageHeight: screenHeight-2*footerButtonsFieldHeight
-    readonly property int screenHeight: Helper.toDp(Screen.height, dpi)
-    readonly property int screenWidth: Helper.toDp(Screen.width, dpi)
+    readonly property int screenHeight: Screen.height
+    readonly property int screenWidth: Screen.width
 
     //LISTVIEW CONSTANTS
     readonly property int listItemRadius: 20
+
+    //IS DEVICE TYPE iPhone XR
+    property bool isXR: (Screen.height*Screen.devicePixelRatio === 1792 &&
+                         Screen.width *Screen.devicePixelRatio === 828)
 
     //INTERNET ACCESS FLAG
     property bool isConnected: false
@@ -91,8 +98,11 @@ QtObject
     //LOCATION ACCESS FLAG
     property bool isLocated: false
 
+    //USER CAME FROM SIGN UP PAGE FLAG
+    property bool fromSignUp: false
+
     //API REQUESTS
-    readonly property string domen: "http://club.versality.ru"
+    readonly property string domen: "http://club2.versality.ru" // TODO replace club2 with club
     readonly property string main: ":8082/"
     readonly property string mobile: ":8080/"
     readonly property string allCats: domen+mobile+"api/categories"
@@ -133,6 +143,7 @@ QtObject
     readonly property string appInfoTitle: "Информация\nо приложении"
     readonly property string appSiteLink: "http://club.versality.ru"
     readonly property string appSiteName: "club.versality.ru"
+    readonly property string back: "Назад"
     readonly property string backToPromotion: "Назад к акции"
     readonly property string backToPromsPicking: "Назад к выбору акций"
     readonly property string birthday: "Дата рождения:"

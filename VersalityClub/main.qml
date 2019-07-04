@@ -24,6 +24,8 @@ import '.' //QTBUG-34418, singletons require explicit import to load qmldir file
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
+import QtPositioning 5.12
+// todo uncomment bellow
 //import CppCall 0.8
 
 ApplicationWindow
@@ -45,6 +47,21 @@ ApplicationWindow
                      "qml/initialPage.qml" : "qml/mapPage.qml"
     }
 
+    // to initiate location permission request from iOS before running into mapPage
+    PositionSource
+    {
+        active: true
+        updateInterval: 1
+
+        onPositionChanged:
+        {
+            if(isNaN(position.coordinate.latitude))
+                update();
+            else active = false;
+        }
+    }
+
+    // todo uncomment bellow
     //CppMethodCall { id: cppCall }
 
     onClosing:
@@ -56,6 +73,7 @@ ApplicationWindow
             AppSettings.beginGroup("user");
             AppSettings.setValue("first_launch", 1);
             AppSettings.endGroup();
+            // todo uncomment bellow
             //cppCall.startLocationService();
         }
     }

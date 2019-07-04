@@ -98,5 +98,7 @@
         <file>icons/settings.svg</file>
         <file>icons/promotion_marker.svg</file>
         <file>icons/tick.svg</file>
+        <file>icons/left_arrow_2.svg</file>
+        <file>qml/ControlBackButton.qml</file>
     </qresource>
 </RCC>

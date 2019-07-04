@@ -76,8 +76,8 @@ RowLayout
     IconedButton
     {
         id: settingsButton
-        width: Vars.footerButtonsHeight
-        height: Vars.footerButtonsHeight
+        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
+        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
         Layout.alignment: Qt.AlignHCenter
         buttonIconSource: "../icons/settings.svg"
         clickArea.onClicked:
@@ -104,8 +104,8 @@ RowLayout
     IconedButton
     {
         id: homeButton
-        width: Vars.footerButtonsHeight*1.1
-        height: Vars.footerButtonsHeight*1.1
+        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
+        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
         Layout.alignment: Qt.AlignHCenter
         buttonIconSource: "../icons/logo_white_fill.svg"
         clickArea.onClicked:
@@ -126,8 +126,8 @@ RowLayout
     IconedButton
     {
         id: favouriteButton
-        width: Vars.footerButtonsHeight
-        height: Vars.footerButtonsHeight
+        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
+        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
         Layout.alignment: Qt.AlignHCenter
         buttonIconSource: "../icons/favourites.svg"
         clickArea.onClicked:

@@ -1,4 +1,4 @@
-QT += quick network webview svg positioning
+QT += quick network webview svg positioning location
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -42,3 +42,5 @@ HEADERS += \
     pagenameholder.h \
     promotionclusters.h \
     cppmethodcall.h
+
+QMAKE_INFO_PLIST = ios/Info.plist

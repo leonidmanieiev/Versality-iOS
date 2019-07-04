@@ -126,6 +126,12 @@ Page
                 }
             }
         }
+
+        ControlBackButton
+        {
+            id: backButton
+            onClicked: logInPageLoader.source = "initialPage.qml";
+        }
     }//middleLayout
 
     ToastMessage { id: toastMessage }

@@ -30,7 +30,7 @@ import QtGraphicalEffects 1.0
 Page
 {
     property bool allGood: false
-    readonly property int promItemHeight: Vars.screenHeight*0.25
+    readonly property int promItemHeight: Vars.screenHeight*0.25*Vars.footerHeightFactor
 
     id: favouritePage
     enabled: Vars.isConnected

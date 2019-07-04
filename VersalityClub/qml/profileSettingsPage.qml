@@ -65,6 +65,7 @@ Page
         topMargin: Vars.pageHeight*0.25
         bottomMargin: Vars.footerButtonsFieldHeight*1.05
         anchors.horizontalCenter: parent.horizontalCenter
+        boundsBehavior: Flickable.DragOverBounds
 
         ColumnLayout
         {
@@ -235,12 +236,11 @@ Page
                 labelColor: Vars.whiteColor
                 labelAlias.font.family: boldText.name
                 labelAlias.font.bold: true
-                fontPixelSize: Helper.toDp(20, Vars.dpi)
+                fontPixelSize: Helper.applyDpr(10, Vars.dpr)
                 Layout.fillWidth: true
                 Layout.topMargin: Vars.pageHeight*0.03
                 borderColor: "transparent"
                 buttonRadius: 25
-                buttonHeight: Vars.screenHeight*0.13
                 buttonWidth: Vars.screenWidth*0.9
                 showGradient2: true
 
@@ -273,8 +273,7 @@ Page
                 labelColor: Vars.whiteColor
                 labelAlias.font.family: boldText.name
                 labelAlias.font.bold: true
-                fontPixelSize: Helper.toDp(20, Vars.dpi)
-                buttonHeight: Vars.screenHeight*0.13
+                fontPixelSize: Helper.applyDpr(10, Vars.dpr)
                 Layout.topMargin: -Vars.pageHeight*0.03
                 Layout.fillWidth: true
                 backgroundColor: Vars.blackColor

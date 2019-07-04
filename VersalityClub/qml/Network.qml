@@ -31,21 +31,19 @@ NetworkInfo
 
     onNetworkStatusChanged:
     {
-        //check QTBUG-40328
-        if(Qt.platform.os !== "windows")
+        if(accessible === 1)
         {
-            if(accessible === 1)
-            {
-                Vars.isConnected = true;
-                parent.enabled = true;
-                toastMessage.close();
-            }
-            else
-            {
-                Vars.isConnected = false;
-                parent.enabled = false;
-                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
-            }
+            Vars.isConnected = true;
+            parent.enabled = true;
+            toastMessage.close();
+
+            // TODO reload parent
+        }
+        else
+        {
+            Vars.isConnected = false;
+            parent.enabled = false;
+            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
         }
     }
 }

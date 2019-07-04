@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QtWebView::initialize();
 
+    // todo uncomment bellow
     //QOneSignal::registerQMLTypes();
     qmlRegisterType<NetworkInfo>("Network", 0, 8, "NetworkInfo");
     qmlRegisterType<CppMethodCall>("CppCall", 0, 8, "CppMethodCall");

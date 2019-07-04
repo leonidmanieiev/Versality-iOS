@@ -136,24 +136,26 @@ Page
         visible: allGood
         clip: true
         width: parent.width
-        height: Vars.screenHeight
-        contentHeight: middleFieldsColumns.height*1.1
+        height: parent.height
+        contentHeight: middleFieldsColumns.height
+        anchors.top: parent.top
+        bottomMargin: Vars.footerButtonsFieldHeight*1.05
         anchors.horizontalCenter: parent.horizontalCenter
         boundsBehavior: Flickable.DragOverBounds
 
         ColumnLayout
         {
             id: middleFieldsColumns
-            width: parent.width
-            spacing: Vars.screenHeight*0.05
+            width: Vars.screenWidth*0.9
+            spacing: Vars.screenHeight*0.045
             anchors.horizontalCenter: parent.horizontalCenter
 
             Rectangle
             {
                 id: promsImage
                 Layout.alignment: Qt.AlignHCenter
-                height: Vars.screenHeight*0.25
-                width: parent.width*0.9
+                height: Vars.screenHeight*0.25*Vars.footerHeightFactor
+                width: parent.width
                 radius: Vars.listItemRadius
                 color: "transparent"
 
@@ -179,29 +181,27 @@ Page
             {
                 id: promotionTitle
                 text: p_title
-                font.pixelSize: Helper.toDp(16, Vars.dpi)
+                font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
                 font.family: boldText.name
                 font.weight: Font.Bold
                 color: Vars.blackColor
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: parent.width*0.1
             }
 
             Rectangle
             {
                 id: textArea
-                width: parent.width*0.9
+                width: promsImage.width
                 height: promotionDescription.height
                 color: Vars.whiteColor
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: parent.width*0.1
 
                 Label
                 {
                     id: promotionDescription
                     width: parent.width
                     text: p_desc
-                    font.pixelSize: Helper.toDp(13, Vars.dpi)
+                    font.pixelSize: Helper.applyDpr(7, Vars.dpr)
                     font.family: regularText.name
                     color: Vars.blackColor
                     wrapMode: Label.WordWrap
@@ -211,9 +211,8 @@ Page
             RowLayout
             {
                 id: rowLayout1
-                width: parent.width*0.9
+                width: promsImage.width
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: parent.width*0.1
                 spacing: parent.width*0.055
 
                 ControlButton
@@ -243,8 +242,8 @@ Page
                 IconedButton
                 {
                     id: addToFavourite
-                    width: Vars.screenHeight*0.08
-                    height: Vars.screenHeight*0.08
+                    width: Vars.screenHeight  * 0.08
+                    height: Vars.screenHeight * 0.08
                     Layout.alignment: Qt.AlignRight
                     buttonIconSource: p_is_marked ?
                                       "../icons/add_to_favourites_on.svg" :
@@ -276,9 +275,8 @@ Page
             ControlButton
             {
                 id: nearestStoreButton
-                buttonWidth: parent.width*0.9
+                buttonWidth: promsImage.width
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: parent.width*0.1
                 labelText: Vars.closestAddress
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
@@ -299,9 +297,8 @@ Page
             ControlButton
             {
                 id: companyCardButton
-                buttonWidth: parent.width*0.9
+                buttonWidth: promsImage.width
                 Layout.alignment: Qt.AlignLeft
-                Layout.leftMargin: parent.width*0.1
                 labelText: Vars.openCompanyCard
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
@@ -342,7 +339,7 @@ Page
         id: promoCodePopup
         visible: false
         width: parent.width*0.8
-        height: parent.height*0.5
+        height: parent.height*0.5*Vars.footerHeightFactor
         radius: 30
         color: Vars.birthdayPickerColor
         anchors.centerIn: parent
@@ -358,8 +355,7 @@ Page
             anchors.top: parent.top
             anchors.topMargin: parent.height*0.3
             anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize,
-                                        Vars.dpi)
+            font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
         }
 
         Rectangle
@@ -382,8 +378,7 @@ Page
                 font.weight: Font.Bold
                 anchors.centerIn: parent
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize*2,
-                                            Vars.dpi)
+                font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize*2, Vars.dpr)
             }
         }//codeSubstrate
 
@@ -396,7 +391,7 @@ Page
             radius: Vars.defaultRadius
             color: "transparent"
             border.color: Vars.whiteColor
-            border.width: Vars.defaultFontPixelSize*0.2
+            border.width: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height*0.05
             anchors.horizontalCenter: parent.horizontalCenter
@@ -406,8 +401,7 @@ Page
                 id: buttonText
                 text: Vars.proceed
                 font.family: regularText.name
-                font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize*1.1,
-                                            Vars.dpi)
+                font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize*1.1, Vars.dpr)
                 color: Vars.whiteColor
                 anchors.centerIn: parent
             }
@@ -434,8 +428,8 @@ Page
         visible: allGood
         buttonText: Vars.backToPromsPicking
         buttonIconSource: "../icons/left_arrow.svg"
-        iconAlias.width: height*0.5
-        iconAlias.height: height*0.4
+        iconAlias.sourceSize.width: height*0.5
+        iconAlias.sourceSize.height: height*0.4
         onClicked: promotionPageLoader.source = "mapPage.qml"
     }
 

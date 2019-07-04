@@ -28,9 +28,10 @@ import QtQml 2.11
 import QtWebView 1.1
 import QtQuick.Controls 2.4
 import QtLocation 5.9
-import QtPositioning 5.8
+import QtPositioning 5.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+// todo uncomment bellow
 //import OneSignal 1.0
 //import CppCall 0.8
 
@@ -97,8 +98,8 @@ Page
         var clustersTextJson =
                 PromotionClusters.clustering(jsonFromServer, mainMap.zoomLevel);
 
-        /*clusterization was unsuccessful
-          check console log*/
+        // clusterization was unsuccessful
+        // check console log
         if(clustersTextJson.substring(0, 5) === "Error")
         {
             allGood = false;
@@ -318,7 +319,7 @@ Page
             color: Vars.blackColor
             textFormat: Text.RichText;
             text: mapCopyright+mapDataCopyright
-            font.pixelSize: Helper.toDp(10, Vars.dpi)
+            font.pixelSize: Helper.applyDpr(5, Vars.dpr)
             font.family: regulatText.name
             onLinkActivated: Qt.openUrlExternally(link)
         }
@@ -463,7 +464,7 @@ Page
                     anchors.leftMargin: icon.width*0.5
                     anchors.verticalCenter: parent.verticalCenter
                     text: ctitle
-                    font.pixelSize: Helper.toDp(18, Vars.dpi)
+                    font.pixelSize: Helper.applyDpr(9, Vars.dpr)
                     font.family: boldText.name
                     color: Vars.whiteColor
                 }
@@ -504,8 +505,6 @@ Page
         enabled: Vars.isLocated
         width: Vars.footerButtonsHeight*0.9
         height: Vars.footerButtonsHeight*0.9
-        buttonIconAlias.sourceSize.width: Vars.footerButtonsHeight*0.9
-        buttonIconAlias.sourceSize.height: Vars.footerButtonsHeight*0.9
         buttonIconSource: "../icons/geo_location.svg"
         anchors.right: parent.right
         anchors.rightMargin: parent.width*0.02
@@ -542,8 +541,8 @@ Page
         visible: showingNearestStore ? true : false
         buttonText: Vars.backToPromotion
         buttonIconSource: "../icons/left_arrow.svg"
-        iconAlias.width: height*0.5
-        iconAlias.height: height*0.4
+        iconAlias.sourceSize.width: height*0.5
+        iconAlias.sourceSize.height: height*0.4
         onClicked:
         {
             var pageName = PageNameHolder.pop();
@@ -582,10 +581,10 @@ Page
     //CppMethodCall { id: cppCall }
 
     Component.onCompleted:
-    {        
-        //TODO REMOVE COMMENTS BEFORE BUILD FOR ANDROID
+    {
         if(AppSettings.value("user/hash") !== undefined)
         {
+            // todo uncomment bellow
             //sending user hash for identification for notifs.
             //QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
 
@@ -596,6 +595,7 @@ Page
                 AppSettings.setValue("first_launch", 1);
                 AppSettings.endGroup();
                 //if mapPage loaded -> user chosen cats -> we can start service
+                // todo uncomment bellow
                 //cppCall.startLocationService();
             }
         }

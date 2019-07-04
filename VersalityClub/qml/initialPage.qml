@@ -121,7 +121,8 @@ Page
     }
 
     //setting active focus for key capturing
-    Component.onCompleted: initialPage.forceActiveFocus()
+    Component.onCompleted: initialPage.forceActiveFocus();
+
 
     Keys.onReleased:
     {

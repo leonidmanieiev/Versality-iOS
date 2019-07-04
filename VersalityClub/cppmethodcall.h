@@ -28,6 +28,7 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QTextStream>
 #include <QStandardPaths>
@@ -45,11 +46,22 @@ public:
         //if user has an account so do hash
         if(!AppSettings().value("user/hash").toString().isEmpty())
         {
+            // on iOS we have to create dir before pass it to the constructor of QFile
+            QString dir = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).value(0);
+            if(!QDir(dir).exists())
+            {
+                if (!QDir().mkpath(dir))
+                {
+                     qDebug() << "Failed to create " << dir;
+                     return;
+                }
+            }
+
             // creating file
-            QFile file(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)+"/hash.txt");
+            QFile file(dir + "/hash.txt");
             if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                qDebug() << "Failed to open 'AppDataLocation/hash.txt'";
+                qDebug() << "Failed to open " << dir;
                 return;
             }
 
@@ -72,6 +84,7 @@ public:
                 locationServiceStarted = true;
 
                 // starting location service
+                // todo uncomment bellow
                 /*QAndroidJniObject::callStaticMethod<void>(
                 "org.versalityclub.LocationService", "startLocationService",
                 "(Landroid/content/Context;)V", QtAndroid::androidActivity().object());*/

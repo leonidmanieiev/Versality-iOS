@@ -54,7 +54,7 @@ Page
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: parent.height*0.2
-        spacing: parent.height*0.05
+        spacing: Vars.screenHeight*0.04
 
         FontLoader
         {
@@ -73,6 +73,7 @@ Page
         {
             id: sexButton
             Layout.fillWidth: true
+            Layout.topMargin: -Vars.pageHeight*0.02
             labelText: Vars.m_f
             labelColor: Vars.purpleTextColor
             buttonClickableArea.onClicked:
@@ -84,6 +85,7 @@ Page
             id: dateofbirthLabel
             labelText: Vars.birthday
             labelColor: Vars.purpleTextColor
+            Layout.topMargin: -Vars.pageHeight*0.02
         }
 
         CustomTextField
@@ -134,40 +136,15 @@ Page
             }
         }
 
-        Button
+        ControlButton
         {
             id: signUpButton
-            opacity: pressed ? Vars.defaultOpacity : 1
+            showGradient2: true
             Layout.fillWidth: true
-            padding: middleFieldsColumns.spacing * 1.5
-            background: Rectangle
-            {
-                clip: true
-                radius: height*0.5
-                anchors.centerIn: parent
-                /*swaped geometry and rotation is a
-                trick for left to right gradient*/
-                height: Vars.screenWidth*0.9
-                width: Vars.screenHeight*0.09
-                rotation: -90
-                gradient: Gradient
-                {
-                    GradientStop { position: 0.0; color: "#390d5e" }
-                    GradientStop { position: 1.0; color: "#952e74" }
-                }
-            }
-            contentItem: Text
-            {
-                id: labelContent
-                text: Vars.signup
-                font.family: mediumText.name
-                font.pixelSize: Helper.toDp(Vars.defaultFontPixelSize,
-                                            Vars.dpi)
-                color: Vars.whiteColor
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-            }
-            onClicked:
+            labelText: Vars.signup
+            labelColor: Vars.whiteColor
+            Layout.topMargin: middleFieldsColumns.spacing
+            buttonClickableArea.onClicked:
             {
                 //check for valid inputs
                 if(sexButton.labelText === Vars.m_f)
@@ -190,12 +167,21 @@ Page
                     AppSettings.setValue("birthday", dateofbirthField.text);
                     AppSettings.endGroup();
 
+                    // to show new user some help info about app
+                    Vars.fromSignUp = true;
+
                     signUpPageLoader.setSource("xmlHttpRequest.qml",
                                                { "api": Vars.userSignup,
                                                  "functionalFlag": 'register' });
                 }
             }
-        }//signUpButton
+        }
+
+        ControlBackButton
+        {
+            id: backButton
+            onClicked: signUpPageLoader.source = "initialPage.qml";
+        }
     }//middleFieldsColumns
 
     ScrollDatePicker

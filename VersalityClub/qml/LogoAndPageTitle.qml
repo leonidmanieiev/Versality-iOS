@@ -45,8 +45,8 @@ RowLayout
         id: logo
         clip: true
         source: "../icons/logo_white_fill.svg"
-        Layout.preferredWidth: Vars.screenHeight*0.1
-        Layout.preferredHeight: Vars.screenHeight*0.1
+        Layout.preferredWidth: Vars.screenHeight*0.1*Vars.iconHeightFactor
+        Layout.preferredHeight: Vars.screenHeight*0.1*Vars.iconHeightFactor
         Layout.alignment: Qt.AlignHCenter
     }
 
@@ -65,15 +65,15 @@ RowLayout
         Layout.alignment: Qt.AlignLeft
         font.family: boldText.name
         font.bold: true
-        font.pixelSize: Helper.toDp(18, Vars.dpi)
+        font.pixelSize: Helper.applyDpr(9, Vars.dpr)
     }
 
     Rectangle
     {
         id: infoButtonField
         visible: showInfoButton
-        width: Vars.screenHeight*0.065
-        height: Vars.screenHeight*0.065
+        width: Vars.screenHeight*0.065*Vars.iconHeightFactor
+        height: Vars.screenHeight*0.065*Vars.iconHeightFactor
         Layout.alignment: Qt.AlignTop
         Layout.topMargin: parent.height*0.25
         Layout.rightMargin: parent.height*0.25
