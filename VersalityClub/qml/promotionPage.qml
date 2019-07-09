@@ -43,7 +43,7 @@ Page
     //all good flag
     property bool allGood: true
     //dist (in meters) to be able to active coupon
-    readonly property int promCloseDist: 250
+    readonly property int promCloseDist: 1000000 // todo set to 250
     //other
     property real nearestStoreLat
     property real nearestStoreLon
@@ -101,6 +101,11 @@ Page
             case 8: return 16.5;
             case 9: return 18;
         }
+    }
+
+    function isUrl()
+    {
+        return Helper.isStringAnUrl(p_promo_code);
     }
 
     id: promotionPage
@@ -339,7 +344,7 @@ Page
         id: promoCodePopup
         visible: false
         width: parent.width*0.8
-        height: parent.height*0.5*Vars.footerHeightFactor
+        height: parent.height*0.5
         radius: 30
         color: Vars.birthdayPickerColor
         anchors.centerIn: parent
@@ -348,6 +353,7 @@ Page
         {
             id: helpText
             clip: true
+            visible: !isUrl()
             color: Vars.whiteColor
             font.family: regularText.name
             text: Vars.activateCouponHelpText
@@ -361,6 +367,7 @@ Page
         Rectangle
         {
             id: codeSubstrate
+            visible: !isUrl()
             width: parent.width
             height: parent.height*0.2
             color: Vars.chosenPurpleColor
@@ -378,9 +385,23 @@ Page
                 font.weight: Font.Bold
                 anchors.centerIn: parent
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize*2, Vars.dpr)
+                font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize*1.5, Vars.dpr)
             }
         }//codeSubstrate
+
+        Image
+        {
+            id: codeImage
+            clip: true
+            visible: isUrl()
+            source: p_promo_code
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: parent.height*0.1 + proceedButton.height
+            anchors.horizontalCenter: parent.horizontalCenter
+            sourceSize.width: Vars.dpr > 2 ? parent.width*0.80 : parent.width*0.75
+            sourceSize.height: Vars.dpr > 2 ? parent.width*0.80 : parent.width*0.75
+            fillMode: Image.PreserveAspectFit
+        }
 
         Rectangle
         {
@@ -391,7 +412,7 @@ Page
             radius: Vars.defaultRadius
             color: "transparent"
             border.color: Vars.whiteColor
-            border.width: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
+            border.width: Helper.applyDpr(2, Vars.dpr)
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height*0.05
             anchors.horizontalCenter: parent.horizontalCenter
