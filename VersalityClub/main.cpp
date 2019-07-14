@@ -24,9 +24,9 @@
 #include "networkinfo.h"
 #include "geolocationinfo.h"
 #include "pagenameholder.h"
-#include "promotionclusters.h"
+#include "promotionClusters.h"
+#include "qlogger.h"
 // #include "qonesignal.h"
-#include "cppmethodcall.h"
 
 #include <QQmlApplicationEngine>
 #include <QtWebView/QtWebView>
@@ -36,7 +36,6 @@
 #include <QDebug>
 #include <QFile>
 
-bool CppMethodCall::locationServiceStarted = false;
 bool AppSettings::needToRemovePromsAndComps = true;
 
 int main(int argc, char *argv[])
@@ -48,11 +47,11 @@ int main(int argc, char *argv[])
     // todo uncomment bellow
     //QOneSignal::registerQMLTypes();
     qmlRegisterType<NetworkInfo>("Network", 0, 8, "NetworkInfo");
-    qmlRegisterType<CppMethodCall>("CppCall", 0, 8, "CppMethodCall");
     qmlRegisterType<AppSettings>("org.versalityclub", 0, 8, "AppSettings");
     qmlRegisterType<GeoLocationInfo>("GeoLocation", 0, 8, "GeoLocationInfo");
     qmlRegisterType<PageNameHolder>("org.versalityclub", 0, 8, "PageNameHolder");
     qmlRegisterType<PromotionClusters>("org.versalityclub", 0, 8, "PromotionClusters");
+    qmlRegisterSingletonType<QLogger>("QLogger", 1, 0, "QLogger", singletonProvider);
 
     QQmlApplicationEngine engine;
 
@@ -60,9 +59,7 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    CppMethodCall cppCall;
-    //saving hash to file
-    cppCall.saveHashToFile();
+    QLogger::saveHashToFile();
 
     return app.exec();
 }

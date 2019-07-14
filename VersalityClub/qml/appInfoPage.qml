@@ -35,7 +35,7 @@ Page
     function getAppInfoText()
     {
         var request = new XMLHttpRequest()
-        request.open('GET', '../appInfoText.txt')
+        request.open('GET', '../text/appInfoText.txt')
         request.onreadystatechange = function(event) {
             if (request.readyState === XMLHttpRequest.DONE)
                 appInfoText = request.responseText;

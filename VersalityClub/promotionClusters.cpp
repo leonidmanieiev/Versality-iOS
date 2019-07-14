@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include "promotionclusters.h"
+#include "promotionClusters.h"
 
 PromotionClusters::PromotionClusters(QObject *parent) :
     QObject(parent), clusters{QVector<QVector<Promotion>>()} { }

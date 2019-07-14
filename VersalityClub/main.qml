@@ -25,8 +25,6 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
 import QtPositioning 5.12
-// todo uncomment bellow
-//import CppCall 0.8
 
 ApplicationWindow
 {
@@ -61,9 +59,6 @@ ApplicationWindow
         }
     }
 
-    // todo uncomment bellow
-    //CppMethodCall { id: cppCall }
-
     onClosing:
     {
         // start location service if user has secret and this is app first closing
@@ -73,8 +68,6 @@ ApplicationWindow
             AppSettings.beginGroup("user");
             AppSettings.setValue("first_launch", 1);
             AppSettings.endGroup();
-            // todo uncomment bellow
-            //cppCall.startLocationService();
         }
     }
 }

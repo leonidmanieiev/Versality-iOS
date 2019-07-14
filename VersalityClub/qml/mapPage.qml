@@ -33,7 +33,6 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 // todo uncomment bellow
 //import OneSignal 1.0
-//import CppCall 0.8
 
 Page
 {
@@ -578,8 +577,6 @@ Page
         }
     }
 
-    //CppMethodCall { id: cppCall }
-
     Component.onCompleted:
     {
         if(AppSettings.value("user/hash") !== undefined)
@@ -594,9 +591,6 @@ Page
                 AppSettings.beginGroup("user");
                 AppSettings.setValue("first_launch", 1);
                 AppSettings.endGroup();
-                //if mapPage loaded -> user chosen cats -> we can start service
-                // todo uncomment bellow
-                //cppCall.startLocationService();
             }
         }
 

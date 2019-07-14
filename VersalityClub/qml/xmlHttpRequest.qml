@@ -23,7 +23,7 @@
 //http client
 import "../"
 import "../js/helpFunc.js" as Helper
-import CppCall 0.8
+import QLogger 1.0
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 
@@ -59,8 +59,6 @@ Item
     property string promo_desc: AppSettings.value("promo/desc") === undefined ? '' : AppSettings.value("promo/desc")
     //company data
     property string comp_id: AppSettings.value("company/id") === undefined ? '' : AppSettings.value("company/id")
-
-    CppMethodCall { id: cppCall }
 
     //creates params for request
     function makeParams()
@@ -171,8 +169,7 @@ Item
                                 AppSettings.setValue("hash", request.responseText);
                                 AppSettings.endGroup();
 
-                                //saving hash to file
-                                cppCall.saveHashToFile();
+                                QLogger.saveHashToFile();
 
                                 if(newUser)
                                 {
@@ -238,8 +235,7 @@ Item
                                     AppSettings.setValue("hash", uInfoJSON.secret);
                                     AppSettings.endGroup();
 
-                                    //saving hash to file
-                                    cppCall.saveHashToFile();
+                                    QLogger.saveHashToFile();
 
                                     xmlHttpRequestLoader.source = "mapPage.qml";
                                 } catch (e) {
@@ -319,8 +315,7 @@ Item
                                 AppSettings.setValue("hash", request.responseText);
                                 AppSettings.endGroup();
 
-                                //saving hash to file
-                                cppCall.saveHashToFile();
+                                QLogger.saveHashToFile();
 
                                 xmlHttpRequestLoader.source = "passwordInputPage.qml";
                                 break;

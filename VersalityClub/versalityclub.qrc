@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Vars.qml</file>
-        <file>main.qml</file>
-        <file>qmldir</file>
         <file>qml/initialPage.qml</file>
         <file>qml/mapPage.qml</file>
         <file>qml/ControlBackground.qml</file>
@@ -13,14 +10,12 @@
         <file>qml/almostDonePage.qml</file>
         <file>qml/logInPage.qml</file>
         <file>qml/xmlHttpRequest.qml</file>
-        <file>AppSettings.qml</file>
         <file>qml/ToastMessage.qml</file>
         <file>qml/profileSettingsPage.qml</file>
         <file>qml/CustomLabel.qml</file>
         <file>qml/CustomTextField.qml</file>
         <file>qml/selectCategoryPage.qml</file>
         <file>qml/userLocation.qml</file>
-        <file>PageNameHolder.qml</file>
         <file>qml/listViewPage.qml</file>
         <file>qml/FooterButtons.qml</file>
         <file>qml/favouritePage.qml</file>
@@ -42,7 +37,6 @@
         <file>backgrounds/fade_out_h.png</file>
         <file>backgrounds/description_fade_out.png</file>
         <file>backgrounds/map_f.png</file>
-        <file>PromotionClusters.qml</file>
         <file>qml/ClusterMarker.qml</file>
         <file>qml/PromotionMarker.qml</file>
         <file>fonts/Roboto-Bold.ttf</file>
@@ -55,7 +49,6 @@
         <file>qml/HelpComponent.qml</file>
         <file>icons/user_location_marker_icon.svg</file>
         <file>icons/geo_location.svg</file>
-        <file>appInfoText.txt</file>
         <file>backgrounds/preview_bg.jpg</file>
         <file>icons/cat_1.svg</file>
         <file>icons/cat_2.svg</file>
@@ -100,5 +93,12 @@
         <file>icons/tick.svg</file>
         <file>icons/left_arrow_2.svg</file>
         <file>qml/ControlBackButton.qml</file>
+        <file>text/appInfoText.txt</file>
+        <file>AppSettings.qml</file>
+        <file>main.qml</file>
+        <file>PageNameHolder.qml</file>
+        <file>PromotionClusters.qml</file>
+        <file>qmldir</file>
+        <file>Vars.qml</file>
     </qresource>
 </RCC>
