@@ -82,7 +82,6 @@ NSString* const RESTRICLET_ALERT  = @"Sorry. We can't start App without location
         [[Logger sharedSingleton] sendCoords :lat :lon];
     } else {
         [[Logger sharedSingleton] log:[@"invalid: " stringByAppendingString:coords]];
-        //[[Logger sharedSingleton] sendCoords :lat :lon]; // todo delete this line
     }
 }
 

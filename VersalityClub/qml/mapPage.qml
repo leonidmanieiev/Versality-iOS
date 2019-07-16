@@ -31,8 +31,6 @@ import QtLocation 5.9
 import QtPositioning 5.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
-// todo uncomment bellow
-//import OneSignal 1.0
 
 Page
 {
@@ -581,8 +579,7 @@ Page
     {
         if(AppSettings.value("user/hash") !== undefined)
         {
-            // todo uncomment bellow
-            //sending user hash for identification for notifs.
+            // todo send user hash for identification for notifs.
             //QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
 
             // start location service if user has secret and this is app first lauch

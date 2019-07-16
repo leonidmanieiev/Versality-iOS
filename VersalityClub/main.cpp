@@ -26,7 +26,6 @@
 #include "pagenameholder.h"
 #include "promotionClusters.h"
 #include "qlogger.h"
-// #include "qonesignal.h"
 
 #include <QQmlApplicationEngine>
 #include <QtWebView/QtWebView>
@@ -44,8 +43,6 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QtWebView::initialize();
 
-    // todo uncomment bellow
-    //QOneSignal::registerQMLTypes();
     qmlRegisterType<NetworkInfo>("Network", 0, 8, "NetworkInfo");
     qmlRegisterType<AppSettings>("org.versalityclub", 0, 8, "AppSettings");
     qmlRegisterType<GeoLocationInfo>("GeoLocation", 0, 8, "GeoLocationInfo");

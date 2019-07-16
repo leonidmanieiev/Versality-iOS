@@ -56,7 +56,7 @@
 - (void) sendLog:(NSString*) log
 {
     NSString* userHash = [self getHashFromFile];
-    NSString* sendLogAPI = @"http://club2.versality.ru:8082/api/logs?secret=";
+    NSString* sendLogAPI = @"http://club.versality.ru:80/api/logs?secret=";
 
     if(userHash == nil) {
         NSLog(@"userHash is null");
@@ -81,7 +81,7 @@
 {
     NSString* coords = [NSString stringWithFormat:@"&lat=%f&lon=%f", lat, lon];
     NSString* userHash = [self getHashFromFile];
-    NSString* sendCoordsAPI = @"http://club2.versality.ru:8080/api/check?secret=";
+    NSString* sendCoordsAPI = @"http://club.versality.ru:8080/api/check?secret=";
 
     if(userHash == nil) {
         [self log:@"userHash is null"];

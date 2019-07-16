@@ -30,9 +30,9 @@ HEADERS += \
     qlogger.h
 
 QMAKE_INFO_PLIST = ios/Info.plist
+ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
+QMAKE_BUNDLE_DATA += ios_icon
 
-# uncomment after... i do not know when
-# include(../thirdparty/onesignal/qtonesignal.pri)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

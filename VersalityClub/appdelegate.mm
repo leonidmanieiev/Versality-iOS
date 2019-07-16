@@ -30,7 +30,7 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Please, enable Background App Refresh
 
 - (BOOL)application:(UIApplication *) __unused application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions
 {
-    if (@available(iOS 10.0, *)) {
+    if (@available(iOS 10.0, *)) {        
         if(locationService == nil) {
             locationService = [[LocationService alloc] init];
         }

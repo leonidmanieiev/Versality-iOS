@@ -102,8 +102,8 @@ QtObject
     property bool fromSignUp: false
 
     //API REQUESTS
-    readonly property string domen: "http://club2.versality.ru" // TODO replace club2 with club
-    readonly property string main: ":8082/"
+    readonly property string domen: "http://club.versality.ru"
+    readonly property string main: ":80/"
     readonly property string mobile: ":8080/"
     readonly property string allCats: domen+mobile+"api/categories"
     readonly property string allPromsListViewModel: domen+mobile+"api/promos4?"
