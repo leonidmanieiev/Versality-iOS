@@ -139,6 +139,9 @@ Page
             borderColor: Vars.forgetPassPurple
             buttonClickableArea.onClicked:
             {
+                // close keyboard
+                Qt.inputMethod.hide();
+
                 passwordInputPageLoader.setSource("xmlHttpRequest.qml",
                                                   { "api": Vars.userResetPass,
                                                     "functionalFlag": 'user/reset-pass'

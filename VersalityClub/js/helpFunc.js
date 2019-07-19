@@ -66,6 +66,14 @@ function isStringAnUrl(str) {
   return (res !== null)
 };
 
+function isItemInBoundariesForClick(itemTopY, itemBottomY, headerBottomY, footerTopY)
+{
+    console.log("(itemTopY > headerBottomY) && (itemBottomY < footerTopY);");
+    console.log("itemTopY:", itemTopY, "itemBottomY:", itemBottomY, "headerBottomY:", headerBottomY, "footerTopY:", footerTopY);
+
+    return (itemTopY > headerBottomY) && (itemBottomY < footerTopY);
+}
+
 /*****************MODELS GENERATION**************/
 
 //puts categories from JSON to model for listview

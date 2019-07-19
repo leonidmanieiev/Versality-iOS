@@ -48,6 +48,13 @@ Page
                                           });
     }
 
+    // is item visiable for user so he can click on it
+    function mayClick(y, h)
+    {
+        return Helper.isItemInBoundariesForClick(y, y+h, logoAndPageTitle.height,
+                                                 Vars.screenHeight-Vars.footerButtonsFieldHeight);
+    }
+
     //checking internet connetion
     Network { toastMessage: toastMessage }
 
@@ -64,8 +71,7 @@ Page
         id: catsListView
         clip: true
         width: parent.width
-        height: parent.height//parent.height-Vars.footerButtonsFieldHeight*2
-        //contentHeight: middleFieldsColumn.height
+        height: parent.height
         anchors.top: parent.top
         topMargin: Vars.pageHeight*0.25
         bottomMargin: Vars.footerButtonsFieldHeight*1.05
@@ -88,22 +94,7 @@ Page
                     radius: height*0.5
                     color: Vars.whiteColor
                     border.width: height*0.06
-                    border.color: Vars.settingspurpleBorderColor
-
-                    LinearGradient
-                    {
-                        id: catsItemGradient
-                        visible: false
-                        anchors.fill: parent
-                        source: parent
-                        start: Qt.point(0, height*0.5)
-                        end: Qt.point(width, height*0.5)
-                        gradient: Gradient
-                        {
-                            GradientStop { position: 0.0; color: "#862b71" }
-                            GradientStop { position: 1.0; color: "#5b1a5c" }
-                        }
-                    }
+                    border.color: Vars.settingsPurpleBorderColor
 
                     Image
                     {
@@ -130,16 +121,6 @@ Page
                             GradientStop { position: 0.0; color: "#431160" }
                             GradientStop { position: 1.0; color: "#a33477" }
                         }
-                    }
-
-                    ColorOverlay
-                    {
-                        id: catIconColorOverlay
-                        visible: false
-                        anchors.fill: catIcon
-                        source: catIcon
-                        color: Vars.whiteColor
-                        cached: true
                     }
 
                     Text
@@ -182,32 +163,36 @@ Page
                         anchors.fill: parent
                         onClicked:
                         {
-                            if(collapsed)
+                            var newY = middleFieldsColumn.y + catsListView.childrenRect.y;
+                            if(mayClick(newY, catsItem.height))
                             {
-                                //trick with visiables is workaroud.
-                                //if just change color it will create a duplicate of icon
-                                downArrow.visible = true;
-                                downArrowColorOverlay.visible = false;
-                                downArrow.rotation = 180;
+                                if(collapsed)
+                                {
+                                    //trick with visiables is workaroud.
+                                    //if just change color it will create a duplicate of icon
+                                    downArrow.visible = true;
+                                    downArrowColorOverlay.visible = false;
+                                    downArrow.rotation = 180;
 
-                                catsItemGradient.visible = true;
-                                catIconColorOverlay.visible = true;
-                                catsItemText.color = Vars.whiteColor;
+                                    catsItem.color = Vars.settingsPurpleBorderColor;
+                                    catIconGradient.visible = false;
+                                    catsItemText.color = Vars.whiteColor;
+                                }
+                                else
+                                {
+                                    //trick with visiables is workaroud.
+                                    //if just change color it will create a duplicate of icon
+                                    downArrow.visible = false;
+                                    downArrowColorOverlay.visible = true;
+                                    downArrow.rotation = 0;
+
+                                    catsItem.color = Vars.whiteColor;
+                                    catIconGradient.visible = true;
+                                    catsItemText.color = Vars.blackColor;
+                                }
+
+                                catsModel.setProperty(index, "collapsed", !collapsed);
                             }
-                            else
-                            {
-                                //trick with visiables is workaroud.
-                                //if just change color it will create a duplicate of icon
-                                downArrow.visible = false;
-                                downArrowColorOverlay.visible = true;
-                                downArrow.rotation = 0;
-
-                                catsItemGradient.visible = false;
-                                catIconColorOverlay.visible = false;
-                                catsItemText.color = Vars.blackColor;
-                            }
-
-                            catsModel.setProperty(index, "collapsed", !collapsed);
                         }
                     }
                 }//catsItem
@@ -246,22 +231,7 @@ Page
                     radius: height*0.5
                     height: Vars.screenHeight*0.07*Vars.iconHeightFactor
                     width: parent.width
-                    color: Vars.whiteColor
-
-                    LinearGradient
-                    {
-                        id: subCatsItemGradient
-                        visible: AppSettings.contains(subid)
-                        anchors.fill: parent
-                        source: parent
-                        start: Qt.point(0, height*0.5)
-                        end: Qt.point(width, height*0.5)
-                        gradient: Gradient
-                        {
-                            GradientStop { position: 0.0; color: "#862b71" }
-                            GradientStop { position: 1.0; color: "#5b1a5c" }
-                        }
-                    }
+                    color: AppSettings.contains(subid) ? Vars.settingsPurpleBorderColor : Vars.whiteColor
 
                     Text
                     {
@@ -290,35 +260,35 @@ Page
                         source: "../icons/tick.svg"
                     }
 
-                    ColorOverlay
-                    {
-                        id: tickIconColorOverlay
-                        visible: tickIcon.visible
-                        anchors.fill: tickIcon
-                        source: tickIcon
-                        color: Vars.whiteColor
-                        cached: true
-                    }
-
                     MouseArea
                     {
                         id: subCatsClickableArea
                         anchors.fill: parent
                         onClicked:
                         {
-                            if(AppSettings.contains(subid))
+                            console.log("middleFieldsSubColumn.y:", middleFieldsSubColumn.y,
+                                        "catsListView.contentY:", catsListView.contentY,
+                                        "catsListView.visibleArea.yPosition:", catsListView.visibleArea.yPosition,
+                                        "catsListView.childrenRect.y:", catsListView.childrenRect.y);
+                            console.log("nuka:", catsListView.visibleArea.yPosition * catsListView.height);
+
+                            var newY = middleFieldsSubColumn.y + Math.abs(catsListView.childrenRect.y) + Vars.screenHeight*0.09*Vars.iconHeightFactor;
+                            if(true) // temp comment smayClick(newY, subCatsItem.height))
                             {
-                                subCatsItemGradient.visible = false;
-                                subCatsText.color = Vars.blackColor;
-                                tickIcon.visible = false;
-                                AppSettings.removeCat(subid);
-                            }
-                            else
-                            {
-                                subCatsItemGradient.visible = true;
-                                subCatsText.color = Vars.whiteColor;
-                                tickIcon.visible = true;
-                                AppSettings.insertCat(subid);
+                                if(AppSettings.contains(subid))
+                                {
+                                    subCatsItem.color = Vars.whiteColor;
+                                    subCatsText.color = Vars.blackColor;
+                                    tickIcon.visible = false;
+                                    AppSettings.removeCat(subid);
+                                }
+                                else
+                                {
+                                    subCatsItem.color = Vars.settingsPurpleBorderColor;
+                                    subCatsText.color = Vars.whiteColor;
+                                    tickIcon.visible = true;
+                                    AppSettings.insertCat(subid);
+                                }
                             }
                         }
                     }

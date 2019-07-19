@@ -39,6 +39,13 @@ Page
     height: Vars.pageHeight
     width: Vars.screenWidth
 
+    // is item visiable for user so he can click on it
+    function mayClick(y, h)
+    {
+        return Helper.isItemInBoundariesForClick(y, y+h, logoAndPageTitle.height,
+                                                 Vars.screenHeight-Vars.footerButtonsFieldHeight);
+    }
+
     //checking internet connetion
     Network { toastMessage: toastMessage }
 
@@ -89,14 +96,18 @@ Page
                 labelText: Vars.choose
                 labelColor: Vars.blackColor
                 backgroundColor: "transparent"
-                borderColor: Vars.settingspurpleBorderColor
+                borderColor: Vars.settingsPurpleBorderColor
                 buttonClickableArea.onClicked:
                 {
-                    PageNameHolder.push("profileSettingsPage.qml");
-                    profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
-                                                        { "api": Vars.allCats,
-                                                          "functionalFlag": 'categories'
-                                                        });
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(mayClick(newY, height))
+                    {
+                        PageNameHolder.push("profileSettingsPage.qml");
+                        profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
+                                                            { "api": Vars.allCats,
+                                                              "functionalFlag": 'categories'
+                                                            });
+                    }
                 }
             }//selectCategoryButton
 
@@ -116,16 +127,20 @@ Page
                 labelText: AppSettings.value("user/sex");
                 labelColor: Vars.blackColor
                 backgroundColor: "transparent"
-                borderColor: Vars.settingspurpleBorderColor
+                borderColor: Vars.settingsPurpleBorderColor
                 buttonClickableArea.onClicked:
                 {
-                    if(labelText === "M")
-                        labelText = "Ж";
-                    else labelText = "M";
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(mayClick(newY, height))
+                    {
+                        if(labelText === "M")
+                            labelText = "Ж";
+                        else labelText = "M";
 
-                    AppSettings.beginGroup("user");
-                    AppSettings.setValue("sex", labelText);
-                    AppSettings.endGroup();
+                        AppSettings.beginGroup("user");
+                        AppSettings.setValue("sex", labelText);
+                        AppSettings.endGroup();
+                    }
                 }
             }
 
@@ -143,7 +158,7 @@ Page
                 Layout.fillWidth: true
                 setFillColor: "transparent"
                 setTextColor: Vars.blackColor
-                setBorderColor: Vars.settingspurpleBorderColor
+                setBorderColor: Vars.settingsPurpleBorderColor
                 text: AppSettings.value("user/birthday");
                 inputMask: Vars.birthdayMask
                 inputMethodHints: Qt.ImhDigitsOnly
@@ -160,9 +175,13 @@ Page
                     anchors.fill: parent
                     onClicked:
                     {
-                        //open picker and disable flicker
-                        birthdayPicker.visible = true;
-                        flickableArea.enabled = false;
+                        var newY = dateofbirthField.y+flickableArea.childrenRect.y;
+                        if(mayClick(newY, dateofbirthField.height))
+                        {
+                            //open picker and disable flicker
+                            birthdayPicker.visible = true;
+                            flickableArea.enabled = false;
+                        }
                     }
                 }
             }
@@ -181,7 +200,7 @@ Page
                 Layout.fillWidth: true
                 setFillColor: "transparent"
                 setTextColor: Vars.blackColor
-                setBorderColor: Vars.settingspurpleBorderColor
+                setBorderColor: Vars.settingsPurpleBorderColor
                 text: AppSettings.value("user/email");
             }
 
@@ -198,11 +217,17 @@ Page
                 Layout.fillWidth: true
                 setFillColor: "transparent"
                 setTextColor: Vars.blackColor
-                setBorderColor: Vars.settingspurpleBorderColor
+                setBorderColor: Vars.settingsPurpleBorderColor
                 echoMode: TextInput.Password
                 inputMethodHints: Qt.ImhSensitiveData
                 selectByMouse: false
                 placeholderText: Vars.enterNewPass
+                onPressed:
+                {
+                    readOnly = false;
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(!mayClick(newY, height)) readOnly = true;
+                }
             }
 
             CustomLabel
@@ -218,9 +243,15 @@ Page
                 Layout.fillWidth: true
                 setFillColor: "transparent"
                 setTextColor: Vars.blackColor
-                setBorderColor: Vars.settingspurpleBorderColor
+                setBorderColor: Vars.settingsPurpleBorderColor
                 text: AppSettings.value("user/name");
                 placeholderText: Vars.enterName
+                onPressed:
+                {
+                    readOnly = false;
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(!mayClick(newY, height)) readOnly = true;
+                }
                 onTextChanged:
                 {
                     AppSettings.beginGroup("user");
@@ -239,30 +270,33 @@ Page
                 fontPixelSize: Helper.applyDpr(10, Vars.dpr)
                 Layout.fillWidth: true
                 Layout.topMargin: Vars.pageHeight*0.03
-                borderColor: "transparent"
+                backgroundColor: Vars.settingsPurpleBorderColor
+                borderColor: Vars.settingsPurpleBorderColor
                 buttonRadius: 25
                 buttonWidth: Vars.screenWidth*0.9
-                showGradient2: true
-
                 buttonClickableArea.onClicked:
                 {
-                    AppSettings.beginGroup("user");
-                    AppSettings.setValue("sex", sexButton.labelText);
-                    if(firstNameField.text.length > 0)
-                        AppSettings.setValue("name", firstNameField.text);
-                    AppSettings.setValue("birthday", dateofbirthField.text);
-                    if(changePasswordField.text.length > 0)
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(mayClick(newY, height))
                     {
-                        AppSettings.setValue("password", changePasswordField.text);
-                        hasPassChanged = true;
-                    }
-                    AppSettings.endGroup();
+                        AppSettings.beginGroup("user");
+                        AppSettings.setValue("sex", sexButton.labelText);
+                        if(firstNameField.text.length > 0)
+                            AppSettings.setValue("name", firstNameField.text);
+                        AppSettings.setValue("birthday", dateofbirthField.text);
+                        if(changePasswordField.text.length > 0)
+                        {
+                            AppSettings.setValue("password", changePasswordField.text);
+                            hasPassChanged = true;
+                        }
+                        AppSettings.endGroup();
 
-                    profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
-                                                        { "api": Vars.userInfo,
-                                                          "functionalFlag": 'user/refresh-snbp',
-                                                          "hasPassChanged": hasPassChanged
-                                                        });
+                        profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
+                                                            { "api": Vars.userInfo,
+                                                              "functionalFlag": 'user/refresh-snbp',
+                                                              "hasPassChanged": hasPassChanged
+                                                            });
+                    }
                 }
             }//saveButton
 
@@ -281,8 +315,12 @@ Page
                 buttonRadius: 25
                 buttonClickableArea.onClicked:
                 {
-                    AppSettings.clearAllAppSettings();
-                    appWindowLoader.source = "initialPage.qml";
+                    var newY = y+flickableArea.childrenRect.y;
+                    if(mayClick(newY, height))
+                    {
+                        AppSettings.clearAllAppSettings();
+                        appWindowLoader.source = "initialPage.qml";
+                    }
                 }
             }
         }//middleFieldsColumns
@@ -299,6 +337,7 @@ Page
 
     LogoAndPageTitle
     {
+        id: logoAndPageTitle
         showInfoButton: true
         pageTitleText: Vars.profileSettings
         pressedFromPageName: 'profileSettingsPage.qml'

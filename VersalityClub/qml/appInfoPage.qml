@@ -91,7 +91,7 @@ Page
             onLinkActivated: Qt.openUrlExternally(link)
             textFormat: Text.RichText;
         }
-    }//flickableAreaÍ
+    }//flickableArea
 
     Image
     {

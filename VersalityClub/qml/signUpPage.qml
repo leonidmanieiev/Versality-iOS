@@ -158,8 +158,12 @@ Page
                 }
                 else
                 {
+                    // close keyboard
+                    Qt.inputMethod.hide();
+
                     //block button to avoid multiple clicks
                     signUpButton.enabled = false;
+
                     //saving user info for further using
                     AppSettings.beginGroup("user");
                     AppSettings.setValue("email", emailField.text.toLowerCase());

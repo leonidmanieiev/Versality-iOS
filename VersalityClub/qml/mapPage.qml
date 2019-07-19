@@ -30,7 +30,6 @@ import QtQuick.Controls 2.4
 import QtLocation 5.9
 import QtPositioning 5.12
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 
 Page
 {
@@ -444,14 +443,6 @@ Page
                     anchors.left: parent.left
                     anchors.leftMargin: parent.width*0.09
                     anchors.verticalCenter: parent.verticalCenter
-                }
-
-                ColorOverlay
-                {
-                    anchors.fill: icon
-                    source: icon
-                    color: Vars.whiteColor
-                    cached: true
                 }
 
                 Label

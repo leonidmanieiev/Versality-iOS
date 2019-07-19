@@ -133,6 +133,9 @@ Page
             backgroundColor: Vars.purpleBorderColor
             buttonClickableArea.onClicked:
             {
+                // close keyboard
+                Qt.inputMethod.hide();
+
                 AppSettings.beginGroup("user");
                 AppSettings.setValue("password", newPassField.text);
                 AppSettings.endGroup();

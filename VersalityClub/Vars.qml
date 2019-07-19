@@ -42,7 +42,7 @@ QtObject
     readonly property color mapPromsPopupColor: "#270f3b"
     readonly property color purpleBorderColor: "#441161"
     readonly property color purpleTextColor: "#3a0d5e"
-    readonly property color settingspurpleBorderColor: "#84296f"
+    readonly property color settingsPurpleBorderColor: "#84296f"
     readonly property color subCatSelectedColor: "#f0e4ff"
     readonly property color toastGrey: "#76797c"
     readonly property color whiteColor: "#FFFFFF"
@@ -102,8 +102,8 @@ QtObject
     property bool fromSignUp: false
 
     //API REQUESTS
-    readonly property string domen: "http://club.versality.ru"
-    readonly property string main: ":80/"
+    readonly property string domen: "https://club.versality.ru"
+    readonly property string main: "/"
     readonly property string mobile: ":8080/"
     readonly property string allCats: domen+mobile+"api/categories"
     readonly property string allPromsListViewModel: domen+mobile+"api/promos4?"
@@ -141,7 +141,7 @@ QtObject
     readonly property string activateCouponHelpText: "Для активации акции\nназовите код Вашего купона:"
     readonly property string almostDone: "Все почти готово..."
     readonly property string appInfoTitle: "Информация\nо приложении"
-    readonly property string appSiteLink: "http://club.versality.ru"
+    readonly property string appSiteLink: "https://club.versality.ru"
     readonly property string appSiteName: "club.versality.ru"
     readonly property string back: "Назад"
     readonly property string backToPromotion: "Назад к акции"

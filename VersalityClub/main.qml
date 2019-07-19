@@ -24,7 +24,7 @@ import '.' //QTBUG-34418, singletons require explicit import to load qmldir file
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
-import QtPositioning 5.12
+//import QtPositioning 5.12 // todo delete this
 
 ApplicationWindow
 {
@@ -46,7 +46,7 @@ ApplicationWindow
     }
 
     // to initiate location permission request from iOS before running into mapPage
-    PositionSource
+    /*PositionSource
     {
         active: true
         updateInterval: 1
@@ -57,7 +57,7 @@ ApplicationWindow
                 update();
             else active = false;
         }
-    }
+    }*/ // todo delete this
 
     onClosing:
     {
