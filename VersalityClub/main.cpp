@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GeoLocationInfo>("GeoLocation", 0, 8, "GeoLocationInfo");
     qmlRegisterType<PageNameHolder>("org.versalityclub", 0, 8, "PageNameHolder");
     qmlRegisterType<PromotionClusters>("org.versalityclub", 0, 8, "PromotionClusters");
-    qmlRegisterSingletonType<QLogger>("QLogger", 1, 0, "QLogger", singletonProvider);
+    qmlRegisterSingletonType<QLogger>("QLogger", 1, 0, "QLogger", &QLogger::singletonProvider);
 
     QQmlApplicationEngine engine;
 

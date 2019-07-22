@@ -402,6 +402,7 @@ Page
     {
         id: compDescFadeOut
         clip: true
+        visible: !compPicPopup.visible
         anchors.bottom: background.top
         width: parent.width
         height: Vars.footerButtonsFieldHeight

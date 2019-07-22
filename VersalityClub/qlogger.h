@@ -29,16 +29,20 @@
 class QLogger : public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(QLogger)
 public:
     explicit QLogger([[maybe_unused]] QObject *parent = nullptr);
     ~QLogger() = default;
     Q_INVOKABLE static void saveHashToFile();
-};
 
-static QObject* singletonProvider([[maybe_unused]] QQmlEngine *engine, [[maybe_unused]] QJSEngine *scriptEngine)
-{
-    QLogger* intance = new QLogger();
-    return intance;
-}
+    static QObject* singletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
+    {
+        Q_UNUSED(engine);
+        Q_UNUSED(scriptEngine);
+
+        QLogger* intance = new QLogger();
+        return intance;
+    }
+};
 
 #endif // Q_LOGGER_H

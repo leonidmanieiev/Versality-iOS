@@ -39,13 +39,6 @@ Page
     height: Vars.pageHeight
     width: Vars.screenWidth
 
-    // is item visiable for user so he can click on it
-    function mayClick(y, h)
-    {
-        return Helper.isItemInBoundariesForClick(y, y+h, logoAndPageTitle.height,
-                                                 Vars.screenHeight-Vars.footerButtonsFieldHeight);
-    }
-
     //checking internet connetion
     Network { toastMessage: toastMessage }
 
@@ -99,15 +92,11 @@ Page
                 borderColor: Vars.settingsPurpleBorderColor
                 buttonClickableArea.onClicked:
                 {
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(mayClick(newY, height))
-                    {
-                        PageNameHolder.push("profileSettingsPage.qml");
-                        profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
-                                                            { "api": Vars.allCats,
-                                                              "functionalFlag": 'categories'
-                                                            });
-                    }
+                    PageNameHolder.push("profileSettingsPage.qml");
+                    profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
+                                                        { "api": Vars.allCats,
+                                                          "functionalFlag": 'categories'
+                                                        });
                 }
             }//selectCategoryButton
 
@@ -130,17 +119,13 @@ Page
                 borderColor: Vars.settingsPurpleBorderColor
                 buttonClickableArea.onClicked:
                 {
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(mayClick(newY, height))
-                    {
-                        if(labelText === "M")
-                            labelText = "Ж";
-                        else labelText = "M";
+                    if(labelText === "M")
+                        labelText = "Ж";
+                    else labelText = "M";
 
-                        AppSettings.beginGroup("user");
-                        AppSettings.setValue("sex", labelText);
-                        AppSettings.endGroup();
-                    }
+                    AppSettings.beginGroup("user");
+                    AppSettings.setValue("sex", labelText);
+                    AppSettings.endGroup();
                 }
             }
 
@@ -175,13 +160,9 @@ Page
                     anchors.fill: parent
                     onClicked:
                     {
-                        var newY = dateofbirthField.y+flickableArea.childrenRect.y;
-                        if(mayClick(newY, dateofbirthField.height))
-                        {
-                            //open picker and disable flicker
-                            birthdayPicker.visible = true;
-                            flickableArea.enabled = false;
-                        }
+                        //open picker and disable flicker
+                        birthdayPicker.visible = true;
+                        flickableArea.enabled = false;
                     }
                 }
             }
@@ -222,12 +203,6 @@ Page
                 inputMethodHints: Qt.ImhSensitiveData
                 selectByMouse: false
                 placeholderText: Vars.enterNewPass
-                onPressed:
-                {
-                    readOnly = false;
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(!mayClick(newY, height)) readOnly = true;
-                }
             }
 
             CustomLabel
@@ -246,12 +221,6 @@ Page
                 setBorderColor: Vars.settingsPurpleBorderColor
                 text: AppSettings.value("user/name");
                 placeholderText: Vars.enterName
-                onPressed:
-                {
-                    readOnly = false;
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(!mayClick(newY, height)) readOnly = true;
-                }
                 onTextChanged:
                 {
                     AppSettings.beginGroup("user");
@@ -270,33 +239,30 @@ Page
                 fontPixelSize: Helper.applyDpr(10, Vars.dpr)
                 Layout.fillWidth: true
                 Layout.topMargin: Vars.pageHeight*0.03
-                backgroundColor: Vars.settingsPurpleBorderColor
-                borderColor: Vars.settingsPurpleBorderColor
+                backgroundColor: Vars.insteadOfGradientColor
+                borderColor: Vars.insteadOfGradientColor
                 buttonRadius: 25
                 buttonWidth: Vars.screenWidth*0.9
+
                 buttonClickableArea.onClicked:
                 {
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(mayClick(newY, height))
+                    AppSettings.beginGroup("user");
+                    AppSettings.setValue("sex", sexButton.labelText);
+                    if(firstNameField.text.length > 0)
+                        AppSettings.setValue("name", firstNameField.text);
+                    AppSettings.setValue("birthday", dateofbirthField.text);
+                    if(changePasswordField.text.length > 0)
                     {
-                        AppSettings.beginGroup("user");
-                        AppSettings.setValue("sex", sexButton.labelText);
-                        if(firstNameField.text.length > 0)
-                            AppSettings.setValue("name", firstNameField.text);
-                        AppSettings.setValue("birthday", dateofbirthField.text);
-                        if(changePasswordField.text.length > 0)
-                        {
-                            AppSettings.setValue("password", changePasswordField.text);
-                            hasPassChanged = true;
-                        }
-                        AppSettings.endGroup();
-
-                        profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
-                                                            { "api": Vars.userInfo,
-                                                              "functionalFlag": 'user/refresh-snbp',
-                                                              "hasPassChanged": hasPassChanged
-                                                            });
+                        AppSettings.setValue("password", changePasswordField.text);
+                        hasPassChanged = true;
                     }
+                    AppSettings.endGroup();
+
+                    profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
+                                                        { "api": Vars.userInfo,
+                                                          "functionalFlag": 'user/refresh-snbp',
+                                                          "hasPassChanged": hasPassChanged
+                                                        });
                 }
             }//saveButton
 
@@ -315,12 +281,8 @@ Page
                 buttonRadius: 25
                 buttonClickableArea.onClicked:
                 {
-                    var newY = y+flickableArea.childrenRect.y;
-                    if(mayClick(newY, height))
-                    {
-                        AppSettings.clearAllAppSettings();
-                        appWindowLoader.source = "initialPage.qml";
-                    }
+                    AppSettings.clearAllAppSettings();
+                    appWindowLoader.source = "initialPage.qml";
                 }
             }
         }//middleFieldsColumns
@@ -333,6 +295,23 @@ Page
         width: parent.width
         height: parent.height
         source: "../backgrounds/profile_settings_h.png"
+    }
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the header
+    Rectangle
+    {
+        id: headerStoper
+        width: parent.width
+        height: logoAndPageTitle.height*1.2
+        anchors.top: parent.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: headerStoper.forceActiveFocus()
+        }
     }
 
     LogoAndPageTitle
@@ -377,6 +356,23 @@ Page
         height: Vars.footerButtonsFieldHeight
         anchors.bottom: parent.bottom
         source: "../backgrounds/map_f.png"
+    }
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the footer
+    Rectangle
+    {
+        id: footerStopper
+        width: parent.width
+        height: Vars.footerButtonsFieldHeight
+        anchors.bottom: parent.bottom
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: footerStopper.forceActiveFocus()
+        }
     }
 
     FooterButtons

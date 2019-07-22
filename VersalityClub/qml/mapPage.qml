@@ -572,14 +572,6 @@ Page
         {
             // todo send user hash for identification for notifs.
             //QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
-
-            // start location service if user has secret and this is app first lauch
-            if(AppSettings.value("user/first_launch") === undefined)
-            {
-                AppSettings.beginGroup("user");
-                AppSettings.setValue("first_launch", 1);
-                AppSettings.endGroup();
-            }
         }
 
         //setting active focus for key capturing

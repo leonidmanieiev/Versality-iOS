@@ -39,6 +39,7 @@ QtObject
     readonly property color errorRed: "RED"
     readonly property color forgetPassPurple: "#a03576"
     readonly property color glowColor: "grey"
+    readonly property color insteadOfGradientColor: "#673389"
     readonly property color mapPromsPopupColor: "#270f3b"
     readonly property color purpleBorderColor: "#441161"
     readonly property color purpleTextColor: "#3a0d5e"
@@ -103,7 +104,6 @@ QtObject
 
     //API REQUESTS
     readonly property string domen: "https://club.versality.ru"
-    readonly property string main: "/"
     readonly property string mobile: ":8080/"
     readonly property string allCats: domen+mobile+"api/categories"
     readonly property string allPromsListViewModel: domen+mobile+"api/promos4?"
@@ -114,12 +114,12 @@ QtObject
     readonly property string userActivateProm: domen+mobile+"api/user/activate?"
     readonly property string userChangePass: domen+mobile+"api/user/set-pass?"
     readonly property string userInfo: domen+mobile+"api/user?"
-    readonly property string userLogin: domen+main+"api/login?"
+    readonly property string userLogin: domen+"/api/login?"
     readonly property string userMarkProm: domen+mobile+"api/user/mark?"
     readonly property string userMarkedProms: domen+mobile+"api/user/marked?"
     readonly property string userResetPass: domen+mobile+"api/user/reset-pass?"
     readonly property string userSelectCats: domen+mobile+"api/user/categories?"
-    readonly property string userSignup: domen+main+"api/register?"
+    readonly property string userSignup: domen+"/api/register?"
     readonly property string userUnmarkProm: domen+mobile+"api/user/unmark?"
 
     //POPUP TEXT CONSTS

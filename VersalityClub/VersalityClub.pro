@@ -32,6 +32,8 @@ HEADERS += \
 QMAKE_INFO_PLIST = ios/Info.plist
 ios_icon.files = $$files($$PWD/ios/AppIcon*.png)
 QMAKE_BUNDLE_DATA += ios_icon
+app_launch_images.files = $$PWD/ios/Launch.xib $$PWD/ios/image_for_launch_screen.png
+QMAKE_BUNDLE_DATA += app_launch_images
 
 
 # Default rules for deployment.

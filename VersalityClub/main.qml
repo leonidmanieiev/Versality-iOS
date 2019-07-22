@@ -24,7 +24,6 @@ import '.' //QTBUG-34418, singletons require explicit import to load qmldir file
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
-//import QtPositioning 5.12 // todo delete this
 
 ApplicationWindow
 {
@@ -43,31 +42,5 @@ ApplicationWindow
         //whether user was not signed(loged) in
         source: AppSettings.value("user/hash") === undefined ?
                      "qml/initialPage.qml" : "qml/mapPage.qml"
-    }
-
-    // to initiate location permission request from iOS before running into mapPage
-    /*PositionSource
-    {
-        active: true
-        updateInterval: 1
-
-        onPositionChanged:
-        {
-            if(isNaN(position.coordinate.latitude))
-                update();
-            else active = false;
-        }
-    }*/ // todo delete this
-
-    onClosing:
-    {
-        // start location service if user has secret and this is app first closing
-        if(AppSettings.value("user/hash") !== undefined &&
-           AppSettings.value("user/first_launch") === undefined)
-        {
-            AppSettings.beginGroup("user");
-            AppSettings.setValue("first_launch", 1);
-            AppSettings.endGroup();
-        }
     }
 }
