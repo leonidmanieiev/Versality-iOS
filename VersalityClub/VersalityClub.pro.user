@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.9.2, 2019-07-23T02:42:04. -->
+<!-- Written by QtCreator 4.9.2, 2019-07-30T04:24:14. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -320,7 +320,7 @@
      <value type="int" key="type">0</value>
     </valuemap>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run on Leonid’s iPhone</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Run  on Leonid’s iPhone</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Run VersalityClub on Leonid’s iPhone</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.IosRunConfiguration:/Users/leonidmanieiev/Documents/versality club/application/Versality-iOS/VersalityClub/VersalityClub.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
@@ -588,12 +588,12 @@
      <value type="int">14</value>
     </valuelist>
     <valuemap type="QVariantMap" key="Ios.device_type">
-     <value type="QString" key="displayName">iPhone Xs Max, com.apple.CoreSimulator.SimRuntime.iOS-12-2</value>
-     <value type="QString" key="identifier">2C6BEC16-33B1-4088-8A49-69E0F4CB6679</value>
+     <value type="QString" key="displayName">iPhone Xʀ, com.apple.CoreSimulator.SimRuntime.iOS-12-4</value>
+     <value type="QString" key="identifier">518885F9-3A62-4FE1-9491-2266BE10A05C</value>
      <value type="int" key="type">1</value>
     </valuemap>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run on iOS Simulator</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Run  on iOS Simulator</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Run VersalityClub on iOS Simulator</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.IosRunConfiguration:/Users/leonidmanieiev/Documents/versality club/application/Versality-iOS/VersalityClub/VersalityClub.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>

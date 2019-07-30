@@ -84,6 +84,9 @@ Page
                   '<a href="'+Vars.appSiteLink+'"'
                   +' style="color: '+Vars.purpleTextColor+'">'
                   +Vars.appSiteName+'</a><br><br>' + appInfoText
+                  +'<br><br><a href="'+Vars.privacyPolicyLink+'"'
+                  +' style="color: '+Vars.purpleTextColor+'">'
+                  +'Политика конфиденциальности</a>'
             font.pixelSize: Helper.applyDpr(7, Vars.dpr)
             font.family: regularText.name
             color: Vars.blackColor
