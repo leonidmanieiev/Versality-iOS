@@ -82,10 +82,10 @@ Page
             readOnly: true
             text: 'Узнайте больше о Versality:<br><br>'+
                   '<a href="'+Vars.appSiteLink+'"'
-                  +' style="color: '+Vars.purpleTextColor+'">'
+                  +' style="color: #631964">'
                   +Vars.appSiteName+'</a><br><br>' + appInfoText
                   +'<br><br><a href="'+Vars.privacyPolicyLink+'"'
-                  +' style="color: '+Vars.purpleTextColor+'">'
+                  +' style="color: #631964">'
                   +'Политика конфиденциальности</a>'
             font.pixelSize: Helper.applyDpr(7, Vars.dpr)
             font.family: regularText.name

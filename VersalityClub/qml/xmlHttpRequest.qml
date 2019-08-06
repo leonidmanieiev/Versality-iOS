@@ -161,7 +161,8 @@ Item
                                                                { "strCatsJSON": request.responseText });
                                 break;
                             case 'register':
-                                xmlHttpRequestLoader.source = "passwordInputPage.qml";
+                                xmlHttpRequestLoader.setSource("passwordInputPage.qml",
+                                                               { "fromRegistration": true });
                                 break;
                             case 'login':
                                 //saving hash(secret) for further auto authentication

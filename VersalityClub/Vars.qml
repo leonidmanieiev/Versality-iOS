@@ -149,7 +149,7 @@ QtObject
     readonly property string birthday: "Дата рождения:"
     readonly property string birthdayMask: "00.00.0000"
     readonly property string changePass: "Изменить пароль:"
-    readonly property string checkYourEmail: "(ПРОВЕРЬТЕ ВАШУ ПОЧТУ)"
+    readonly property string checkYourEmail: "ПРОВЕРЬТЕ ВАШУ ПОЧТУ"
     readonly property string choose: "ВЫБОР"
     readonly property string chooseCats: "Выберите\nинтересные Вам категории:"
     readonly property string closestAddress: "БЛИЖАЙШИЙ КО МНЕ АДРЕС"

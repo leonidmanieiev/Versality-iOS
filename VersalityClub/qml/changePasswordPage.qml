@@ -167,7 +167,7 @@ Page
 
     ToastMessage { id: networkToastMessage }
 
-    Component.onCompleted: toastMessage.setText("Проверьте e-mail");
+    Component.onCompleted: toastMessage.setText(Vars.checkYourEmail);
 
     Loader
     {
