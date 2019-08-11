@@ -26,6 +26,7 @@ import "../js/helpFunc.js" as Helper
 import QLogger 1.0
 import QtQuick 2.11
 import QtQuick.Controls 2.4
+import Network 0.9
 
 Item
 {
@@ -126,6 +127,10 @@ Item
             default: return 'NO_ERROR';
         }
     }
+
+    ToastMessage { id: toastMessage }
+
+    Network { id: network }
 
     function xhr()
     {
@@ -353,14 +358,23 @@ Item
                             default: console.log("Unknown functionalFlag"); break;
                         }//switch(functionalFlag)
                     }//if(errorStatus === 'NO_ERROR')
-                    else toastMessage.setTextAndRun(errorStatus, false);
+                    else
+                    {
+                        console.log("errorStatus:", errorStatus);
+                        toastMessage.setTextAndRun(errorStatus, true);
+
+                    }
                 }//if(request.status === 200)
                 else if(request.status !== null)
-                    toastMessage.setTextAndRun(Helper.httpErrorDecoder(request.status), false);
+                {
+                    console.log("request.status:", request.status);
+                    toastMessage.setTextAndRun(Helper.httpErrorDecoder(request.status), true);
+
+                }
                 else
                 {
                     console.log("xhr()::request.status is null");
-                    toastMessage.setTextAndRun(Vars.smthWentWrong);
+                    toastMessage.setTextAndRun(Vars.smthWentWrong, true);
                 }
             }//if(request.readyState === XMLHttpRequest.DONE)
             else console.log("readyState: " + request.readyState);
@@ -370,9 +384,16 @@ Item
         request.send(params);
     }//function xhr()
 
-    ToastMessage { id: toastMessage }
-
-    Component.onCompleted: xhr()
+    Component.onCompleted:
+    {
+        if(network.hasConnection()) {
+            toastMessage.close();
+            xhr()
+        } else {
+            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            appWindowLoader.source = "mapPage.qml";
+        }
+    }
 
     Loader
     {

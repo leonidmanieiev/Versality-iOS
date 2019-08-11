@@ -50,9 +50,6 @@ Page
                                           });
     }
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
-
     FontLoader
     {
         id: mediumText;
@@ -306,8 +303,6 @@ Page
         pageTitleText: Vars.profileSettings
         pressedFromPageName: 'selectCategoryPage.qml'
     }
-
-    ToastMessage { id: toastMessage }
 
     Component.onCompleted:
     {

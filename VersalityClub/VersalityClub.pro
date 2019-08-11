@@ -21,9 +21,9 @@ HEADERS += \
     appdelegate.h \
     locationService.h \
     logger.h \
-    networkinfo.h \
     appsettings.h \
     geolocationinfo.h \
+    network.h \
     promotion.h \
     pagenameholder.h \
     promotionClusters.h \

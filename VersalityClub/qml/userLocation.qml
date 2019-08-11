@@ -28,6 +28,7 @@ import QtQml 2.2
 import QtPositioning 5.12
 import QtLocation 5.9
 import GeoLocation 0.8
+import Network 0.9
 
 Item
 {
@@ -68,6 +69,8 @@ Item
     }
 
     ToastMessage { id: toastMessage }
+
+    Network { id: network }
 
     GeoLocationInfo
     {
@@ -170,39 +173,47 @@ Item
         //request promotion info
         function requestForPromotions()
         {
-            var request = new XMLHttpRequest();
-            //show all promos for now, not within radius
-            /*var params = 'secret='+secret+'&lat='+AppSettings.value("user/lat")+
-                         '&lon='+AppSettings.value("user/lon");*/
-            var params = 'secret='+secret;
-
-            console.log(api + params);
-
-            request.open('POST', api);
-            request.onreadystatechange = function()
+            if(network.hasConnection())
             {
-                if(request.readyState === XMLHttpRequest.DONE)
-                {
-                    if(isNaN(AppSettings.value("user/lat")) || isNaN(AppSettings.value("user/lon")))
-                    {
-                        disableUsability();
-                        console.log(Vars.userLocationIsNAN);
-                    }
-                    else if(request.status === 200)
-                    {
-                        notifier.visible = false;
-                        //saving response for further using
-                        if(isTilesApi)
-                            Vars.allPromsData = request.responseText;
-                        else Vars.allUniquePromsData = request.responseText;
-                    }
-                    else notifier.visible = true;
-                }
-                else console.log("readyState: " + request.readyState);
-            }
+                toastMessage.close();
+                var request = new XMLHttpRequest();
+                //show all promos for now, not within radius
+                /*var params = 'secret='+secret+'&lat='+AppSettings.value("user/lat")+
+                             '&lon='+AppSettings.value("user/lon");*/
+                var params = 'secret='+secret;
 
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send(params);
+                console.log(api + params);
+
+                request.open('POST', api);
+                request.onreadystatechange = function()
+                {
+                    if(request.readyState === XMLHttpRequest.DONE)
+                    {
+                        if(isNaN(AppSettings.value("user/lat")) || isNaN(AppSettings.value("user/lon")))
+                        {
+                            disableUsability();
+                            console.log(Vars.userLocationIsNAN);
+                        }
+                        else if(request.status === 200)
+                        {
+                            notifier.visible = false;
+                            //saving response for further using
+                            if(isTilesApi)
+                                Vars.allPromsData = request.responseText;
+                            else Vars.allUniquePromsData = request.responseText;
+                        }
+                        else notifier.visible = true;
+                    }
+                    else console.log("readyState: " + request.readyState);
+                }
+
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.send(params);
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
         }//function requestForPromotions()
 
         onSourceErrorChanged:

@@ -25,6 +25,7 @@ import "../"
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 Page
 {
@@ -33,8 +34,10 @@ Page
     height: Vars.screenHeight
     width: Vars.screenWidth
 
+    ToastMessage { id: toastMessage }
+
     //checking internet connetion
-    Network { toastMessage: toastMessage }
+    Network { id: network }
 
     Image
     {
@@ -85,8 +88,16 @@ Page
             labelText: Vars.signup
             buttonClickableArea.onClicked:
             {
-                PageNameHolder.push("initialPage.qml");
-                initialPageLoader.source = "signUpPage.qml";
+                if(network.hasConnection())
+                {
+                    toastMessage.close();
+                    PageNameHolder.push("initialPage.qml");
+                    initialPageLoader.source = "signUpPage.qml";
+                }
+                else
+                {
+                    toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                }
             }
         }
 
@@ -97,13 +108,20 @@ Page
             labelText: Vars.login
             buttonClickableArea.onClicked:
             {
-                PageNameHolder.push("initialPage.qml");
-                initialPageLoader.source = "logInPage.qml";
+                if(network.hasConnection())
+                {
+                    toastMessage.close();
+                    PageNameHolder.push("initialPage.qml");
+                    initialPageLoader.source = "logInPage.qml";
+                }
+                else
+                {
+                    toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                }
             }
         }
     }//middleButtonsColumn
 
-    ToastMessage { id: toastMessage }
 
     Loader
     {

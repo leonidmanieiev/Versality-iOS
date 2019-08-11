@@ -27,6 +27,7 @@ import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import Network 0.9
 
 Page
 {
@@ -61,8 +62,10 @@ Page
         source: Vars.boldFont
     }
 
+    ToastMessage { id: toastMessage }
+
     //checking internet connetion
-    Network { toastMessage: toastMessage }
+    Network { id: network }
 
     Image
     {
@@ -233,7 +236,15 @@ Page
         buttonIconSource: "../icons/left_arrow.svg"
         iconAlias.sourceSize.width: height*0.5
         iconAlias.sourceSize.height: height*0.4
-        onClicked: previewPromotionPageLoader.source = "mapPage.qml"
+        onClicked:
+        {
+            if(network.hasConnection()) {
+                toastMessage.close();
+                previewPromotionPageLoader.source = "mapPage.qml"
+            } else {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
+        }
     }
 
     FooterButtons
@@ -275,8 +286,6 @@ Page
             previewPromotionPageLoader.reload();
         }
     }
-
-    ToastMessage { id: toastMessage }
 
     Loader
     {

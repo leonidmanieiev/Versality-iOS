@@ -28,6 +28,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtPositioning 5.8
 import QtGraphicalEffects 1.0
+import Network 0.9
 
 Page
 {
@@ -125,8 +126,10 @@ Page
         source: Vars.boldFont
     }
 
+    ToastMessage { id: toastMessage }
+
     //checking internet connetion
-    Network { toastMessage: toastMessage }
+    Network { id: network }
 
     background: Rectangle
     {
@@ -230,17 +233,25 @@ Page
                     borderColor: "transparent"
                     buttonClickableArea.onClicked:
                     {
-                        if(minDistToStore < promCloseDist)
+                        if(network.hasConnection())
                         {
-                            promoCodePopup.visible = true;
-                            flickableArea.enabled = false;
-                            //inform server about coupon was activated
-                            promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                          {"api": Vars.userActivateProm,
-                                                           "functionalFlag": "user/activate",
-                                                           "promo_id": p_id});
+                            toastMessage.close();
+                            if(minDistToStore < promCloseDist)
+                            {
+                                promoCodePopup.visible = true;
+                                flickableArea.enabled = false;
+                                //inform server about coupon was activated
+                                promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                              {"api": Vars.userActivateProm,
+                                                               "functionalFlag": "user/activate",
+                                                               "promo_id": p_id});
+                            }
+                            else toastMessage.setTextAndRun(Vars.getCloserToProm, false);
                         }
-                        else toastMessage.setTextAndRun(Vars.getCloserToProm, false);
+                        else
+                        {
+                            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                        }
                     }
                 }
 
@@ -255,23 +266,31 @@ Page
                                       "../icons/add_to_favourites_off.svg"
                     clickArea.onClicked:
                     {
-                        if(!p_is_marked)
+                        if(network.hasConnection())
                         {
-                            p_is_marked = true;
-                            buttonIconSource = "../icons/add_to_favourites_on.svg";
-                            promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                          {"api": Vars.userMarkProm,
-                                                           "functionalFlag": "user/mark",
-                                                           "promo_id": p_id});
+                            toastMessage.close();
+                            if(!p_is_marked)
+                            {
+                                p_is_marked = true;
+                                buttonIconSource = "../icons/add_to_favourites_on.svg";
+                                promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                              {"api": Vars.userMarkProm,
+                                                               "functionalFlag": "user/mark",
+                                                               "promo_id": p_id});
+                            }
+                            else
+                            {
+                                p_is_marked = false;
+                                buttonIconSource = "../icons/add_to_favourites_off.svg";
+                                promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                              {"api": Vars.userUnmarkProm,
+                                                               "functionalFlag": "user/unmark",
+                                                               "promo_id": p_id});
+                            }
                         }
                         else
                         {
-                            p_is_marked = false;
-                            buttonIconSource = "../icons/add_to_favourites_off.svg";
-                            promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                          {"api": Vars.userUnmarkProm,
-                                                           "functionalFlag": "user/unmark",
-                                                           "promo_id": p_id});
+                            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
                         }
                     }
                 }//addToFavourite
@@ -286,16 +305,24 @@ Page
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
                 {
-                    PageNameHolder.push("promotionPage.qml");
-                    promotionPageLoader.setSource("mapPage.qml",
-                                        { "defaultLat": nearestStoreLat,
-                                          "defaultLon": nearestStoreLon,
-                                          "defaultZoomLevel": getZoomLevel(),
-                                          "showingNearestStore": true,
-                                          "locButtClicked": true,
-                                          "nearestPromId": p_id,
-                                          "nearestPromIcon": c_icon
-                                        });
+                    if(network.hasConnection())
+                    {
+                        toastMessage.close();
+                        PageNameHolder.push("promotionPage.qml");
+                        promotionPageLoader.setSource("mapPage.qml",
+                                            { "defaultLat": nearestStoreLat,
+                                              "defaultLon": nearestStoreLon,
+                                              "defaultZoomLevel": getZoomLevel(),
+                                              "showingNearestStore": true,
+                                              "locButtClicked": true,
+                                              "nearestPromId": p_id,
+                                              "nearestPromIcon": c_icon
+                                            });
+                    }
+                    else
+                    {
+                        toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                    }
                 }
             }
 
@@ -308,14 +335,22 @@ Page
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
                 {
-                    PageNameHolder.push("promotionPage.qml");
-                    AppSettings.beginGroup("company");
-                    AppSettings.setValue("id", comp_id);
-                    AppSettings.endGroup();
-                    promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                  { "api": Vars.companyInfo,
-                                                    "functionalFlag": 'company'
-                                                  });
+                    if(network.hasConnection())
+                    {
+                        toastMessage.close();
+                        PageNameHolder.push("promotionPage.qml");
+                        AppSettings.beginGroup("company");
+                        AppSettings.setValue("id", comp_id);
+                        AppSettings.endGroup();
+                        promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                      { "api": Vars.companyInfo,
+                                                        "functionalFlag": 'company'
+                                                      });
+                    }
+                    else
+                    {
+                        toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                    }
                 }
             }
         }//middleFieldsColumns
@@ -440,8 +475,6 @@ Page
         }//proceedButton
     }
 
-    ToastMessage { id: toastMessage }
-
     //back to promotions choose button
     TopControlButton
     {
@@ -451,7 +484,15 @@ Page
         buttonIconSource: "../icons/left_arrow.svg"
         iconAlias.sourceSize.width: height*0.5
         iconAlias.sourceSize.height: height*0.4
-        onClicked: promotionPageLoader.source = "mapPage.qml"
+        onClicked:
+        {
+            if(network.hasConnection()) {
+                toastMessage.close();
+                promotionPageLoader.source = "mapPage.qml"
+            } else {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
+        }
     }
 
     FooterButtons

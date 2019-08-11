@@ -26,6 +26,7 @@ import "../js/helpFunc.js" as Helper
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 RowLayout
 {
@@ -39,6 +40,10 @@ RowLayout
     height: Vars.screenHeight*0.15
     width: Vars.screenWidth
     anchors.horizontalCenter: parent.horizontalCenter
+
+    ToastMessage { id: toastMessage }
+
+    Network { id: network }
 
     Image
     {
@@ -90,30 +95,38 @@ RowLayout
                                           : "../icons/app_info_off.svg"
             clickArea.onClicked:
             {
-                if(infoClicked)
+                if(network.hasConnection())
                 {
-                    appWindowLoader.source = 'profileSettingsPage.qml';
-                    infoClicked = false;
-                }
-                else
-                {
-                    if(pressedFromPageName === 'selectCategoryPage.qml')
+                    toastMessage.close();
+                    if(infoClicked)
                     {
-                        appWindowLoader.setSource("xmlHttpRequest.qml",
-                                                  { "api": Vars.userSelectCats,
-                                                    "functionalFlag": 'user/refresh-cats',
-                                                    "nextPageAfterCatsSave": 'appInfoPage.qml'
-                                                  });
+                        appWindowLoader.source = 'profileSettingsPage.qml';
+                        infoClicked = false;
                     }
                     else
                     {
-                        appWindowLoader.source = "appInfoPage.qml";
-                    }
+                        if(pressedFromPageName === 'selectCategoryPage.qml')
+                        {
+                            appWindowLoader.setSource("xmlHttpRequest.qml",
+                                                      { "api": Vars.userSelectCats,
+                                                        "functionalFlag": 'user/refresh-cats',
+                                                        "nextPageAfterCatsSave": 'appInfoPage.qml'
+                                                      });
+                        }
+                        else
+                        {
+                            appWindowLoader.source = "appInfoPage.qml";
+                        }
 
-                    PageNameHolder.push('profileSettingsPage.qml')
-                    infoClicked = true;
+                        PageNameHolder.push('profileSettingsPage.qml')
+                        infoClicked = true;
+                    }
+                } // hasConnection
+                else
+                {
+                    toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
                 }
-            }
-        }
-    }
+            } // onClicked
+        } // IconedButton
+    } // infoButtonField
 }

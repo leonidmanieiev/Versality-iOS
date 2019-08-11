@@ -37,8 +37,7 @@ Page
     height: Vars.pageHeight
     width: Vars.screenWidth
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
+    StaticNotifier { id: notifier }
 
     background: Rectangle
     {
@@ -80,10 +79,6 @@ Page
             notifier.visible = true;
         }
     }
-
-    StaticNotifier { id: notifier }
-
-    ToastMessage { id: toastMessage }
 
     ListView
     {

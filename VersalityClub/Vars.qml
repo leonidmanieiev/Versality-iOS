@@ -94,7 +94,7 @@ QtObject
                          Screen.width *Screen.devicePixelRatio === 828)
 
     //INTERNET ACCESS FLAG
-    property bool isConnected: false
+    property bool isConnected: true
 
     //LOCATION ACCESS FLAG
     property bool isLocated: false
@@ -123,18 +123,18 @@ QtObject
     readonly property string userUnmarkProm: domen+mobile+"api/user/unmark?"
 
     //POPUP TEXT CONSTS
-    readonly property string estabLocationMethodErr: "Ошибка установки метода определения местоположения"
+    readonly property string estabLocationMethodErr: "Ошибка установки метода определения геопозиции"
     readonly property string getCloserToProm: "Подойдите ближе к акции"
     readonly property string nmeaConnectionViaSocketErr: "Ошибка подключения к источнику NMEA через socket"
     readonly property string noFavouriteProms: "У Вас нет избранных акций"
-    readonly property string noInternetConnection: "Нет соединения с интернетом"
-    readonly property string noLocationPrivileges: "Нет привилегий на получение местоположения"
+    readonly property string noInternetConnection: "Нет соединения с интернетом.\nОбновите страницу."
+    readonly property string noLocationPrivileges: "Нет привилегий на получение геопозиции"
     readonly property string noPromsFromCompany: "У компании нет акций"
     readonly property string noSuitablePromsNearby: "Рядом нет подходящих для Вас акций"
     readonly property string smthWentWrong: "Что-то пошло не так, попробуйте позже"
-    readonly property string turnOnLocationAndWait: "Включите определение местоположения и ждите закрытия popup"
-    readonly property string unableToGetLocation: "Невозможно получить местоположение"
-    readonly property string unknownPosSrcErr: "Неизвестная ошибка PositionSource"
+    readonly property string turnOnLocationAndWait: "Включите определение геопозиции и ждите закрытия popup"
+    readonly property string unableToGetLocation: "Невозможно получить геопозицию"
+    readonly property string unknownPosSrcErr: "Невозможно получить геопозицию"
 
     //TEXT CONSTS
     readonly property string activateCoupon: "АКТИВИРОВАТЬ КУПОН"

@@ -33,12 +33,9 @@ Popup
 
     function setTextNoAutoClose(messageText)
     {
-        if(popupContent.text === '')
-        {
-            toastMessage.closePolicy = Popup.NoAutoClose;
-            popupContent.text = messageText;
-            open();
-        }
+        toastMessage.closePolicy = Popup.NoAutoClose;
+        popupContent.text = messageText;
+        open();
     }
 
     function setText(messageText)
@@ -68,8 +65,8 @@ Popup
     }
 
     id: toastMessage
-    x: (parent.width-popupBackground.width)*0.5
-    y: parent.height*0.8
+    x: (Vars.screenWidth - popupBackground.width) * 0.5
+    y: Vars.pageHeight*0.8
     contentItem: Text
     {
         id: popupContent
@@ -86,8 +83,8 @@ Popup
     background: Rectangle
     {
         id: popupBackground
-        width: popupContent.width*1.2 < toastMessage.parent.width*0.8
-               ? popupContent.width*1.2 : toastMessage.parent.width*0.8
+        width: popupContent.width*1.2 < Vars.screenWidth*0.8
+               ? popupContent.width*1.2 : Vars.screenWidth*0.8
         height: popupContent.height*2
         radius: parent.height*0.5
         color: backgroundColor

@@ -35,9 +35,6 @@ Page
     height: Vars.screenHeight
     width: Vars.screenWidth
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
-
     Image
     {
         id: background
@@ -166,8 +163,6 @@ Page
             }
         }
     }//middleLayout
-
-    ToastMessage { id: toastMessage }
 
     ToastMessage
     {

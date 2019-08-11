@@ -24,6 +24,7 @@
 import "../"
 import QtQuick 2.11
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 RowLayout
 {
@@ -60,6 +61,10 @@ RowLayout
     height: Vars.footerButtonsFieldHeight
     anchors.top: parent.top
 
+    ToastMessage { id: toastMessage }
+
+    Network { id: network }
+
     IconedButton
     {
         id: backButton
@@ -69,10 +74,18 @@ RowLayout
         buttonIconSource: "../icons/comp_back.svg"
         clickArea.onClicked:
         {
-            PageNameHolder.pop();
-            //to avoid not loading bug
-            appWindowLoader.source = "";
-            appWindowLoader.source = "promotionPage.qml";
+            if(network.hasConnection())
+            {
+                toastMessage.close();
+                PageNameHolder.pop();
+                //to avoid not loading bug
+                appWindowLoader.source = "";
+                appWindowLoader.source = "promotionPage.qml";
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
         }
     }
 
@@ -85,11 +98,19 @@ RowLayout
         buttonIconSource: compInfoButtonIcon
         clickArea.onClicked:
         {
-            if(currPageName != "companyPage.qml")
+            if(network.hasConnection())
             {
-                currPageName = "companyPage.qml";
-                parent.parent.comp_loader.setSource(currPageName);
-                setButtonsStates();
+                toastMessage.close();
+                if(currPageName != "companyPage.qml")
+                {
+                    currPageName = "companyPage.qml";
+                    parent.parent.comp_loader.setSource(currPageName);
+                    setButtonsStates();
+                }
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
             }
         }
     }
@@ -103,12 +124,20 @@ RowLayout
         buttonIconSource: compMapButtonIcon
         clickArea.onClicked:
         {
-            if(currPageName != "companyMapPage.qml")
+            if(network.hasConnection())
             {
-                currPageName = "companyMapPage.qml";
-                parent.parent.comp_loader.setSource("mapPage.qml",
-                    {"allGood": true, "requestFromCompany": true});
-                setButtonsStates();
+                toastMessage.close();
+                if(currPageName != "companyMapPage.qml")
+                {
+                    currPageName = "companyMapPage.qml";
+                    parent.parent.comp_loader.setSource("mapPage.qml",
+                        {"allGood": true, "requestFromCompany": true});
+                    setButtonsStates();
+                }
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
             }
         }
     }
@@ -122,12 +151,20 @@ RowLayout
         buttonIconSource: compListButtonIcon
         clickArea.onClicked:
         {
-            if(currPageName != "companyListPage.qml")
+            if(network.hasConnection())
             {
-                currPageName = "companyListPage.qml";
-                parent.parent.comp_loader.setSource("listViewPage.qml",
-                    {"allGood": true, "requestFromCompany": true});
-                setButtonsStates();
+                toastMessage.close();
+                if(currPageName != "companyListPage.qml")
+                {
+                    currPageName = "companyListPage.qml";
+                    parent.parent.comp_loader.setSource("listViewPage.qml",
+                        {"allGood": true, "requestFromCompany": true});
+                    setButtonsStates();
+                }
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
             }
         }
     }

@@ -26,6 +26,7 @@ import "../js/helpFunc.js" as Helper
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 Page
 {
@@ -39,8 +40,10 @@ Page
     height: Vars.pageHeight
     width: Vars.screenWidth
 
+    ToastMessage { id: toastMessage }
+
     //checking internet connetion
-    Network { toastMessage: toastMessage }
+    Network { id: network }
 
     FontLoader
     {
@@ -281,8 +284,13 @@ Page
                 buttonRadius: 25
                 buttonClickableArea.onClicked:
                 {
-                    AppSettings.clearAllAppSettings();
-                    appWindowLoader.source = "initialPage.qml";
+                    if(network.hasConnection()) {
+                        toastMessage.close();
+                        AppSettings.clearAllAppSettings();
+                        appWindowLoader.source = "initialPage.qml";
+                    } else {
+                        toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                    }
                 }
             }
         }//middleFieldsColumns
@@ -343,8 +351,6 @@ Page
             flickableArea.enabled = true;
         }
     }
-
-    ToastMessage { id: toastMessage }
 
     Component.onCompleted: profileSettingsPage.forceActiveFocus()
 

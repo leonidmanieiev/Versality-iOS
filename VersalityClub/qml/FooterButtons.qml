@@ -24,6 +24,7 @@
 import "../"
 import QtQuick 2.11
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 RowLayout
 {
@@ -72,6 +73,10 @@ RowLayout
                                     "nextPageAfterCatsSave": nextPageName
                                   });
     }
+
+    ToastMessage { id: toastMessage }
+
+    Network { id: network }
 
     IconedButton
     {

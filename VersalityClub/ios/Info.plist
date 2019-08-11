@@ -36,11 +36,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location information needed to display promotions that are relevant to you</string>
+        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location information needed to display promotions that are relevant to you</string>
+        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location information needed to display promotions that are relevant to you</string>
+        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

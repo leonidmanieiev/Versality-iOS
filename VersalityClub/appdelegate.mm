@@ -25,8 +25,8 @@
 
 @implementation QIOSApplicationDelegate
 
-NSString* const SLCM_IS_UNAVAILABLE    = @"Sorry, you won't get push notifications, because we can't get your location.";
-NSString* const ENABLE_BG_CAPABILITIES = @"Please, enable Background App Refresh.";
+NSString* const SLCM_IS_UNAVAILABLE    = @"Извините, Вы не сможете получать push-уведомления, потому что у приложения нет доступа к Вашей геопозиции.";
+NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включите «Обновление контента».\nЕсли оно уже включено, перейдите в «Настройки -> Основные -> Обновление контента» и включите его там.";
 
 - (BOOL)application:(UIApplication *) __unused application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions
 {
@@ -85,12 +85,12 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Please, enable Background App Refresh
         UIViewController* rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
 
         UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Alert"
+            [UIAlertController alertControllerWithTitle:@"Внимание"
                                                 message:ENABLE_BG_CAPABILITIES
                                          preferredStyle:UIAlertControllerStyleAlert];
 
         UIAlertAction* settingsAction
-            = [UIAlertAction actionWithTitle:@"Settings"
+            = [UIAlertAction actionWithTitle:@"Настройки"
                                        style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction* __unused action) {
                                          if ([[UIApplication sharedApplication] canOpenURL:settingsUrl]) {
@@ -98,7 +98,7 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Please, enable Background App Refresh
                                          }
                                      }];
 
-        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancle"
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Закрыть приложение"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction* __unused action) { exit(1); }];
 
@@ -117,11 +117,11 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Please, enable Background App Refresh
         UIViewController* rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
 
         UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Alert"
+            [UIAlertController alertControllerWithTitle:@"Внимание"
                                                 message:SLCM_IS_UNAVAILABLE
                                          preferredStyle:UIAlertControllerStyleAlert];
 
-        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancle"
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Закрыть приложение"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction* __unused action) { exit(1); }];
 

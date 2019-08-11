@@ -30,6 +30,7 @@ import QtQuick.Controls 2.4
 import QtLocation 5.9
 import QtPositioning 5.12
 import QtQuick.Layouts 1.3
+import Network 0.9
 
 Page
 {
@@ -137,8 +138,11 @@ Page
     height: requestFromCompany ? Vars.companyPageHeight : Vars.pageHeight
     width: Vars.screenWidth
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
+    StaticNotifier { id: notifier }
+
+    ToastMessage { id: toastMessage }
+
+    Network { id: network }
 
     FontLoader
     {
@@ -516,8 +520,16 @@ Page
         buttonIconSource: "../icons/show_listview.svg"
         onClicked:
         {
-            PageNameHolder.push("mapPage.qml");
-            mapPageLoader.source = "listViewPage.qml";
+            if(network.hasConnection())
+            {
+                toastMessage.close();
+                PageNameHolder.push("mapPage.qml");
+                mapPageLoader.source = "listViewPage.qml";
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
         }
     }
 
@@ -533,15 +545,23 @@ Page
         iconAlias.sourceSize.height: height*0.4
         onClicked:
         {
-            var pageName = PageNameHolder.pop();
+            if(network.hasConnection())
+            {
+                toastMessage.close();
+                var pageName = PageNameHolder.pop();
 
-            //if no pages in sequence
-            if(pageName === "")
-                appWindow.close();
-            else mapPageLoader.source = pageName;
+                //if no pages in sequence
+                if(pageName === "")
+                    appWindow.close();
+                else mapPageLoader.source = pageName;
 
-            //to avoid not loading bug
-            //mapPageLoader.reload();
+                //to avoid not loading bug
+                //mapPageLoader.reload();
+            }
+            else
+            {
+                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+            }
         }
     }
 
@@ -612,10 +632,6 @@ Page
             notifier.visible = true;
         }
     }
-
-    StaticNotifier { id: notifier }
-
-    ToastMessage { id: toastMessage }
 
     //workaround to wait until server sends pasponse
     Timer

@@ -33,9 +33,6 @@ Page
     height: Vars.screenHeight
     width: Vars.screenWidth
 
-    //checking internet connetion
-    Network { toastMessage: networkToastMessage }
-
     Image
     {
         id: background
@@ -164,8 +161,6 @@ Page
         id: toastMessage
         closePolicy: Popup.NoAutoClose
     }
-
-    ToastMessage { id: networkToastMessage }
 
     Component.onCompleted: toastMessage.setText(Vars.checkYourEmail);
 

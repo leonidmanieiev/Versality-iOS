@@ -44,9 +44,6 @@ Page
 
     LogoAndPageTitle { pageTitleText: Vars.signupNoun }
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
-
     ColumnLayout
     {
         id: middleFieldsColumns
@@ -215,8 +212,6 @@ Page
             birthdayPicker.visible = false;
         }
     }
-
-    ToastMessage { id: toastMessage }
 
     Loader
     {

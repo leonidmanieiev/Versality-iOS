@@ -24,7 +24,6 @@
         <file>qml/TopControlButton.qml</file>
         <file>qml/companyPage.qml</file>
         <file>qml/previewPromotionPage.qml</file>
-        <file>qml/Network.qml</file>
         <file>qml/StaticNotifier.qml</file>
         <file>qml/ScrollDatePicker.qml</file>
         <file>qml/ScrollNumberPicker.qml</file>

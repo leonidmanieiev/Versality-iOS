@@ -50,9 +50,6 @@ Page
 
     ToastMessage { id: toastMessage }
 
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
-
     FontLoader
     {
         id: regularText;

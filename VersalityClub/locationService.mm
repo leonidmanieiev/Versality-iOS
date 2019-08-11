@@ -26,9 +26,9 @@
 
 @implementation LocationService
 
-NSString* const WHEN_IN_USE_ALERT = @"With location access set to 'While Using the App' we can't send you push notifications. Please, switch it to 'Always'.";
-NSString* const DENIED_ALERT      = @"With location access set to 'Never' we can't start the App. Please switch it to 'Always'.";
-NSString* const RESTRICLET_ALERT  = @"Sorry. We can't start App without location access set to 'Always'.";
+NSString* const WHEN_IN_USE_ALERT = @"С доступом к геопозиции в режиме «Только при использовании», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
+NSString* const DENIED_ALERT      = @"С доступом к геопозиции в режиме «Запретить», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
+NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить приложение без доступа к геопозиции в режиме «Всегда».";
 
 - (id) init
 {
@@ -104,12 +104,12 @@ NSString* const RESTRICLET_ALERT  = @"Sorry. We can't start App without location
         UIViewController* rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
 
         UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Alert"
+            [UIAlertController alertControllerWithTitle:@"Внимание"
                                                 message:@""
                                          preferredStyle:UIAlertControllerStyleAlert];
 
         UIAlertAction* settingsAction
-            = [UIAlertAction actionWithTitle:@"Settings"
+            = [UIAlertAction actionWithTitle:@"Настройки"
                                        style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction* __unused action) {
                                          if ([[UIApplication sharedApplication] canOpenURL:settingsUrl]) {
@@ -117,7 +117,7 @@ NSString* const RESTRICLET_ALERT  = @"Sorry. We can't start App without location
                                          }
                                      }];
 
-        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancle"
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Закрыть приложение"
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction* __unused action) { exit(1); }];
 

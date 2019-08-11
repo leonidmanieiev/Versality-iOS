@@ -20,30 +20,34 @@
 **
 ****************************************************************************/
 
-//Network information component
-import "../"
-import Network 0.8
-import QtQuick 2.11
+// Wrapper, so I check internet connection
+#ifndef NETWORK_H
+#define NETWORK_H
 
-NetworkInfo
+#include <QtNetwork>
+
+class Network : public QObject
 {
-    property var toastMessage
+    Q_OBJECT
+public:
+    explicit Network(QObject *parent = nullptr) : QObject(parent) { }
 
-    onNetworkStatusChanged:
+    Q_INVOKABLE bool hasConnection()
     {
-        if(accessible === 1)
-        {
-            Vars.isConnected = true;
-            parent.enabled = true;
-            toastMessage.close();
+        QNetworkAccessManager nam;
+        QNetworkRequest request(QUrl("http://www.google.com"));
+        QNetworkReply* reply = nam.get(request);
+        QEventLoop loop;
 
-            // TODO reload parent
-        }
-        else
-        {
-            Vars.isConnected = false;
-            parent.enabled = false;
-            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+        connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+        loop.exec();
+
+        if (reply->bytesAvailable()) {
+            return true;
+        } else {
+            return false;
         }
     }
-}
+};
+
+#endif // NETWORK_H

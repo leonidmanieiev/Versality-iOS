@@ -41,7 +41,7 @@ function httpErrorDecoder(statusCode)
         default: decodedError = "Неизвестная ошибка"; break;
     }
 
-    return decodedError + ". Попробуйте позже";
+    return decodedError + ".\nПопробуйте позже.";
 }
 
 function isStringAnUrl(str) {

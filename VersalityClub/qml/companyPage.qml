@@ -45,9 +45,14 @@ Page
     //alias
     property alias comp_loader: companyPageLoader
 
+    function adjastPicUrl(picUrl)
+    {
+        return picUrl.charAt(0) === '/' ? Vars.domen + picUrl : picUrl;
+    }
+
     function setPopupPicAndShow()
     {
-        compPicPopup.picItem.source = picsSources[picInd];
+        compPicPopup.picItem.source = adjastPicUrl(picsSources[picInd]);
         compPicPopup.visible = true;
         PageNameHolder.push('popupImage');
     }
@@ -70,9 +75,6 @@ Page
         id: boldText;
         source: Vars.boldFont
     }
-
-    //checking internet connetion
-    Network { toastMessage: toastMessage }
 
     background: Rectangle
     {
@@ -206,7 +208,7 @@ Page
                                 onClicked:
                                 {
                                     picInd = 0;
-                                    setPopupPicAndShow()
+                                    setPopupPicAndShow(picInd);
                                 }
                             }
                         }
@@ -232,7 +234,7 @@ Page
                                 onClicked:
                                 {
                                     picInd = 1;
-                                    setPopupPicAndShow()
+                                    setPopupPicAndShow(picInd);
                                 }
                             }
                         }
@@ -258,7 +260,7 @@ Page
                                 onClicked:
                                 {
                                     picInd = 2;
-                                    setPopupPicAndShow()
+                                    setPopupPicAndShow(picInd);
                                 }
                             }
                         }
@@ -284,7 +286,7 @@ Page
                                 onClicked:
                                 {
                                     picInd = 3;
-                                    setPopupPicAndShow()
+                                    setPopupPicAndShow(picInd);
                                 }
                             }
                         }
@@ -322,7 +324,7 @@ Page
                 {
                     id: textArea
                     width: parent.width
-                    text: comp_about
+                    text: comp_about+'\n\n'
                     font.pixelSize: Helper.applyDpr(7, Vars.dpr)
                     font.family: regularText.name
                     color: Vars.blackColor
@@ -351,6 +353,7 @@ Page
         Image
         {
             id: pic
+            fillMode: Image.PreserveAspectFit
             anchors.fill: parent
         }
 
@@ -379,14 +382,14 @@ Page
                     // swipe from left to right
                     canSwipe = false;
                     picInd = picInd-1;
-                    pic.source = picsSources[picInd];
+                    pic.source = adjastPicUrl(picsSources[picInd])
                 }
                 else if(picInd < 3 && dist < -15 && canSwipe)
                 {
                     // swipe from right to left
                     canSwipe = false;
                     picInd = picInd+1;
-                    pic.source = picsSources[picInd];
+                    pic.source = adjastPicUrl(picsSources[picInd]);
                 }
             }
         }

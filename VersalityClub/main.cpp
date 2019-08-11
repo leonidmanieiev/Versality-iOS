@@ -21,7 +21,7 @@
 ****************************************************************************/
 
 #include "appsettings.h"
-#include "networkinfo.h"
+#include "network.h"
 #include "geolocationinfo.h"
 #include "pagenameholder.h"
 #include "promotionClusters.h"
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QtWebView::initialize();
 
-    qmlRegisterType<NetworkInfo>("Network", 0, 8, "NetworkInfo");
+    qmlRegisterType<Network>("Network", 0, 9, "Network");
     qmlRegisterType<AppSettings>("org.versalityclub", 0, 8, "AppSettings");
     qmlRegisterType<GeoLocationInfo>("GeoLocation", 0, 8, "GeoLocationInfo");
     qmlRegisterType<PageNameHolder>("org.versalityclub", 0, 8, "PageNameHolder");
