@@ -84,7 +84,7 @@
     NSString* sendCoordsAPI = @"https://club.versality.ru:8080/api/check?secret=";
 
     if(userHash == nil) {
-        [self log:@"userHash is null"];
+        [self log:@"sendCoords::userHash is null\n"];
         return;
     }
 

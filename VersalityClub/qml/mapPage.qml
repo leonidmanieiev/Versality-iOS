@@ -588,12 +588,6 @@ Page
 
     Component.onCompleted:
     {
-        if(AppSettings.value("user/hash") !== undefined)
-        {
-            // todo send user hash for identification for notifs.
-            //QOneSignal.sendTag("hash", AppSettings.value("user/hash"));
-        }
-
         //setting active focus for key capturing
         mapPage.forceActiveFocus();
 

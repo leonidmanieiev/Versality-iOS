@@ -429,7 +429,7 @@ Page
             id: codeImage
             clip: true
             visible: isUrl()
-            source: p_promo_code
+            source: Helper.adjastPicUrl(p_promo_code);
             anchors.bottom: parent.bottom
             anchors.bottomMargin: parent.height*0.1 + proceedButton.height
             anchors.horizontalCenter: parent.horizontalCenter

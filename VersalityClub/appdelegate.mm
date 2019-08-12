@@ -48,6 +48,13 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *) __unused application {
+    NSString* userHash = [[Logger sharedSingleton] getHashFromFile];
+    if(userHash != nil) {
+        //[OneSignal sendTag:@"hash" value:userHash];
+    } else {
+        [[Logger sharedSingleton] log:@"applicationDidEnterBackground::userHash == nil\n"];
+    }
+
     [self initLocationService];
 }
 
@@ -69,13 +76,21 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 }
 
 - (void)applicationWillTerminate:(UIApplication *) __unused application {
+    NSString* userHash = [[Logger sharedSingleton] getHashFromFile];
+    if(userHash != nil) {
+        //[OneSignal sendTag:@"hash" value:userHash];
+    } else {
+        [[Logger sharedSingleton] log:@"applicationWillTerminate::userHash == nil\n"];
+    }
+
     [self initLocationService];
 }
 
 - (void) initLocationService
 {
-    if(locationService.startLocationService)
+    if(locationService.startLocationService) {
         [[Logger sharedSingleton] log:@"Location service started\n"];
+    }
 }
 
 - (void) askToEnableBackgroundCapabilities

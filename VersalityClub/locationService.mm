@@ -79,10 +79,11 @@ NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить п
 
     if(fabs(location.timestamp.timeIntervalSinceNow) < 60) {
         [[Logger sharedSingleton] log:[@"valid: " stringByAppendingString:coords]];
-        [[Logger sharedSingleton] sendCoords :lat :lon];
     } else {
         [[Logger sharedSingleton] log:[@"invalid: " stringByAppendingString:coords]];
     }
+
+    [[Logger sharedSingleton] sendCoords :lat :lon];
 }
 
 - (void) locationManager:(CLLocationManager*) __unused manager didChangeAuthorizationStatus:(CLAuthorizationStatus) status

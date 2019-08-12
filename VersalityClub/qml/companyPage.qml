@@ -45,14 +45,9 @@ Page
     //alias
     property alias comp_loader: companyPageLoader
 
-    function adjastPicUrl(picUrl)
-    {
-        return picUrl.charAt(0) === '/' ? Vars.domen + picUrl : picUrl;
-    }
-
     function setPopupPicAndShow()
     {
-        compPicPopup.picItem.source = adjastPicUrl(picsSources[picInd]);
+        compPicPopup.picItem.source = Helper.adjastPicUrl(picsSources[picInd]);
         compPicPopup.visible = true;
         PageNameHolder.push('popupImage');
     }
@@ -382,14 +377,14 @@ Page
                     // swipe from left to right
                     canSwipe = false;
                     picInd = picInd-1;
-                    pic.source = adjastPicUrl(picsSources[picInd])
+                    pic.source = Helper.adjastPicUrl(picsSources[picInd])
                 }
                 else if(picInd < 3 && dist < -15 && canSwipe)
                 {
                     // swipe from right to left
                     canSwipe = false;
                     picInd = picInd+1;
-                    pic.source = adjastPicUrl(picsSources[picInd]);
+                    pic.source = Helper.adjastPicUrl(picsSources[picInd]);
                 }
             }
         }
