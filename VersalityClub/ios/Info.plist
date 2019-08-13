@@ -23,9 +23,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.8</string>
+	<string>0.9</string>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>9</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -36,11 +36,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
+	<string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
+	<string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-        <string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
+	<string>Без этого доступа, приложение не сможет отправлять push-уведомления с уникальными для Вас скидками и функционировать корректно.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

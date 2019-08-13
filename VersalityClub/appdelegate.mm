@@ -22,6 +22,7 @@
 
 #import "appdelegate.h"
 #import "logger.h"
+#import <OneSignal/OneSignal.h>
 
 @implementation QIOSApplicationDelegate
 
@@ -31,6 +32,19 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 - (BOOL)application:(UIApplication *) __unused application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions
 {
     if (@available(iOS 10.0, *)) {        
+        
+        [OneSignal initWithLaunchOptions:launchOptions
+                                   appId:@"89497872-d7b2-428d-bc6b-b53412a2f319"
+                handleNotificationAction:nil
+                                settings:@{kOSSettingsKeyAutoPrompt: @false}];
+        OneSignal.inFocusDisplayType = OSNotificationDisplayTypeNotification;
+        
+        // Recommend moving the below line to prompt for push after informing the user about
+        // how your app will use them.
+        [OneSignal promptForPushNotificationsWithUserResponse:^(BOOL accepted) {
+            NSLog(@"User accepted notifications: %d", accepted);
+        }];
+        
         if(locationService == nil) {
             locationService = [[LocationService alloc] init];
         }
@@ -48,13 +62,6 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *) __unused application {
-    NSString* userHash = [[Logger sharedSingleton] getHashFromFile];
-    if(userHash != nil) {
-        //[OneSignal sendTag:@"hash" value:userHash];
-    } else {
-        [[Logger sharedSingleton] log:@"applicationDidEnterBackground::userHash == nil\n"];
-    }
-
     [self initLocationService];
 }
 
@@ -76,13 +83,6 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 }
 
 - (void)applicationWillTerminate:(UIApplication *) __unused application {
-    NSString* userHash = [[Logger sharedSingleton] getHashFromFile];
-    if(userHash != nil) {
-        //[OneSignal sendTag:@"hash" value:userHash];
-    } else {
-        [[Logger sharedSingleton] log:@"applicationWillTerminate::userHash == nil\n"];
-    }
-
     [self initLocationService];
 }
 

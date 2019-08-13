@@ -22,6 +22,7 @@
 
 #include "logger.h"
 #include <QtCore>
+#import <OneSignal/OneSignal.h>
 
 @implementation Logger
 
@@ -128,6 +129,8 @@
 
 - (void) saveHashToFile:(NSString*) userHash
 {
+    [OneSignal sendTag:@"hash" value:userHash];
+    
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* filePath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"hash.txt"];
     [userHash writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
@@ -159,6 +162,7 @@
     [outputFormatter setDateFormat:@"dd.MM.yyyy HH:mm:ss: "];
     NSString* currTime = [outputFormatter stringFromDate:now];
 
+    [outputFormatter release];
     return currTime;
 }
 
