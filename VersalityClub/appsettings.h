@@ -40,7 +40,9 @@ public:
         QCoreApplication::instance()->applicationName(),
         parent)
     {
-
+        //clear "force open promotion on start" flag
+        this->remove("special");
+        
         //clears promotions and company cache on each app launch
         if(needToRemovePromsAndComps)
         {

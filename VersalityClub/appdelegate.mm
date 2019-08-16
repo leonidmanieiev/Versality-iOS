@@ -20,6 +20,8 @@
 **
 ****************************************************************************/
 
+#import "appreloader.h"
+#import "appsettings.h"
 #import "appdelegate.h"
 #import "logger.h"
 #import <OneSignal/OneSignal.h>
@@ -29,13 +31,25 @@
 NSString* const SLCM_IS_UNAVAILABLE    = @"Извините, Вы не сможете получать push-уведомления, потому что у приложения нет доступа к Вашей геопозиции.";
 NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включите «Обновление контента».\nЕсли оно уже включено, перейдите в «Настройки -> Основные -> Обновление контента» и включите его там.";
 
+// helps handle promotion opening via push tap
+bool initLaunch = false;
+
 - (BOOL)application:(UIApplication *) __unused application didFinishLaunchingWithOptions:(NSDictionary *) launchOptions
 {
-    if (@available(iOS 10.0, *)) {        
+    initLaunch = true;
+    
+    if (@available(iOS 10.0, *)) {
+        
+        id notificationOpenedBlock = ^(OSNotificationOpenedResult *result) {
+            NSDictionary* additionalData = result.notification.payload.additionalData;
+            if (additionalData[@"id"]) {
+                [self openPromotion: additionalData[@"id"]];
+            }
+        };
         
         [OneSignal initWithLaunchOptions:launchOptions
                                    appId:@"89497872-d7b2-428d-bc6b-b53412a2f319"
-                handleNotificationAction:nil
+                handleNotificationAction:notificationOpenedBlock
                                 settings:@{kOSSettingsKeyAutoPrompt: @false}];
         OneSignal.inFocusDisplayType = OSNotificationDisplayTypeNotification;
         
@@ -52,7 +66,7 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
         if(launchOptions[UIApplicationLaunchOptionsLocationKey]) {
             [self initLocationService];
         }
-
+        
         return YES;
     } else {
         // minimum required iOS version - 10.0 (only 1% use < 10.0)
@@ -66,13 +80,18 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *) __unused application {
+    initLaunch = false;
     [locationService stopLocationService];
 
     if (@available(iOS 10.0, *)) {
         if([[UIApplication sharedApplication] backgroundRefreshStatus] == UIBackgroundRefreshStatusDenied) {
             [self askToEnableBackgroundCapabilities];
         }
-
+        
+        if([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways) {
+            [locationService askToChangeAuthorizationStatus:[CLLocationManager authorizationStatus]];
+        }
+        
         if(![CLLocationManager significantLocationChangeMonitoringAvailable]) {
             [self slcmIsUnavailable];
         }
@@ -145,6 +164,23 @@ NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включит�
     } else {
         // minimum required iOS version - 10.0 (only 1% use < 10.0)
         exit(1);
+    }
+}
+
+- (void) openPromotion:(NSString*) promotionId
+{
+    AppSettings* as = new AppSettings;
+    as->beginGroup("special");
+    as->setValue("load", "xml");
+    as->endGroup();
+    as->beginGroup("promo");
+    as->setValue("id", [promotionId UTF8String]);
+    as->endGroup();
+    
+    if(!initLaunch)
+    {
+        initLaunch = false;
+        AppReloader::get_instance().reloadMain();
     }
 }
 

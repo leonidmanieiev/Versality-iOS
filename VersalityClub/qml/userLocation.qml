@@ -223,10 +223,15 @@ Item
                 enableUsability();
                 return;
             }
-
-            toastMessage.setTextNoAutoClose(sourceErrorMessage(sourceError));
-            disableUsability();
-            stop();
+            else
+            {
+                toastMessage.setTextNoAutoClose("Обновите карту");
+                return;
+                //userLocationItem.enable = false;
+                //userLocation.active = false;
+                //stop();
+                //toastMessage.setTextNoAutoClose(sourceErrorMessage(sourceError));
+            }
         }
 
         onPositionChanged:

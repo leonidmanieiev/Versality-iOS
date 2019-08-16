@@ -31,6 +31,7 @@ import QtLocation 5.9
 import QtPositioning 5.12
 import QtQuick.Layouts 1.3
 import Network 0.9
+import QLogger 1.0
 
 Page
 {
@@ -590,7 +591,7 @@ Page
     {
         //setting active focus for key capturing
         mapPage.forceActiveFocus();
-
+        
         if(!requestFromCompany)
         {
             //exit app from map page
@@ -610,6 +611,9 @@ Page
 
     function runParsing()
     {
+        // saves and sends tag (hash) to OneSignal
+        QLogger.saveHashToFile();
+        
         if(showingNearestStore)
         {
             applyNearestPromOnly();

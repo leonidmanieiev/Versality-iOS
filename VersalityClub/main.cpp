@@ -20,6 +20,7 @@
 **
 ****************************************************************************/
 
+#include "appreloader.h"
 #include "appsettings.h"
 #include "network.h"
 #include "geolocationinfo.h"
@@ -51,7 +52,8 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<QLogger>("QLogger", 1, 0, "QLogger", &QLogger::singletonProvider);
 
     QQmlApplicationEngine engine;
-
+    AppReloader::get_instance().setEngine(&engine);
+    
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

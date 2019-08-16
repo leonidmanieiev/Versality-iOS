@@ -33,6 +33,31 @@ ApplicationWindow
     height: Vars.screenHeight
     color: Vars.whiteColor
 
+    function runPageSelection()
+    {
+        // if user tap on push -> open corresponding promotion
+        if(AppSettings.value("special/load") === "xml")
+        {
+            AppSettings.remove("special");
+            appWindowLoader.setSource("qml/xmlHttpRequest.qml",
+            {
+                "api": Vars.promFullViewModel,
+                "functionalFlag": 'user/fullprom',
+                "promo_id": AppSettings.value("promo/id")
+            });
+        }
+        // if user doesn't have hash -> he doesn't have account -> open initialPage
+        else if(AppSettings.value("user/hash") === undefined)
+        {
+            appWindowLoader.source = "qml/initialPage.qml";
+        }
+        // otherwise open mapPage
+        else
+        {
+            appWindowLoader.source = "qml/mapPage.qml";
+        }
+    }
+    
     Loader
     {
         id: appWindowLoader
@@ -42,5 +67,14 @@ ApplicationWindow
         //whether user was not signed(loged) in
         source: AppSettings.value("user/hash") === undefined ?
                      "qml/initialPage.qml" : "qml/mapPage.qml"
+    }
+    
+    Timer
+    {
+        running: true
+        // wait for AppSettings.value("special/load")
+        // to be set in appdelegage::openPromotion
+        interval: 10
+        onTriggered: runPageSelection()
     }
 }
