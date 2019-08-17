@@ -29,38 +29,34 @@ import Network 0.9
 RowLayout
 {
     property string pressedFromPageName: ''
+    property double dummy_width: parent.width*0.3 / 2.0
 
     id: footerButtonsLayout
     width: parent.width
     height: Vars.footerButtonsFieldHeight
     anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    spacing: 0
 
     function showSubstrateForSettingsButton()
     {
-        settingsButtonSubstrate.visible = true;
-        homeButtonSubstrate.visible = false;
-        favouriteButtonSubstrate.visible = false;
+        settingsButtonSubstrate.substrateSource  = "../icons/footer_button_substrate.svg";
+        homeButtonSubstrate.substrateSource      = "../icons/dummy_footer_button_substrate.svg";
+        favouriteButtonSubstrate.substrateSource = "../icons/dummy_footer_button_substrate.svg";
     }
 
     function showSubstrateForHomeButton()
     {
-        settingsButtonSubstrate.visible = false;
-        homeButtonSubstrate.visible = true;
-        favouriteButtonSubstrate.visible = false;
+        settingsButtonSubstrate.substrateSource  = "../icons/dummy_footer_button_substrate.svg";
+        homeButtonSubstrate.substrateSource      = "../icons/footer_button_substrate.svg";
+        favouriteButtonSubstrate.substrateSource = "../icons/dummy_footer_button_substrate.svg";
     }
 
     function showSubstrateForFavouriteButton()
     {
-        settingsButtonSubstrate.visible = false;
-        homeButtonSubstrate.visible = false;
-        favouriteButtonSubstrate.visible = true;
-    }
-
-    function disableAllButtonsSubstrates()
-    {
-        settingsButtonSubstrate.visible = false;
-        homeButtonSubstrate.visible = false;
-        favouriteButtonSubstrate.visible = false;
+        settingsButtonSubstrate.substrateSource  = "../icons/dummy_footer_button_substrate.svg";
+        homeButtonSubstrate.substrateSource      = "../icons/dummy_footer_button_substrate.svg";
+        favouriteButtonSubstrate.substrateSource = "../icons/footer_button_substrate.svg";
     }
 
     // instead of saveSelectedButton from selectCategoryPage
@@ -78,81 +74,133 @@ RowLayout
 
     Network { id: network }
 
-    IconedButton
+    Rectangle
     {
-        id: settingsButton
-        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        Layout.alignment: Qt.AlignHCenter
-        buttonIconSource: "../icons/settings.svg"
-        clickArea.onClicked:
-        {
-            showSubstrateForSettingsButton();
-            PageNameHolder.push(pressedFromPageName);
-
-            if(pressedFromPageName === 'selectCategoryPage.qml')
-            {
-                saveSelectedCategory('profileSettingsPage.qml');
-            }
-            else
-            {
-                appWindowLoader.setSource("xmlHttpRequest.qml",
-                                          { "api": Vars.userInfo,
-                                            "functionalFlag": 'user'
-                                          });
-            }
-        }
-
-        FooterButtonSubstrate { id: settingsButtonSubstrate }
+        id: dummy1
+        Layout.preferredWidth: Vars.screenWidth*0.1
+        height: Vars.footerButtonsFieldHeight
+        color: "transparent"
     }
 
-    IconedButton
+    FooterButtonSubstrate
     {
-        id: homeButton
-        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        Layout.alignment: Qt.AlignHCenter
-        buttonIconSource: "../icons/logo_white_fill.svg"
-        clickArea.onClicked:
+        id: settingsButtonSubstrate
+        Layout.fillWidth: true
+
+        IconedButton
         {
-            showSubstrateForHomeButton();
-
-            if(pressedFromPageName === 'selectCategoryPage.qml')
-                saveSelectedCategory('mapPage.qml');
-            else
-                appWindowLoader.setSource("mapPage.qml");
-        }
-        //need to clear data for getting fresh one
-        Component.onCompleted: Vars.allPromsData = '';
-
-        FooterButtonSubstrate { id: homeButtonSubstrate }
-    }
-
-    IconedButton
-    {
-        id: favouriteButton
-        width: Vars.footerButtonsHeight  * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        height: Vars.footerButtonsHeight * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
-        Layout.alignment: Qt.AlignHCenter
-        buttonIconSource: "../icons/favourites.svg"
-        clickArea.onClicked:
-        {
-            if(pressedFromPageName !== "favouritePage.qml")
+            id: settingsButton
+            width: parent.width*0.7
+            height: parent.width*0.7
+            anchors.centerIn: parent
+            buttonIconSource: "../icons/settings.svg"
+            clickArea.onClicked:
+            {
+                showSubstrateForSettingsButton();
                 PageNameHolder.push(pressedFromPageName);
 
-            if(pressedFromPageName === 'selectCategoryPage.qml')
-            {
-                saveSelectedCategory('favouritePage.qml');
-            }
-            else
-            {
-                appWindowLoader.setSource("xmlHttpRequest.qml",
-                                           { "api": Vars.userMarkedProms,
-                                             "functionalFlag": 'user/marked'
-                                         });
+                if(pressedFromPageName === 'selectCategoryPage.qml')
+                {
+                    saveSelectedCategory('profileSettingsPage.qml');
+                }
+                else
+                {
+                    appWindowLoader.setSource("xmlHttpRequest.qml",
+                                              { "api": Vars.userInfo,
+                                                "functionalFlag": 'user'
+                                              });
+                }
             }
         }
+    }
 
-        FooterButtonSubstrate { id: favouriteButtonSubstrate }
+    Rectangle
+    {
+        id: dummy2
+        Layout.preferredWidth: dummy_width
+        height: Vars.footerButtonsFieldHeight
+        color: "transparent"
+    }
+
+    FooterButtonSubstrate
+    {
+        id: homeButtonSubstrate
+        Layout.fillWidth: true
+
+        IconedButton
+        {
+            id: homeButton
+            width: parent.width*0.7
+            height: parent.width*0.7
+            anchors.centerIn: parent
+            // dont ask me why i have this issue with iPhone X and XS
+            buttonIconAlias.anchors.horizontalCenterOffset: Vars.isXorXS ? -0.5 : 0
+            buttonIconAlias.anchors.verticalCenterOffset:   Vars.isXorXS ? -0.5 : 0
+            buttonIconSource: "../icons/logo_white_fill.svg"
+            //need to clear data for getting fresh one
+            Component.onCompleted: Vars.allPromsData = '';
+            clickArea.onClicked:
+            {
+                showSubstrateForHomeButton();
+
+                if(pressedFromPageName === 'selectCategoryPage.qml')
+                    saveSelectedCategory('mapPage.qml');
+                else
+                    appWindowLoader.setSource("mapPage.qml");
+            }
+        }
+    }
+
+    Rectangle
+    {
+        id: dummy3
+        Layout.preferredWidth: dummy_width
+        height: Vars.footerButtonsFieldHeight
+        color: "transparent"
+    }
+
+
+    FooterButtonSubstrate
+    {
+        id: favouriteButtonSubstrate
+        Layout.fillWidth: true
+
+        IconedButton
+        {
+            id: favouriteButton
+            width: parent.width*0.7
+            height: parent.width*0.7
+            anchors.centerIn: parent
+            buttonIconSource: "../icons/favourites.svg"
+            clickArea.onClicked:
+            {
+                if(pressedFromPageName !== "favouritePage.qml")
+                {
+                    showSubstrateForFavouriteButton();
+                    PageNameHolder.push(pressedFromPageName);
+                }
+
+                if(pressedFromPageName === 'selectCategoryPage.qml')
+                {
+                    saveSelectedCategory('favouritePage.qml');
+                }
+                else
+                {
+                    appWindowLoader.setSource("xmlHttpRequest.qml",
+                                               { "api": Vars.userMarkedProms,
+                                                 "functionalFlag": 'user/marked'
+                                             });
+                }
+            }
+        }
+    }
+
+
+    Rectangle
+    {
+        id: dummy4
+        Layout.preferredWidth: Vars.screenWidth*0.1
+        height: Vars.footerButtonsFieldHeight
+        color: "transparent"
     }
 }//footerButtonsLayout

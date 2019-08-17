@@ -49,7 +49,6 @@ Page
     property real nearestStoreLat
     property real nearestStoreLon
     property real minDistToStore: 5000000
-    //readonly property int storeInfoItemHeight: Vars.screenHeight*0.06
     //alias
     property alias prom_loader: promotionPageLoader
 
@@ -154,14 +153,14 @@ Page
         ColumnLayout
         {
             id: middleFieldsColumns
-            width: Vars.screenWidth*0.9
+            width: Vars.screenWidth*0.8
             spacing: Vars.screenHeight*0.045
             anchors.horizontalCenter: parent.horizontalCenter
 
             Rectangle
             {
                 id: promsImage
-                Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignLeft
                 height: Vars.screenHeight*0.25*Vars.footerHeightFactor
                 width: parent.width
                 radius: Vars.listItemRadius
@@ -221,6 +220,7 @@ Page
                 id: rowLayout1
                 width: promsImage.width
                 Layout.alignment: Qt.AlignLeft
+                Layout.topMargin: -Vars.pageHeight*0.03
                 spacing: parent.width*0.055
 
                 ControlButton
@@ -231,6 +231,7 @@ Page
                     labelColor: Vars.whiteColor
                     backgroundColor: Vars.activeCouponColor
                     borderColor: "transparent"
+                    fontPixelSize: Helper.applyDpr(6, Vars.dpr)
                     buttonClickableArea.onClicked:
                     {
                         if(network.hasConnection())
@@ -258,8 +259,8 @@ Page
                 IconedButton
                 {
                     id: addToFavourite
-                    width: Vars.screenHeight  * 0.08
-                    height: Vars.screenHeight * 0.08
+                    width: Vars.screenHeight  * 0.05 * Vars.iconHeightFactor
+                    height: Vars.screenHeight * 0.05 * Vars.iconHeightFactor
                     Layout.alignment: Qt.AlignRight
                     buttonIconSource: p_is_marked ?
                                       "../icons/add_to_favourites_on.svg" :
@@ -299,9 +300,11 @@ Page
             ControlButton
             {
                 id: nearestStoreButton
-                buttonWidth: promsImage.width
+                Layout.topMargin: -Vars.pageHeight*0.02
+                buttonWidth: promsImage.width*0.9
                 Layout.alignment: Qt.AlignLeft
                 labelText: Vars.closestAddress
+                fontPixelSize: Helper.applyDpr(6, Vars.dpr)
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
                 {
@@ -329,9 +332,13 @@ Page
             ControlButton
             {
                 id: companyCardButton
+                Layout.topMargin: -Vars.pageHeight*0.02
+                labelColor: Vars.blackColor
+                borderColor: Vars.blackColor
                 buttonWidth: promsImage.width
                 Layout.alignment: Qt.AlignLeft
                 labelText: Vars.openCompanyCard
+                fontPixelSize: Helper.applyDpr(6, Vars.dpr)
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
                 {
@@ -498,7 +505,7 @@ Page
     FooterButtons
     {
         pressedFromPageName: 'promotionPage.qml'
-        Component.onCompleted: disableAllButtonsSubstrates()
+        Component.onCompleted: showSubstrateForHomeButton()
     }
 
     Component.onCompleted:

@@ -88,7 +88,6 @@
         <file>icons/logo.svg</file>
         <file>icons/logo_full.svg</file>
         <file>icons/settings.svg</file>
-        <file>icons/promotion_marker.svg</file>
         <file>icons/tick.svg</file>
         <file>icons/left_arrow_2.svg</file>
         <file>qml/ControlBackButton.qml</file>
@@ -99,5 +98,7 @@
         <file>PromotionClusters.qml</file>
         <file>qmldir</file>
         <file>Vars.qml</file>
+        <file>icons/promotion_marker.svg</file>
+        <file>icons/dummy_footer_button_substrate.svg</file>
     </qresource>
 </RCC>

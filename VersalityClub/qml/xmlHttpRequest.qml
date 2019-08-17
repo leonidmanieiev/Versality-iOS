@@ -269,6 +269,7 @@ Item
                                         AppSettings.setValue("desc", ppdInJSON[0].desc);
                                         AppSettings.setValue("pic", ppdInJSON[0].pic);
                                         AppSettings.setValue("icon", ppdInJSON[0].icon);
+                                        AppSettings.setValue("comp_logo", ppdInJSON[0].company_logo);
                                         AppSettings.setValue("lat", ppdInJSON[0].lat);
                                         AppSettings.setValue("lon", ppdInJSON[0].lon);
                                         AppSettings.setValue("is_marked", ppdInJSON[0].is_marked);
@@ -398,7 +399,7 @@ Item
         id: stubBackground
         anchors.fill: parent
         visible: showIndicator()
-        color: "purple"
+        color: "#4d1463"
     }
     
     BusyIndicator {
@@ -435,7 +436,7 @@ Item
                 
                 Repeater {
                     id: repeater
-                    model: 6
+                    model: 3
                     
                     Rectangle {
                         x: item.width / 2 - width / 2
@@ -443,7 +444,7 @@ Item
                         implicitWidth: 10
                         implicitHeight: 10
                         radius: 5
-                        color: "#21be2b"
+                        color: Vars.whiteColor
                         transform: [
                         Translate {
                             y: -Math.min(item.width, item.height) * 0.5 + 5

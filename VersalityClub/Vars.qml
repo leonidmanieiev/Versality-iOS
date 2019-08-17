@@ -53,7 +53,7 @@ QtObject
     readonly property int defaultFontPixelSize: 8
     readonly property int defaultRadius: (isXR || dpr > 2) ? 30 : 20
     readonly property int defaultYear: new Date().getYear()-30
-    readonly property real defaultOpacity: 0.8
+    readonly property real defaultOpacity: 0.7
     readonly property string defaultMonth: '06'
 
     //REGEX
@@ -71,10 +71,10 @@ QtObject
 
     //FOOTERBUTTONS CONSTANTS
     readonly property int footerButtonsFieldHeight: screenHeight*0.125*footerHeightFactor
-    readonly property int footerButtonsHeight: screenHeight*0.08*footerHeightFactor
+    readonly property int footerButtonsHeight: screenHeight*0.07*footerHeightFactor
 
     //HEADERBUTTONS CONSTANTS
-    readonly property int headerButtonsHeight: footerButtonsHeight
+    readonly property int headerButtonsHeight: footerButtonsHeight// * ((Vars.isXR || Vars.dpr > 2) ? 1.2 : 1.1)
 
     //SCREEN CONSTANTS
     readonly property real dpr: isXR ? 2.5 : (Screen.devicePixelRatio > 2 ? 2.2 : Screen.devicePixelRatio)
@@ -92,6 +92,10 @@ QtObject
     //IS DEVICE TYPE iPhone XR
     property bool isXR: (Screen.height*Screen.devicePixelRatio === 1792 &&
                          Screen.width *Screen.devicePixelRatio === 828)
+
+    //IS DEVICE TYPE iPhone X or XS
+    property bool isXorXS: (Screen.height*Screen.devicePixelRatio === 2436 &&
+                            Screen.width *Screen.devicePixelRatio === 1125)
 
     //INTERNET ACCESS FLAG
     property bool isConnected: true

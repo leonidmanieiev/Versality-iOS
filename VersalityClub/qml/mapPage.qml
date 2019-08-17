@@ -52,7 +52,7 @@ Page
     readonly property string mapDataCopyright: ' Data © <a href="https://www.openstreetmap.org/'
                                                +'copyright" style="color: '+Vars.purpleTextColor+'">'
                                                +'OpenStreetMap</a>'
-    readonly property int markerSize: Vars.screenWidth*0.1
+    readonly property int markerSize: Vars.screenWidth*0.15
     readonly property int fromButtonZoomLevel: 16
     readonly property int promsTilesItemHeight: popupWindow.height/3
 
@@ -206,8 +206,8 @@ Page
             {
                 id: userMarkerIcon
                 source: "../icons/user_location_marker_icon.svg"
-                sourceSize.width: markerSize*0.7
-                sourceSize.height: markerSize*1.2
+                sourceSize.width: markerSize*0.6
+                sourceSize.height: markerSize*1.05
             }
         }
 
@@ -246,7 +246,7 @@ Page
                     {
                         iconId: icon
                         sourceSize.height: markerSize
-                        sourceSize.width: markerSize*0.8
+                        sourceSize.width: markerSize
                     }
                 }
 
@@ -443,8 +443,8 @@ Page
                     smooth: true
                     antialiasing: true
                     source: "../icons/cat_"+cicon+".svg"
-                    sourceSize.width: markerSize*0.8
-                    sourceSize.height: markerSize*0.8
+                    sourceSize.width: markerSize*0.6
+                    sourceSize.height: markerSize*0.6
                     anchors.left: parent.left
                     anchors.leftMargin: parent.width*0.09
                     anchors.verticalCenter: parent.verticalCenter
@@ -580,11 +580,7 @@ Page
     {
         id: footerButton
         pressedFromPageName: pressedFrom
-        Component.onCompleted:
-        {
-            if(!requestFromCompany && !showingNearestStore)
-                showSubstrateForHomeButton();
-        }
+        Component.onCompleted: showSubstrateForHomeButton()
     }
 
     Component.onCompleted:

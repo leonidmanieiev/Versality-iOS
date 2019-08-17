@@ -54,7 +54,14 @@ ApplicationWindow
         // otherwise open mapPage
         else
         {
-            appWindowLoader.source = "qml/mapPage.qml";
+            appWindowLoader.source = "qml/mapPage.qml"
+            /*AppSettings.beginGroup("company");
+            AppSettings.setValue("id", "c2a7b0b2-20d2-44f2-bf39-8d49a32ead32");
+            AppSettings.endGroup();
+            appWindowLoader.setSource("qml/xmlHttpRequest.qml",
+                                          { "api": Vars.companyInfo,
+                                            "functionalFlag": 'company'
+                                          });*/
         }
     }
     

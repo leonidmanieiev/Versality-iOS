@@ -81,7 +81,7 @@ RowLayout
         height: Vars.screenHeight*0.065*Vars.iconHeightFactor
         Layout.alignment: Qt.AlignTop
         Layout.topMargin: parent.height*0.25
-        Layout.rightMargin: parent.height*0.25
+        Layout.rightMargin: parent.height*0.04
         radius: height*0.5
         color: infoClicked ? Vars.whiteColor : "transparent"
 

@@ -19,6 +19,7 @@ RESOURCES += \
 
 HEADERS += \
     appdelegate.h \
+    appreloader.h \
     locationService.h \
     logger.h \
     appsettings.h \

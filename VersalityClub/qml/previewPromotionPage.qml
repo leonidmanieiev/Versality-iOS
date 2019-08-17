@@ -37,6 +37,7 @@ Page
     property string p_desc: AppSettings.value("promo/desc")
     property string p_pic: AppSettings.value("promo/pic")
     property string c_icon: AppSettings.value("promo/icon")
+    property string c_logo: AppSettings.value("promo/comp_logo")
     property real s_lat: AppSettings.value("promo/lat")
     property real s_lon: AppSettings.value("promo/lon")
     property bool p_is_marked: AppSettings.value("promo/is_marked")
@@ -91,7 +92,7 @@ Page
         ColumnLayout
         {
             id: middleFieldsColumns
-            width: Vars.screenWidth*0.9
+            width: Vars.screenWidth*0.8
             spacing: Vars.screenHeight*0.05
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -101,7 +102,9 @@ Page
                 width: Vars.footerButtonsHeight*1.3
                 height: Vars.footerButtonsHeight*1.3
                 Layout.topMargin: parent.spacing*0.2
-                Layout.alignment: Qt.AlignHCenter
+                // this throws an error but for some reason Layout.alignment
+                // doesn't work here, but anchors do
+                anchors.horizontalCenter: parent.horizontalCenter
                 buttonIconSource: p_is_marked ?
                                   "../icons/add_to_favourites_2_on.svg" :
                                   "../icons/add_to_favourites_2_off.svg"
@@ -132,9 +135,8 @@ Page
             {
                 id: promsImage
                 Layout.topMargin: parent.spacing*2
-                Layout.alignment: Qt.AlignHCenter
                 height: Vars.screenHeight*0.25*Vars.footerHeightFactor
-                width: Vars.screenWidth*0.9
+                width: parent.width
                 radius: Vars.listItemRadius
                 color: "transparent"
 
@@ -154,12 +156,33 @@ Page
                     imageSource: p_pic
                     roundValue: Vars.listItemRadius
                 }
+
+                Rectangle
+                {
+                    id: companyLogoItem
+                    height: parent.width*0.2
+                    width: height
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: -height*0.5
+                    radius: height*0.5
+                    color: "transparent"
+
+                    //rounding company logo item background image
+                    ImageRounder
+                    {
+                        //because when requesting from company page, where is no logo in promos array
+                        imageSource: Helper.adjastPicUrl(c_logo)
+                        roundValue: parent.height*0.5
+                    }
+                }
             }
 
             Label
             {
                 id: promotionTitle
                 text: p_title
+                Layout.topMargin: Vars.pageHeight*0.03
                 font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
                 font.family: boldText.name
                 font.weight: Font.Bold
@@ -170,6 +193,7 @@ Page
             Rectangle
             {
                 id: textArea
+                Layout.topMargin: -Vars.pageHeight*0.01
                 width: promsImage.width
                 height: childrenRect.height
                 Layout.alignment: Qt.AlignLeft
@@ -203,8 +227,8 @@ Page
             ControlButton
             {
                 id: moreButton
-                buttonWidth: Vars.screenWidth*0.9
-                Layout.alignment: Qt.AlignLeft
+                Layout.topMargin: -Vars.pageHeight*0.03
+                buttonWidth: parent.width
                 labelText: Vars.more
                 buttonClickableArea.onClicked:
                 {
@@ -250,7 +274,7 @@ Page
     FooterButtons
     {
         pressedFromPageName: 'previewPromotionPage.qml'
-        Component.onCompleted: disableAllButtonsSubstrates()
+        Component.onCompleted: showSubstrateForHomeButton()
     }
 
     Component.onCompleted:

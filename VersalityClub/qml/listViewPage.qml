@@ -251,7 +251,7 @@ Page
     FooterButtons
     {
         pressedFromPageName: pressedfrom
-        Component.onCompleted: disableAllButtonsSubstrates()
+        Component.onCompleted: showSubstrateForHomeButton()
     }
 
     Keys.onReleased:

@@ -31,8 +31,8 @@ Page
 {
     property string strCatsJSON: ''
     property string pressedFrom: 'selectCategoryPage.qml'
-    readonly property double catsItemHeight: Vars.screenHeight*0.09*Vars.iconHeightFactor
-    readonly property double subCatsItemHeight: Vars.screenHeight*0.07*Vars.iconHeightFactor
+    readonly property double catsItemHeight: Vars.screenHeight*0.07*Vars.iconHeightFactor
+    readonly property double subCatsItemHeight: Vars.screenHeight*0.06*Vars.iconHeightFactor
 
     id: selectCategoryPage
     enabled: Vars.isConnected
@@ -117,7 +117,7 @@ Page
                         x: parent.radius*2
                         color: Vars.blackColor
                         font.family: mediumText.name
-                        font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
+                        font.pixelSize: Helper.applyDpr(6, Vars.dpr)
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
@@ -223,7 +223,7 @@ Page
                         width: parent.width*0.7
                         anchors.verticalCenter: parent.verticalCenter
                         font.family: mediumText.name
-                        font.pixelSize: Helper.applyDpr(Vars.defaultFontPixelSize, Vars.dpr)
+                        font.pixelSize: Helper.applyDpr(6, Vars.dpr)
                         color: AppSettings.contains(subid) ? Vars.whiteColor :
                                                              Vars.blackColor
                         wrapMode: Text.WordWrap
