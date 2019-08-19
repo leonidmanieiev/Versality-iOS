@@ -41,7 +41,7 @@ public:
         parent)
     {
         //clear "force open promotion on start" flag
-        this->remove("special");
+        this->remove("push");
         
         //clears promotions and company cache on each app launch
         if(needToRemovePromsAndComps)

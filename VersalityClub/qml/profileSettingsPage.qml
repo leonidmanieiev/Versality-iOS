@@ -34,12 +34,45 @@ Page
     property string pressedFrom: 'profileSettingsPage.qml'
     //alias
     property alias loader: profileSettingsPageLoader
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     id: profileSettingsPage
     enabled: Vars.isConnected
     height: Vars.pageHeight
     width: Vars.screenWidth
 
+    // instead of saveButton
+    function saveProfileSettings(nextPageName)
+    {
+        // close keyboard
+        Qt.inputMethod.hide();
+        // pop current page, because next one will be different
+        PageNameHolder.pop();
+        
+        AppSettings.beginGroup("user");
+        AppSettings.setValue("sex", sexButton.labelText);
+        if(firstNameField.text.length > 0)
+        {
+            AppSettings.setValue("name", firstNameField.text);
+        }
+        AppSettings.setValue("birthday", dateofbirthField.text);
+        if(changePasswordField.text.length > 0)
+        {
+            AppSettings.setValue("password", changePasswordField.text);
+            hasPassChanged = true;
+        }
+        AppSettings.endGroup();
+        
+        profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
+                                            {
+                                                "api": Vars.userInfo,
+                                                "functionalFlag": 'user/refresh-snbp',
+                                                "hasPassChanged": hasPassChanged,
+                                                "nextPageAfterSettingsSave": nextPageName
+                                            });
+    }
+    
     ToastMessage { id: toastMessage }
 
     //checking internet connetion
@@ -77,7 +110,7 @@ Page
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: Vars.screenHeight*0.05
 
-            CustomLabel
+            /*CustomLabel
             {
                 id: selectCategoryLabel
                 labelText: Vars.chooseCats
@@ -95,13 +128,13 @@ Page
                 borderColor: Vars.settingsPurpleBorderColor
                 buttonClickableArea.onClicked:
                 {
-                    PageNameHolder.push("profileSettingsPage.qml");
+                    PageNameHolder.push(pressedFrom);
                     profileSettingsPageLoader.setSource("xmlHttpRequest.qml",
                                                         { "api": Vars.allCats,
                                                           "functionalFlag": 'categories'
                                                         });
                 }
-            }//selectCategoryButton
+            }//selectCategoryButton*/
 
             CustomLabel
             {
@@ -231,8 +264,16 @@ Page
                     AppSettings.endGroup();
                 }
             }
+            
+            Rectangle
+            {
+                id: dummy
+                Layout.fillWidth: true
+                height: Vars.headerButtonsHeight*0.6
+                color: "transparent"
+            }
 
-            ControlButton
+            /*ControlButton
             {
                 id: saveButton
                 labelText: Vars.save;
@@ -252,7 +293,9 @@ Page
                     AppSettings.beginGroup("user");
                     AppSettings.setValue("sex", sexButton.labelText);
                     if(firstNameField.text.length > 0)
+                    {
                         AppSettings.setValue("name", firstNameField.text);
+                    }
                     AppSettings.setValue("birthday", dateofbirthField.text);
                     if(changePasswordField.text.length > 0)
                     {
@@ -292,7 +335,7 @@ Page
                         toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
                     }
                 }
-            }
+            }*/
         }//middleFieldsColumns
     }//flickableArea
 
@@ -325,9 +368,8 @@ Page
     LogoAndPageTitle
     {
         id: logoAndPageTitle
-        showInfoButton: true
         pageTitleText: Vars.profileSettings
-        pressedFromPageName: 'profileSettingsPage.qml'
+        pressedFromPageName: pressedFrom
     }
 
     ScrollDatePicker
@@ -353,6 +395,31 @@ Page
     }
 
     Component.onCompleted: profileSettingsPage.forceActiveFocus()
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
 
     Image
     {
@@ -383,6 +450,7 @@ Page
 
     FooterButtons
     {
+        id: footerButton
         pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForSettingsButton()
     }

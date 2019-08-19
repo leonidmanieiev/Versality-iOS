@@ -70,6 +70,10 @@ Page
     property string nearestPromId: ''
     property string nearestPromIcon: ''
 
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
+
     function setUserLocationMarker(lat, lon, _zoomLevel, follow)
     {
         if(locButtClicked)
@@ -264,7 +268,7 @@ Page
                         }
                         else
                         {
-                            PageNameHolder.push("mapPage.qml");
+                            PageNameHolder.push(pressedFrom);
 
                             AppSettings.beginGroup("promo");
                             AppSettings.setValue("id", id);
@@ -386,12 +390,16 @@ Page
         {
             //set flag if entire popup shows
             if(y === popupShowTo)
+            {
                 isPopupOpened = true;
+            }
             else if(isPopupOpened === true)
             {
                 //if user swipes popup down enought to automaticly hide it
                 if(y > yToHide)
+                {
                     hide();
+                }
                 //if popup hides enought to make it invisible
                 if(y > yToInvisible)
                 {
@@ -400,9 +408,13 @@ Page
                 }
             }
             else if(isPopupOpened === false)
+            {
                 //if popup shows enought to make it visible
                 if(y <= yToInvisible)
+                {
                     popupWindow.visible = true;
+                }
+            }
         }
 
         ListView
@@ -468,7 +480,7 @@ Page
                     anchors.fill: parent
                     onClicked:
                     {
-                        PageNameHolder.push("mapPage.qml");
+                        PageNameHolder.push(pressedFrom);
                         AppSettings.beginGroup("promo");
                         AppSettings.setValue("id", cid);
                         AppSettings.endGroup();
@@ -511,6 +523,31 @@ Page
         }
     }
 
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
+
     //switch to listViewPage (proms as list) if does not came
     //from companyPage or promotionPage
     TopControlButton
@@ -524,7 +561,7 @@ Page
             if(network.hasConnection())
             {
                 toastMessage.close();
-                PageNameHolder.push("mapPage.qml");
+                PageNameHolder.push(pressedFrom);
                 mapPageLoader.source = "listViewPage.qml";
             }
             else
@@ -590,8 +627,18 @@ Page
         
         if(!requestFromCompany)
         {
-            //exit app from map page
-            if(!showingNearestStore)
+            // open promotion on push click
+            if(AppSettings.value("push/open") === "true")
+            {
+                AppSettings.remove("push");
+                appWindowLoader.setSource("xmlHttpRequest.qml",
+                                          {
+                                              "api": Vars.promFullViewModel,
+                                              "functionalFlag": 'user/fullprom',
+                                              "promo_id": AppSettings.value("promo/id")
+                                          });
+            }
+            else if(!showingNearestStore)
             {
                 PageNameHolder.clear();
             }

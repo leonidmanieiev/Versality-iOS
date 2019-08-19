@@ -30,7 +30,11 @@ import QtGraphicalEffects 1.0
 Page
 {
     property bool allGood: false
+    property string pressedFrom: 'favouritePage.qml'
     readonly property int promItemHeight: Vars.screenHeight*0.25*Vars.footerHeightFactor
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     id: favouritePage
     enabled: Vars.isConnected
@@ -94,24 +98,6 @@ Page
     }
 
     ListModel { id: promsModel }
-
-    Image
-    {
-        id: background
-        clip: true
-        width: parent.width
-        height: Vars.footerButtonsFieldHeight
-        anchors.bottom: parent.bottom
-        source: "../backgrounds/map_f.png"
-    }
-
-    Image
-    {
-        id: background2
-        clip: true
-        anchors.fill: parent
-        source: "../backgrounds/listview_hf.png"
-    }
 
     Component
     {
@@ -185,6 +171,49 @@ Page
         }//Column
     }//promsDelegate
 
+    Image
+    {
+        id: background2
+        clip: true
+        anchors.fill: parent
+        source: "../backgrounds/listview_hf.png"
+    }
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
+
+    Image
+    {
+        id: background
+        clip: true
+        width: parent.width
+        height: Vars.footerButtonsFieldHeight
+        anchors.bottom: parent.bottom
+        source: "../backgrounds/map_f.png"
+    }
+
     //switch to mapPage (proms on map view)
     /*TopControlButton
     {
@@ -198,7 +227,8 @@ Page
 
     FooterButtons
     {
-        pressedFromPageName: 'favouritePage.qml'
+        id: footerButton
+        pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForFavouriteButton();
     }
 

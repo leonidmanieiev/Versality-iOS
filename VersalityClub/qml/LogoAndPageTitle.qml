@@ -41,6 +41,14 @@ RowLayout
     width: Vars.screenWidth
     anchors.horizontalCenter: parent.horizontalCenter
 
+    function itemSize()
+    {
+        if(Vars.isXSMax) return 0.035
+        else if(Vars.isXR || Vars.isXorXS) return 0.03
+        else if(Vars.isFives || Vars.isThose) return 0.02
+        else return 0.01 //pluses
+    }
+    
     ToastMessage { id: toastMessage }
 
     Network { id: network }
@@ -73,7 +81,15 @@ RowLayout
         font.pixelSize: Helper.applyDpr(9, Vars.dpr)
     }
 
-    Rectangle
+    Item
+    {
+        visible: true //(Vars.isXR || Vars.isXorXS || isXSMax)
+        width: Vars.screenHeight  * Vars.iconHeightFactor * itemSize()
+        height: Vars.screenHeight * Vars.iconHeightFactor * itemSize()
+        Layout.rightMargin: parent.height*0.04
+    }
+    
+    /*Rectangle
     {
         id: infoButtonField
         visible: showInfoButton
@@ -128,5 +144,5 @@ RowLayout
                 }
             } // onClicked
         } // IconedButton
-    } // infoButtonField
+    } // infoButtonField*/
 }

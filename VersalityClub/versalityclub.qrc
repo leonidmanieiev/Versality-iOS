@@ -100,5 +100,6 @@
         <file>Vars.qml</file>
         <file>icons/promotion_marker.svg</file>
         <file>icons/dummy_footer_button_substrate.svg</file>
+        <file>qml/SettingsHelperPopup.qml</file>
     </qresource>
 </RCC>

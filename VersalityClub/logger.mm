@@ -22,7 +22,7 @@
 
 #include "logger.h"
 #include <QtCore>
-#import <OneSignal/OneSignal.h>
+//#import <OneSignal/OneSignal.h>
 
 @implementation Logger
 
@@ -129,7 +129,8 @@
 
 - (void) saveHashToFile:(NSString*) userHash
 {
-    [OneSignal sendTag:@"hash" value:userHash];
+    // TODO
+    //[OneSignal sendTag:@"hash" value:userHash];
     
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* filePath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"hash.txt"];

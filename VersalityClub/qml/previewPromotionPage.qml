@@ -41,10 +41,14 @@ Page
     property real s_lat: AppSettings.value("promo/lat")
     property real s_lon: AppSettings.value("promo/lon")
     property bool p_is_marked: AppSettings.value("promo/is_marked")
+    property string pressedFrom: 'previewPromotionPage.qml'
     //all good flag
     property bool allGood: true
     //max length of promotion description text preview
     readonly property int maxLineCnt: 3
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     id: previewPromPage
     enabled: Vars.isConnected
@@ -232,7 +236,7 @@ Page
                 labelText: Vars.more
                 buttonClickableArea.onClicked:
                 {
-                    PageNameHolder.push("previewPromotionPage.qml");
+                    PageNameHolder.push(pressedFrom);
                     previewPromotionPageLoader.setSource("xmlHttpRequest.qml",
                                             { "api": Vars.promFullViewModel,
                                               "functionalFlag": 'user/fullprom'});
@@ -240,6 +244,31 @@ Page
             }//moreButton
         }//middleFieldsColumns
     }//flickableArea
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
 
     Image
     {
@@ -273,7 +302,8 @@ Page
 
     FooterButtons
     {
-        pressedFromPageName: 'previewPromotionPage.qml'
+        id: footerButton
+        pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForHomeButton()
     }
 

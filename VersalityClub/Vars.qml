@@ -96,6 +96,18 @@ QtObject
     //IS DEVICE TYPE iPhone X or XS
     property bool isXorXS: (Screen.height*Screen.devicePixelRatio === 2436 &&
                             Screen.width *Screen.devicePixelRatio === 1125)
+                            
+    //IS DEVICE TYPE iPhone 5's
+    property bool isFives: (Screen.height*Screen.devicePixelRatio === 1136 &&
+                            Screen.width *Screen.devicePixelRatio === 640)
+                            
+    //IS DEVICE TYPE iPhone XS Max
+    property bool isXSMax: (Screen.height*Screen.devicePixelRatio === 2688 &&
+                            Screen.width *Screen.devicePixelRatio === 1242)
+                            
+    //IS DEVICE TYPE iPhone 6,6s,7,8
+    property bool isThose: (Screen.height*Screen.devicePixelRatio === 1334 &&
+                             Screen.width *Screen.devicePixelRatio === 750)
 
     //INTERNET ACCESS FLAG
     property bool isConnected: true
@@ -154,7 +166,7 @@ QtObject
     readonly property string birthdayMask: "00.00.0000"
     readonly property string changePass: "Изменить пароль:"
     readonly property string checkYourEmail: "ПРОВЕРЬТЕ ВАШУ ПОЧТУ"
-    readonly property string choose: "ВЫБОР"
+    readonly property string chooseCategories: "ВЫБОР КАТЕГОРИЙ"
     readonly property string chooseCats: "Выберите\nинтересные Вам категории:"
     readonly property string closestAddress: "БЛИЖАЙШИЙ КО МНЕ АДРЕС"
     readonly property string email: "E-mail:"

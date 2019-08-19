@@ -36,9 +36,9 @@ ApplicationWindow
     function runPageSelection()
     {
         // if user tap on push -> open corresponding promotion
-        if(AppSettings.value("special/load") === "xml")
+        if(AppSettings.value("push/open") === "true")
         {
-            AppSettings.remove("special");
+            AppSettings.remove("push");
             appWindowLoader.setSource("qml/xmlHttpRequest.qml",
             {
                 "api": Vars.promFullViewModel,
@@ -55,13 +55,6 @@ ApplicationWindow
         else
         {
             appWindowLoader.source = "qml/mapPage.qml"
-            /*AppSettings.beginGroup("company");
-            AppSettings.setValue("id", "c2a7b0b2-20d2-44f2-bf39-8d49a32ead32");
-            AppSettings.endGroup();
-            appWindowLoader.setSource("qml/xmlHttpRequest.qml",
-                                          { "api": Vars.companyInfo,
-                                            "functionalFlag": 'company'
-                                          });*/
         }
     }
     
@@ -79,7 +72,7 @@ ApplicationWindow
     Timer
     {
         running: true
-        // wait for AppSettings.value("special/load")
+        // wait for AppSettings.value("push/open")
         // to be set in appdelegage::openPromotion
         interval: 10
         onTriggered: runPageSelection()

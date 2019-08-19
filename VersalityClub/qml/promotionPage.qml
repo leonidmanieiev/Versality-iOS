@@ -41,6 +41,7 @@ Page
     property string c_icon: AppSettings.value("promo/icon")
     property string comp_id: AppSettings.value("promo/comp_id")
     property bool p_is_marked: AppSettings.value("promo/is_marked")
+    property string pressedFrom: 'promotionPage.qml'
     //all good flag
     property bool allGood: true
     //dist (in meters) to be able to active coupon
@@ -51,6 +52,8 @@ Page
     property real minDistToStore: 5000000
     //alias
     property alias prom_loader: promotionPageLoader
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     //setting lat and lon of the nearest to user store
     function setNearestStoreCoords(promJSON)
@@ -311,7 +314,7 @@ Page
                     if(network.hasConnection())
                     {
                         toastMessage.close();
-                        PageNameHolder.push("promotionPage.qml");
+                        PageNameHolder.push(pressedFrom);
                         promotionPageLoader.setSource("mapPage.qml",
                                             { "defaultLat": nearestStoreLat,
                                               "defaultLon": nearestStoreLon,
@@ -345,7 +348,7 @@ Page
                     if(network.hasConnection())
                     {
                         toastMessage.close();
-                        PageNameHolder.push("promotionPage.qml");
+                        PageNameHolder.push(pressedFrom);
                         AppSettings.beginGroup("company");
                         AppSettings.setValue("id", comp_id);
                         AppSettings.endGroup();
@@ -362,6 +365,31 @@ Page
             }
         }//middleFieldsColumns
     }//flickableArea
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
 
     Image
     {
@@ -504,7 +532,8 @@ Page
 
     FooterButtons
     {
-        pressedFromPageName: 'promotionPage.qml'
+        id: footerButton
+        pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForHomeButton()
     }
 

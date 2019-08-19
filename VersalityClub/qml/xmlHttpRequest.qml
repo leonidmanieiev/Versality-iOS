@@ -36,6 +36,8 @@ Item
     //depend on request (functionalFlag)
     property string api: ''
     property string nextPageAfterCatsSave: 'profileSettingsPage.qml'
+    property string nextPageAfterSettingsSave: 'mapPage.qml'
+    property string nextPageAfterRetrieveUserCats: ''
     //user data
     property string sex: AppSettings.value("user/sex") === undefined ? "" : AppSettings.value("user/sex")
     property string birthday: AppSettings.value("user/birthday") === undefined ? "" : AppSettings.value("user/birthday")
@@ -210,7 +212,16 @@ Item
                                         // set only user selected categories - up
                                         for(var i in uInfoRespJSON.categories)
                                             AppSettings.insertCat(uInfoRespJSON.categories[i]);
-                                        xmlHttpRequestLoader.source = "profileSettingsPage.qml";
+
+                                        if(nextPageAfterRetrieveUserCats === 'selectCategoryPage.qml') {
+                                            xmlHttpRequestLoader.setSource("xmlHttpRequest.qml",
+                                                                           {
+                                                                              "api": Vars.allCats,
+                                                                              "functionalFlag": 'categories'
+                                                                           });
+                                        } else {
+                                            xmlHttpRequestLoader.source = "profileSettingsPage.qml";
+                                        }
                                     }
                                 } catch (e) {
                                     toastMessage.setTextAndRun(Vars.smthWentWrong, true);
@@ -243,7 +254,15 @@ Item
 
                                     QLogger.saveHashToFile();
 
-                                    xmlHttpRequestLoader.source = "mapPage.qml";
+                                    if(nextPageAfterSettingsSave === 'selectCategoryPage.qml') {
+                                        xmlHttpRequestLoader.setSource("xmlHttpRequest.qml",
+                                                                       {
+                                                                          "api": Vars.allCats,
+                                                                          "functionalFlag": 'categories'
+                                                                       });
+                                    } else {
+                                        xmlHttpRequestLoader.source = nextPageAfterSettingsSave;
+                                    }
                                 } catch (e) {
                                     toastMessage.setTextAndRun(Vars.smthWentWrong, true);
                                 }
@@ -389,6 +408,7 @@ Item
     {
         // these pages show white screen while loading
         return (api === Vars.userInfo ||
+                api === Vars.allCats ||
                 api === Vars.userMarkedProms ||
                 api === Vars.userSelectCats ||
                 api === Vars.promFullViewModel);

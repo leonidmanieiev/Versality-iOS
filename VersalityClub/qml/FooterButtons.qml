@@ -30,7 +30,7 @@ RowLayout
 {
     property string pressedFromPageName: ''
     property double dummy_width: parent.width*0.3 / 2.0
-
+    
     id: footerButtonsLayout
     width: parent.width
     height: Vars.footerButtonsFieldHeight
@@ -81,7 +81,7 @@ RowLayout
         height: Vars.footerButtonsFieldHeight
         color: "transparent"
     }
-
+    
     FooterButtonSubstrate
     {
         id: settingsButtonSubstrate
@@ -96,12 +96,26 @@ RowLayout
             buttonIconSource: "../icons/settings.svg"
             clickArea.onClicked:
             {
+                Qt.inputMethod.hide();
                 showSubstrateForSettingsButton();
-                PageNameHolder.push(pressedFromPageName);
+
+                // this points to parent of footer buttons
+                if(parent.parent.parent.parent.shp.isPopupOpened){
+                    parent.parent.parent.parent.shp.hide();
+                } else {
+                    parent.parent.parent.parent.shp.show();
+                }
+
+                /*PageNameHolder.push(pressedFromPageName);
 
                 if(pressedFromPageName === 'selectCategoryPage.qml')
                 {
                     saveSelectedCategory('profileSettingsPage.qml');
+                }
+                else if(pressedFromPageName === 'profileSettingsPage.qml')
+                {
+                    // this points to profileSettingsPage
+                    parent.parent.parent.parent.saveProfileSettings('profileSettingsPage.qml');
                 }
                 else
                 {
@@ -109,7 +123,7 @@ RowLayout
                                               { "api": Vars.userInfo,
                                                 "functionalFlag": 'user'
                                               });
-                }
+                }*/
             }
         }
     }
@@ -144,9 +158,18 @@ RowLayout
                 showSubstrateForHomeButton();
 
                 if(pressedFromPageName === 'selectCategoryPage.qml')
+                {
                     saveSelectedCategory('mapPage.qml');
+                }
+                else if(pressedFromPageName === 'profileSettingsPage.qml')
+                {
+                    // this points to profileSettingsPage
+                    parent.parent.parent.parent.saveProfileSettings('mapPage.qml');
+                }
                 else
+                {
                     appWindowLoader.setSource("mapPage.qml");
+                }
             }
         }
     }
@@ -183,6 +206,11 @@ RowLayout
                 if(pressedFromPageName === 'selectCategoryPage.qml')
                 {
                     saveSelectedCategory('favouritePage.qml');
+                }
+                else if(pressedFromPageName === 'profileSettingsPage.qml')
+                {
+                    // this points to profileSettingsPage
+                    parent.parent.parent.parent.saveProfileSettings('favouritePage.qml');
                 }
                 else
                 {

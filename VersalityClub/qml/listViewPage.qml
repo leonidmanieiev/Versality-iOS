@@ -35,6 +35,9 @@ Page
     property bool requestFromCompany: false
     property string pressedfrom: requestFromCompany ? 'companyPage.qml' : 'listViewPage.qml'
     readonly property int promItemHeight: Vars.screenHeight*0.25*Vars.footerHeightFactor
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     id: listViewPage
     enabled: Vars.isConnected
@@ -134,24 +137,6 @@ Page
         delegate: promsDelegate
     }
 
-    Image
-    {
-        id: background
-        clip: true
-        width: parent.width
-        height: Vars.footerButtonsFieldHeight
-        anchors.bottom: parent.bottom
-        source: "../backgrounds/map_f.png"
-    }
-
-    Image
-    {
-        id: background2
-        clip: true
-        anchors.fill: parent
-        source: "../backgrounds/listview_hf.png"
-    }
-
     Component
     {
         id: promsDelegate
@@ -214,7 +199,7 @@ Page
                     anchors.fill: parent
                     onClicked:
                     {
-                        PageNameHolder.push("listViewPage.qml");
+                        PageNameHolder.push(pressedfrom);
                         appWindowLoader.setSource("xmlHttpRequest.qml",
                                                 { "api": Vars.promFullViewModel,
                                                   "functionalFlag": 'user/fullprom',
@@ -227,6 +212,14 @@ Page
             }//promsRect
         }//column
     }//promsDelegate
+
+    Image
+    {
+        id: background2
+        clip: true
+        anchors.fill: parent
+        source: "../backgrounds/listview_hf.png"
+    }
 
     //switch to mapPage (proms on map view)
     TopControlButton
@@ -246,10 +239,46 @@ Page
                 toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
             }
         }
+    } // showOnMapButton
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
+    }
+
+    Image
+    {
+        id: background
+        clip: true
+        width: parent.width
+        height: Vars.footerButtonsFieldHeight
+        anchors.bottom: parent.bottom
+        source: "../backgrounds/map_f.png"
     }
 
     FooterButtons
     {
+        id: footerButton
         pressedFromPageName: pressedfrom
         Component.onCompleted: showSubstrateForHomeButton()
     }

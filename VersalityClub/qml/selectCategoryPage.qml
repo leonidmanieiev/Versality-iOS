@@ -33,6 +33,9 @@ Page
     property string pressedFrom: 'selectCategoryPage.qml'
     readonly property double catsItemHeight: Vars.screenHeight*0.07*Vars.iconHeightFactor
     readonly property double subCatsItemHeight: Vars.screenHeight*0.06*Vars.iconHeightFactor
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     id: selectCategoryPage
     enabled: Vars.isConnected
@@ -299,9 +302,9 @@ Page
     LogoAndPageTitle
     {
         id: logoAndPageTitle
-        showInfoButton: true
+        //showInfoButton: true
         pageTitleText: Vars.profileSettings
-        pressedFromPageName: 'selectCategoryPage.qml'
+        pressedFromPageName: pressedFrom
     }
 
     Component.onCompleted:
@@ -311,6 +314,31 @@ Page
 
         var catsJSON = JSON.parse(strCatsJSON);
         Helper.catsJsonToListModel(catsJSON);
+    }
+
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        parentHeight: parent.height
     }
 
     Image
@@ -342,6 +370,7 @@ Page
 
     FooterButtons
     {
+        id: footerButton
         pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForSettingsButton()
     }

@@ -24,7 +24,7 @@
 #import "appsettings.h"
 #import "appdelegate.h"
 #import "logger.h"
-#import <OneSignal/OneSignal.h>
+//#import <OneSignal/OneSignal.h>
 
 @implementation QIOSApplicationDelegate
 
@@ -39,8 +39,8 @@ bool initLaunch = false;
     initLaunch = true;
     
     if (@available(iOS 10.0, *)) {
-        
-        id notificationOpenedBlock = ^(OSNotificationOpenedResult *result) {
+        // TODO
+        /*id notificationOpenedBlock = ^(OSNotificationOpenedResult *result) {
             NSDictionary* additionalData = result.notification.payload.additionalData;
             if (additionalData[@"id"]) {
                 [self openPromotion: additionalData[@"id"]];
@@ -57,7 +57,7 @@ bool initLaunch = false;
         // how your app will use them.
         [OneSignal promptForPushNotificationsWithUserResponse:^(BOOL accepted) {
             NSLog(@"User accepted notifications: %d", accepted);
-        }];
+        }];*/
         
         if(locationService == nil) {
             locationService = [[LocationService alloc] init];
@@ -170,8 +170,8 @@ bool initLaunch = false;
 - (void) openPromotion:(NSString*) promotionId
 {
     AppSettings* as = new AppSettings;
-    as->beginGroup("special");
-    as->setValue("load", "xml");
+    as->beginGroup("push");
+    as->setValue("open", "true");
     as->endGroup();
     as->beginGroup("promo");
     as->setValue("id", [promotionId UTF8String]);

@@ -41,18 +41,30 @@ Page
                                         comp_pictures[2], comp_pictures[3]]
     property int picInd: 0
     property int namePhoneSiteTextSize: 6
+    property string pressedFrom: 'companyPage.qml'
     //all good flag
     property bool allGood: AppSettings.value("company/id") === undefined ? false : true
     //help width
     property double width_between_buttons: (Vars.screenWidth*0.8 - Vars.headerButtonsHeight*4) / 3
+    //alias
+    property alias shp: settingsHelperPopup
+    property alias fb: footerButton
 
     function setPopupPicAndShow()
     {
+        settingsHelperPopup.hide();
         compPicPopup.picItem.source = Helper.adjastPicUrl(picsSources[picInd]);
         compPicPopup.visible = true;
         PageNameHolder.push('popupImage');
     }
 
+    function logoSize()
+    {
+        if(Vars.isXR || Vars.isXSMax)
+            return 0.9;
+        return 1;
+    }
+    
     header: HeaderButtons
     {
         id: headerButtons
@@ -119,9 +131,9 @@ Page
                     //Layout.preferredWidth: Vars.headerButtonsHeight
                     //Layout.alignment: Qt.AlignTop
                     //height: Vars.headerButtonsHeight
-                    Layout.preferredWidth: Vars.headerButtonsHeight  * (Vars.isXR || Vars.dpr > 2 ? 0.9 : 1)
-                    Layout.preferredHeight: Vars.headerButtonsHeight * (Vars.isXR || Vars.dpr > 2 ? 0.9 : 1)
-                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth: Vars.headerButtonsHeight  * logoSize()
+                    Layout.preferredHeight: Vars.headerButtonsHeight * logoSize()
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                     color: Vars.whiteColor
 
                     ImageRounder
@@ -441,6 +453,32 @@ Page
         source: "../backgrounds/description_fade_out.png"
     }
 
+    // this thing does not allow to select/deselect subcat,
+    // when it is under the settingsHelperPopup
+    Rectangle
+    {
+        id: settingsHelperPopupStopper
+        enabled: settingsHelperPopup.isPopupOpened
+        width: parent.width
+        height: settingsHelperPopup.height
+        anchors.bottom: footerButton.top
+        color: "transparent"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: settingsHelperPopupStopper.forceActiveFocus()
+        }
+    }
+
+    SettingsHelperPopup
+    {
+        id: settingsHelperPopup
+        currentPage: pressedFrom
+        companyFactor: headerButtons.height
+        parentHeight: parent.height + companyFactor
+    }
+
     Image
     {
         id: background
@@ -453,7 +491,8 @@ Page
 
     FooterButtons
     {
-        pressedFromPageName: 'companyPage.qml'
+        id: footerButton
+        pressedFromPageName: pressedFrom
         Component.onCompleted: showSubstrateForHomeButton()
     }
 
