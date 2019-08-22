@@ -20,32 +20,26 @@
 **
 ****************************************************************************/
 
-#ifndef LOCATIONSERVICE_H
-#define LOCATIONSERVICE_H
+#include "qenablelocation.h"
+#include "enablelocation.h"
+#include <QDebug>
 
-extern "C"
+QEnableLocation::QEnableLocation(QObject* parent) : QObject(parent) { }
 
-#include <Foundation/Foundation.h>
-#include <CoreLocation/CoreLocation.h>
-
-@interface LocationService : NSObject <CLLocationManagerDelegate> {
-    CLLocationManager* locationManager;
+bool QEnableLocation::askEnableLocationAlways()
+{
+    qDebug() << "QEnableLocation::askEnableLocationAlways()";
+    return [[EnableLocation sharedSingleton] askEnableLocationAlways];
 }
 
-//FOUNDATION_EXPORT NSString* const WHEN_IN_USE_ALERT;
-//FOUNDATION_EXPORT NSString* const DENIED_ALERT;
-//FOUNDATION_EXPORT NSString* const RESTRICLET_ALERT;
+bool QEnableLocation::askEnableLocation()
+{
+    qDebug() << "QEnableLocation::askEnableLocation()";
+    return [[EnableLocation sharedSingleton] askEnableLocation];
+}
 
-- (BOOL) startLocationService;
-
-- (void) stopLocationService;
-
-- (void) locationManager:(CLLocationManager*) manager didUpdateLocations:(NSArray*) locations;
-
-- (void) locationManager:(CLLocationManager*) manager didChangeAuthorizationStatus:(CLAuthorizationStatus) status;
-
-//- (void) askToChangeAuthorizationStatus:(CLAuthorizationStatus) status;
-
-@end
-
-#endif // LOCATIONSERVICE_H
+bool QEnableLocation::askEnableBR()
+{
+    qDebug() << "QEnableLocation::askEnableBR()";
+    return [[EnableLocation sharedSingleton] askEnableBR];
+}

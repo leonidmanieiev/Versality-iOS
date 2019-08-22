@@ -29,6 +29,7 @@ import QtQuick.Layouts 1.3
 import QtPositioning 5.8
 import QtGraphicalEffects 1.0
 import Network 0.9
+import QEnableLocation 1.0
 
 Page
 {
@@ -47,6 +48,7 @@ Page
     //dist (in meters) to be able to active coupon
     readonly property int promCloseDist: 250
     //other
+    property bool parsed: false
     property real nearestStoreLat
     property real nearestStoreLon
     property real minDistToStore: 5000000
@@ -54,24 +56,31 @@ Page
     property alias prom_loader: promotionPageLoader
     property alias shp: settingsHelperPopup
     property alias fb: footerButton
+    //user coords
+    property real _userLat
+    property real _userLon
 
     //setting lat and lon of the nearest to user store
     function setNearestStoreCoords(promJSON)
     {
-        var userPos = QtPositioning.coordinate(AppSettings.value("user/lat"),
-                                               AppSettings.value("user/lon"));
-        for(var i in promJSON.stores)
+        if(!parsed)
         {
-            var storePos = QtPositioning.coordinate(promJSON.stores[i].lat,
-                                                    promJSON.stores[i].lon);
-            var distToStore = Math.round(storePos.distanceTo(userPos));
-
-            if(minDistToStore > distToStore)
+            var userPos = QtPositioning.coordinate(AppSettings.value("user/lat"),
+                                                   AppSettings.value("user/lon"));
+            for(var i in promJSON.stores)
             {
-                minDistToStore = distToStore;
-                nearestStoreLat = promJSON.stores[i].lat;
-                nearestStoreLon = promJSON.stores[i].lon;
+                var storePos = QtPositioning.coordinate(promJSON.stores[i].lat,
+                                                        promJSON.stores[i].lon);
+                var distToStore = Math.round(storePos.distanceTo(userPos));
+
+                if(minDistToStore > distToStore)
+                {
+                    minDistToStore = distToStore;
+                    nearestStoreLat = promJSON.stores[i].lat;
+                    nearestStoreLon = promJSON.stores[i].lon;
+                }
             }
+            parsed = true;
         }
     }
 
@@ -93,16 +102,16 @@ Page
 
         switch(closestDistIndex)
         {
-            case 0: return 9.5;
-            case 1: return 10;
-            case 2: return 10.5;
-            case 3: return 12;
-            case 4: return 13;
-            case 5: return 13.5;
-            case 6: return 14;
-            case 7: return 15.5;
-            case 8: return 16.5;
-            case 9: return 18;
+            case 0: return 9;
+            case 1: return 9.5;
+            case 2: return 10;
+            case 3: return 11;
+            case 4: return 12;
+            case 5: return 12.5;
+            case 6: return 13;
+            case 7: return 14.5;
+            case 8: return 15.5;
+            case 9: return 17;
         }
     }
 
@@ -128,6 +137,8 @@ Page
         source: Vars.boldFont
     }
 
+    GuestToastMessage { id: guestToastMessage }
+
     ToastMessage { id: toastMessage }
 
     //checking internet connetion
@@ -138,6 +149,39 @@ Page
         id: pageBackground
         anchors.fill: parent
         color: Vars.whiteColor
+    }
+
+    // get user location for couponActivation and nearestStore
+    PositionSource
+    {
+        id: positionSource
+        active: false
+        updateInterval: 1
+    }
+
+    //wait for user location to trigger
+    Timer
+    {
+        id: waitForUserLocation
+        running: !isNaN(positionSource.position.coordinate.latitude)
+        interval: 1
+        onTriggered: saveUserLocationAndParse()
+    }
+
+    function saveUserLocationAndParse()
+    {
+        var userLat = positionSource.position.coordinate.latitude;
+        var userLon = positionSource.position.coordinate.longitude;
+
+        _userLat = userLat;
+        _userLon = userLon;
+
+        AppSettings.beginGroup("user");
+        AppSettings.setValue("lat", userLat);
+        AppSettings.setValue("lon", userLon);
+        AppSettings.endGroup();
+
+        setNearestStoreCoords(JSON.parse(Vars.fullPromData));
     }
 
     Flickable
@@ -237,24 +281,42 @@ Page
                     fontPixelSize: Helper.applyDpr(6, Vars.dpr)
                     buttonClickableArea.onClicked:
                     {
-                        if(network.hasConnection())
+                        // functionality is disable if guest loged in
+                        if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
                         {
-                            toastMessage.close();
-                            if(minDistToStore < promCloseDist)
-                            {
-                                promoCodePopup.visible = true;
-                                flickableArea.enabled = false;
-                                //inform server about coupon was activated
-                                promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                              {"api": Vars.userActivateProm,
-                                                               "functionalFlag": "user/activate",
-                                                               "promo_id": p_id});
-                            }
-                            else toastMessage.setTextAndRun(Vars.getCloserToProm, false);
+                            guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
                         }
                         else
                         {
-                            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                            if(QEnableLocation.askEnableLocation())
+                            {
+                                positionSource.start();
+
+                                if(network.hasConnection())
+                                {
+                                    toastMessage.close();
+                                    console.log("minDistToStore:", minDistToStore);
+                                    if(minDistToStore < promCloseDist)
+                                    {
+                                        promoCodePopup.visible = true;
+                                        flickableArea.enabled = false;
+                                        //inform server about coupon was activated
+                                        promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                                      {"api": Vars.userActivateProm,
+                                                                       "functionalFlag": "user/activate",
+                                                                       "promo_id": p_id});
+                                    }
+                                    else toastMessage.setTextAndRun(Vars.getCloserToProm, false);
+                                }
+                                else
+                                {
+                                    toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                                }
+                            }
+                            else
+                            {
+                                positionSource.stop();
+                            }
                         }
                     }
                 }
@@ -270,31 +332,39 @@ Page
                                       "../icons/add_to_favourites_off.svg"
                     clickArea.onClicked:
                     {
-                        if(network.hasConnection())
+                        // functionality is disable if guest loged in
+                        if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
                         {
-                            toastMessage.close();
-                            if(!p_is_marked)
-                            {
-                                p_is_marked = true;
-                                buttonIconSource = "../icons/add_to_favourites_on.svg";
-                                promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                              {"api": Vars.userMarkProm,
-                                                               "functionalFlag": "user/mark",
-                                                               "promo_id": p_id});
-                            }
-                            else
-                            {
-                                p_is_marked = false;
-                                buttonIconSource = "../icons/add_to_favourites_off.svg";
-                                promotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                              {"api": Vars.userUnmarkProm,
-                                                               "functionalFlag": "user/unmark",
-                                                               "promo_id": p_id});
-                            }
+                            guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
                         }
                         else
                         {
-                            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                            if(network.hasConnection())
+                            {
+                                toastMessage.close();
+                                if(!p_is_marked)
+                                {
+                                    p_is_marked = true;
+                                    buttonIconSource = "../icons/add_to_favourites_on.svg";
+                                    promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                                  {"api": Vars.userMarkProm,
+                                                                   "functionalFlag": "user/mark",
+                                                                   "promo_id": p_id});
+                                }
+                                else
+                                {
+                                    p_is_marked = false;
+                                    buttonIconSource = "../icons/add_to_favourites_off.svg";
+                                    promotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                                  {"api": Vars.userUnmarkProm,
+                                                                   "functionalFlag": "user/unmark",
+                                                                   "promo_id": p_id});
+                                }
+                            }
+                            else
+                            {
+                                toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                            }
                         }
                     }
                 }//addToFavourite
@@ -311,23 +381,35 @@ Page
                 backgroundColor: "transparent"
                 buttonClickableArea.onClicked:
                 {
-                    if(network.hasConnection())
+                    if(QEnableLocation.askEnableLocation())
                     {
-                        toastMessage.close();
-                        PageNameHolder.push(pressedFrom);
-                        promotionPageLoader.setSource("mapPage.qml",
-                                            { "defaultLat": nearestStoreLat,
-                                              "defaultLon": nearestStoreLon,
-                                              "defaultZoomLevel": getZoomLevel(),
-                                              "showingNearestStore": true,
-                                              "locButtClicked": true,
-                                              "nearestPromId": p_id,
-                                              "nearestPromIcon": c_icon
-                                            });
+                        positionSource.start();
+
+                        if(network.hasConnection())
+                        {
+                            toastMessage.close();
+                            PageNameHolder.push(pressedFrom);
+
+                            promotionPageLoader.setSource("mapPage.qml",
+                                                { "defaultLat": nearestStoreLat,
+                                                  "defaultLon": nearestStoreLon,
+                                                  "userLat": _userLat,
+                                                  "userLon": _userLon,
+                                                  "defaultZoomLevel": getZoomLevel(),
+                                                  "showingNearestStore": true,
+                                                  "locButtClicked": true,
+                                                  "nearestPromId": p_id,
+                                                  "nearestPromIcon": c_icon
+                                                });
+                        }
+                        else
+                        {
+                            toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                        }
                     }
                     else
                     {
-                        toastMessage.setTextNoAutoClose(Vars.noInternetConnection);
+                        positionSource.stop();
                     }
                 }
             }
@@ -541,9 +623,6 @@ Page
     {
         if(allGood)
         {
-            var fpdInJSON = JSON.parse(Vars.fullPromData);
-
-            setNearestStoreCoords(fpdInJSON);
             notifier.visible = false;
             promotionPage.forceActiveFocus();
         }

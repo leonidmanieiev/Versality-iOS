@@ -129,7 +129,6 @@
 
 - (void) saveHashToFile:(NSString*) userHash
 {
-    // TODO
     //[OneSignal sendTag:@"hash" value:userHash];
     
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

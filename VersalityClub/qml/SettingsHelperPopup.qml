@@ -50,6 +50,8 @@ Rectangle
     color: Vars.mapPromsPopupColor
     anchors.horizontalCenter: parent.horizontalCenter
 
+    GuestToastMessage { id: guestToastMessage }
+
     //checking internet connetion
     Network { id: network }
 
@@ -243,19 +245,27 @@ Rectangle
             buttonRadius: 20
             buttonClickableArea.onClicked:
             {
-                PageNameHolder.push(currentPage);
-                if(currentPage === 'selectCategoryPage.qml') {
-                    hide();
-                } else if(currentPage === 'profileSettingsPage.qml') {
-                    // this points to profileSettingsPage
-                    parent.parent.parent.parent.saveProfileSettings('selectCategoryPage.qml');
-                } else {
-                    appWindowLoader.setSource("xmlHttpRequest.qml",
-                                              {
-                                                  "api": Vars.userInfo,
-                                                  "functionalFlag": 'user',
-                                                  "nextPageAfterRetrieveUserCats": 'selectCategoryPage.qml'
-                                              });
+                // functionality is disable if guest loged in
+                if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
+                {
+                    guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
+                }
+                else
+                {
+                    PageNameHolder.push(currentPage);
+                    if(currentPage === 'selectCategoryPage.qml') {
+                        hide();
+                    } else if(currentPage === 'profileSettingsPage.qml') {
+                        // this points to profileSettingsPage
+                        parent.parent.parent.parent.saveProfileSettings('selectCategoryPage.qml');
+                    } else {
+                        appWindowLoader.setSource("xmlHttpRequest.qml",
+                                                  {
+                                                      "api": Vars.userInfo,
+                                                      "functionalFlag": 'user',
+                                                      "nextPageAfterRetrieveUserCats": 'selectCategoryPage.qml'
+                                                  });
+                    }
                 }
             }
         } // selectCategoryButton
@@ -273,28 +283,36 @@ Rectangle
             borderColor: Vars.whiteColor
             buttonClickableArea.onClicked:
             {
-                PageNameHolder.push(currentPage);
-
-                if(currentPage === 'selectCategoryPage.qml')
+                // functionality is disable if guest loged in
+                if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
                 {
-                    appWindowLoader.setSource("xmlHttpRequest.qml",
-                                              {
-                                                "api": Vars.userSelectCats,
-                                                "functionalFlag": 'user/refresh-cats',
-                                                "nextPageAfterCatsSave": 'profileSettingsPage.qml'
-                                              });
-                }
-                else if(currentPage === 'profileSettingsPage.qml')
-                {
-                    hide();
+                    guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
                 }
                 else
                 {
-                    appWindowLoader.setSource("xmlHttpRequest.qml",
-                                              {
-                                                  "api": Vars.userInfo,
-                                                  "functionalFlag": 'user'
-                                              });
+                    PageNameHolder.push(currentPage);
+
+                    if(currentPage === 'selectCategoryPage.qml')
+                    {
+                        appWindowLoader.setSource("xmlHttpRequest.qml",
+                                                  {
+                                                    "api": Vars.userSelectCats,
+                                                    "functionalFlag": 'user/refresh-cats',
+                                                    "nextPageAfterCatsSave": 'profileSettingsPage.qml'
+                                                  });
+                    }
+                    else if(currentPage === 'profileSettingsPage.qml')
+                    {
+                        hide();
+                    }
+                    else
+                    {
+                        appWindowLoader.setSource("xmlHttpRequest.qml",
+                                                  {
+                                                      "api": Vars.userInfo,
+                                                      "functionalFlag": 'user'
+                                                  });
+                    }
                 }
             }
         } // profileSettingsButton
@@ -306,12 +324,14 @@ Rectangle
             labelAlias.font.bold: true
             buttonHeight: fontPixelSize*Vars.controlHeightFactor*0.9
             Layout.fillWidth: true
-            labelText: Vars.logout
+            labelText: (Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash) ? Vars.guestLogout : Vars.logout
             labelColor: Vars.whiteColor
             backgroundColor: "transparent"
             borderColor: Vars.whiteColor
             buttonClickableArea.onClicked:
             {
+                if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash) Vars.isGuest = false;
+
                 AppSettings.clearAllAppSettings();
                 appWindowLoader.source = "initialPage.qml";
             }

@@ -20,32 +20,31 @@
 **
 ****************************************************************************/
 
-#ifndef LOCATIONSERVICE_H
-#define LOCATIONSERVICE_H
+#ifndef Q_ENABLELOCATION_H
+#define Q_ENABLELOCATION_H
 
-extern "C"
+#include <QObject>
+#include <QQmlEngine>
 
-#include <Foundation/Foundation.h>
-#include <CoreLocation/CoreLocation.h>
+class QEnableLocation : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(QEnableLocation)
+public:
+    explicit QEnableLocation([[maybe_unused]] QObject *parent = nullptr);
+    ~QEnableLocation() = default;
+    Q_INVOKABLE static bool askEnableLocationAlways();
+    Q_INVOKABLE static bool askEnableLocation();
+    Q_INVOKABLE static bool askEnableBR();
 
-@interface LocationService : NSObject <CLLocationManagerDelegate> {
-    CLLocationManager* locationManager;
-}
+    static QObject* singletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
+    {
+        Q_UNUSED(engine);
+        Q_UNUSED(scriptEngine);
 
-//FOUNDATION_EXPORT NSString* const WHEN_IN_USE_ALERT;
-//FOUNDATION_EXPORT NSString* const DENIED_ALERT;
-//FOUNDATION_EXPORT NSString* const RESTRICLET_ALERT;
+        QEnableLocation* intance = new QEnableLocation();
+        return intance;
+    }
+};
 
-- (BOOL) startLocationService;
-
-- (void) stopLocationService;
-
-- (void) locationManager:(CLLocationManager*) manager didUpdateLocations:(NSArray*) locations;
-
-- (void) locationManager:(CLLocationManager*) manager didChangeAuthorizationStatus:(CLAuthorizationStatus) status;
-
-//- (void) askToChangeAuthorizationStatus:(CLAuthorizationStatus) status;
-
-@end
-
-#endif // LOCATIONSERVICE_H
+#endif // Q_ENABLELOCATION_H

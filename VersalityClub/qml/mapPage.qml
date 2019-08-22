@@ -32,6 +32,7 @@ import QtPositioning 5.12
 import QtQuick.Layouts 1.3
 import Network 0.9
 import QLogger 1.0
+import QEnableLocation 1.0
 
 Page
 {
@@ -41,6 +42,8 @@ Page
     readonly property int maxZoomLevel: 19
     property real defaultLat: 59.933284
     property real defaultLon: 30.343614
+    property real userLat: AppSettings.value("user/lat")
+    property real userLon: AppSettings.value("user/lon")
     property bool allGood: false
     property bool requestFromCompany: false
     property string pressedFrom: requestFromCompany ? 'companyPage.qml' : 'mapPage.qml'
@@ -78,15 +81,12 @@ Page
     {
         if(locButtClicked)
         {
-            userLocationMarker.coordinate =
-                    QtPositioning.coordinate(lat, lon);
+            userLocationMarker.coordinate = QtPositioning.coordinate(lat, lon);
             userLocationMarker.visible = true;
 
-            if(follow)
-                mainMap.center = userLocationMarker.coordinate;
+            if(follow) mainMap.center = userLocationMarker.coordinate;
 
-            if(_zoomLevel !== 0)
-                mainMap.zoomLevel = _zoomLevel;
+            if(_zoomLevel !== 0) mainMap.zoomLevel = _zoomLevel;
         }
     }
 
@@ -504,10 +504,40 @@ Page
         }//column
     }//promsTilesDelegate
 
+    // to show user location when asked
+    PositionSource
+    {
+        id: positionSource
+        active: false
+        updateInterval: 1
+    }
+
+    //wait for user location to trigger
+    Timer
+    {
+        id: waitForUserLocation
+        running: !isNaN(positionSource.position.coordinate.latitude)
+        interval: 1
+        onTriggered: saveUserLocationAndShowIcon()
+    }
+
+    function saveUserLocationAndShowIcon()
+    {
+        var userLat = positionSource.position.coordinate.latitude;
+        var userLon = positionSource.position.coordinate.longitude;
+
+        setUserLocationMarker(userLat, userLon, fromButtonZoomLevel, true)
+
+        AppSettings.beginGroup("user");
+        AppSettings.setValue("lat", userLat);
+        AppSettings.setValue("lon", userLon);
+        AppSettings.endGroup();
+    }
+
     IconedButton
     {
         id: geoLocationButton
-        enabled: Vars.isLocated
+        enabled: true
         width: Vars.footerButtonsHeight*0.9
         height: Vars.footerButtonsHeight*0.9
         buttonIconSource: "../icons/geo_location.svg"
@@ -516,10 +546,15 @@ Page
         anchors.verticalCenter: parent.verticalCenter
         clickArea.onClicked:
         {
-            locButtClicked = true;
-            setUserLocationMarker(AppSettings.value("user/lat"),
-                                  AppSettings.value("user/lon"),
-                                  fromButtonZoomLevel, true)
+            if(QEnableLocation.askEnableLocation())
+            {
+                locButtClicked = true;
+                positionSource.start();
+            }
+            else
+            {
+                positionSource.stop();
+            }
         }
     }
 
@@ -627,24 +662,14 @@ Page
         
         if(!requestFromCompany)
         {
-            // open promotion on push click
-            if(AppSettings.value("push/open") === "true")
-            {
-                AppSettings.remove("push");
-                appWindowLoader.setSource("xmlHttpRequest.qml",
-                                          {
-                                              "api": Vars.promFullViewModel,
-                                              "functionalFlag": 'user/fullprom',
-                                              "promo_id": AppSettings.value("promo/id")
-                                          });
-            }
-            else if(!showingNearestStore)
+            if(!showingNearestStore)
             {
                 PageNameHolder.clear();
             }
             else
             {
                 mainMap.center = QtPositioning.coordinate(defaultLat, defaultLon);
+                setUserLocationMarker(userLat, userLon, 0, false);
             }
 
             //start capturing user location and getting all promotions

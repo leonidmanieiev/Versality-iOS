@@ -24,12 +24,13 @@
 #import "appsettings.h"
 #import "appdelegate.h"
 #import "logger.h"
+#import "enablelocation.h"
 //#import <OneSignal/OneSignal.h>
 
 @implementation QIOSApplicationDelegate
 
 NSString* const SLCM_IS_UNAVAILABLE    = @"Извините, Вы не сможете получать push-уведомления, потому что у приложения нет доступа к Вашей геопозиции.";
-NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включите «Обновление контента».\nЕсли оно уже включено, перейдите в «Настройки -> Основные -> Обновление контента» и включите его там.";
+//NSString* const ENABLE_BG_CAPABILITIES = @"Пожалуйста, включите «Обновление контента».\nЕсли оно уже включено, перейдите в «Настройки -> Основные -> Обновление контента» и включите его там.";
 
 // helps handle promotion opening via push tap
 bool initLaunch = false;
@@ -39,7 +40,6 @@ bool initLaunch = false;
     initLaunch = true;
     
     if (@available(iOS 10.0, *)) {
-        // TODO
         /*id notificationOpenedBlock = ^(OSNotificationOpenedResult *result) {
             NSDictionary* additionalData = result.notification.payload.additionalData;
             if (additionalData[@"id"]) {
@@ -85,11 +85,13 @@ bool initLaunch = false;
 
     if (@available(iOS 10.0, *)) {
         if([[UIApplication sharedApplication] backgroundRefreshStatus] == UIBackgroundRefreshStatusDenied) {
-            [self askToEnableBackgroundCapabilities];
+            [[EnableLocation sharedSingleton] askEnableBR];
+            //[self askToEnableBackgroundCapabilities];
         }
         
         if([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways) {
-            [locationService askToChangeAuthorizationStatus:[CLLocationManager authorizationStatus]];
+            [[EnableLocation sharedSingleton] askEnableLocationAlways];
+            //[locationService askToChangeAuthorizationStatus:[CLLocationManager authorizationStatus]];
         }
         
         if(![CLLocationManager significantLocationChangeMonitoringAvailable]) {
@@ -112,7 +114,7 @@ bool initLaunch = false;
     }
 }
 
-- (void) askToEnableBackgroundCapabilities
+/*- (void) askToEnableBackgroundCapabilities
 {
     if (@available(iOS 10.0, *)) {
         NSURL* settingsUrl = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
@@ -143,7 +145,7 @@ bool initLaunch = false;
         // minimum required iOS version - 10.0 (only 1% use < 10.0)
         exit(1);
     }
-}
+}*/
 
 - (void) slcmIsUnavailable
 {
@@ -151,13 +153,13 @@ bool initLaunch = false;
         UIViewController* rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
 
         UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Внимание"
+            [UIAlertController alertControllerWithTitle:@""
                                                 message:SLCM_IS_UNAVAILABLE
                                          preferredStyle:UIAlertControllerStyleAlert];
 
-        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Закрыть приложение"
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Закрыть"
                                                                style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction* __unused action) { exit(1); }];
+                                                             handler:^(UIAlertAction* __unused action) {  }];
 
         [alert addAction:cancelAction];
         [rootViewController presentViewController:alert animated:YES completion:nil];

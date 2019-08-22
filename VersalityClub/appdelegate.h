@@ -36,14 +36,14 @@ extern "C"
 @property (strong, nonatomic) UIWindow *window;
 
 FOUNDATION_EXPORT NSString* const SLCM_IS_UNAVAILABLE;
-FOUNDATION_EXPORT NSString* const ENABLE_BG_CAPABILITIES;
+//FOUNDATION_EXPORT NSString* const ENABLE_BG_CAPABILITIES;
 
 // helps handle promotion opening via push tap
 extern bool initLaunch;
 
 - (void) initLocationService;
 
-- (void) askToEnableBackgroundCapabilities;
+//- (void) askToEnableBackgroundCapabilities;
 
 - (void) slcmIsUnavailable;
 

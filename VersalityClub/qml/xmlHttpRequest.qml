@@ -381,15 +381,13 @@ Item
                     else
                     {
                         console.log("errorStatus:", errorStatus);
-                        toastMessage.setTextAndRun(errorStatus, true);
-
+                        toastMessage.setTextAndRun(errorStatus, false);
                     }
                 }//if(request.status === 200)
                 else if(request.status !== null)
                 {
                     console.log("request.status:", request.status);
                     toastMessage.setTextAndRun(Helper.httpErrorDecoder(request.status), true);
-
                 }
                 else
                 {

@@ -21,14 +21,15 @@
 ****************************************************************************/
 
 #import "locationService.h"
+#import "enablelocation.h"
 #import "logger.h"
 #import <UIKit/UIKit.h>
 
 @implementation LocationService
 
-NSString* const WHEN_IN_USE_ALERT = @"С доступом к геопозиции в режиме «Только при использовании», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
-NSString* const DENIED_ALERT      = @"С доступом к геопозиции в режиме «Запретить», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
-NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить приложение без доступа к геопозиции в режиме «Всегда».";
+//NSString* const WHEN_IN_USE_ALERT = @"С доступом к геопозиции в режиме «Только при использовании», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
+//NSString* const DENIED_ALERT      = @"С доступом к геопозиции в режиме «Запретить», мы не можем запустить приложение. Пожалуйста, переключите режим на «Всегда».";
+//NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить приложение без доступа к геопозиции в режиме «Всегда».";
 
 - (id) init
 {
@@ -90,7 +91,8 @@ NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить п
 {
     if (@available(iOS 10.0, *)) {
         if(status != kCLAuthorizationStatusAuthorizedAlways) {
-            [self askToChangeAuthorizationStatus:status];
+            [[EnableLocation sharedSingleton] askEnableLocationAlways];
+            //[self askToChangeAuthorizationStatus:status];
         }
     } else {
         // minimum required iOS version - 10.0 (only 1% use < 10.0)
@@ -98,7 +100,7 @@ NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить п
     }
 }
 
-- (void) askToChangeAuthorizationStatus:(CLAuthorizationStatus) status
+/*- (void) askToChangeAuthorizationStatus:(CLAuthorizationStatus) status
 {
     if (@available(iOS 10.0, *)) {
         NSURL* settingsUrl = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
@@ -145,6 +147,6 @@ NSString* const RESTRICLET_ALERT  = @"Мы не можем запустить п
         // minimum required iOS version - 10.0 (only 1% use < 10.0)
         exit(1);
     }
-}
+}*/
 
 @end

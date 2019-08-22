@@ -74,7 +74,7 @@ ApplicationWindow
         running: true
         // wait for AppSettings.value("push/open")
         // to be set in appdelegage::openPromotion
-        interval: 10
+        interval: 30
         onTriggered: runPageSelection()
     }
 }

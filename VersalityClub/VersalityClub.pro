@@ -4,9 +4,11 @@ CONFIG += c++17
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    enablelocation.mm \
         main.cpp \
     promotion.cpp \
-    promotionClusters.cpp
+    promotionClusters.cpp \
+    qenablelocation.mm
 
 OBJECTIVE_SOURCES += \
     appdelegate.mm \
@@ -20,14 +22,15 @@ RESOURCES += \
 HEADERS += \
     appdelegate.h \
     appreloader.h \
+    enablelocation.h \
     locationService.h \
     logger.h \
     appsettings.h \
-    geolocationinfo.h \
     network.h \
     promotion.h \
     pagenameholder.h \
     promotionClusters.h \
+    qenablelocation.h \
     qlogger.h
 
 QMAKE_INFO_PLIST = ios/Info.plist

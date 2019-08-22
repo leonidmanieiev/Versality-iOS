@@ -20,32 +20,24 @@
 **
 ****************************************************************************/
 
-#ifndef LOCATIONSERVICE_H
-#define LOCATIONSERVICE_H
+#ifndef M_ENABLELOCATION_H
+#define M_ENABLELOCATION_H
 
 extern "C"
 
-#include <Foundation/Foundation.h>
+#include <UIKit/UIKit.h>
 #include <CoreLocation/CoreLocation.h>
 
-@interface LocationService : NSObject <CLLocationManagerDelegate> {
-    CLLocationManager* locationManager;
-}
+@interface EnableLocation : NSObject
 
-//FOUNDATION_EXPORT NSString* const WHEN_IN_USE_ALERT;
-//FOUNDATION_EXPORT NSString* const DENIED_ALERT;
-//FOUNDATION_EXPORT NSString* const RESTRICLET_ALERT;
+- (BOOL) askEnableLocationAlways;
 
-- (BOOL) startLocationService;
+- (BOOL) askEnableLocation;
 
-- (void) stopLocationService;
+- (BOOL) askEnableBR;
 
-- (void) locationManager:(CLLocationManager*) manager didUpdateLocations:(NSArray*) locations;
-
-- (void) locationManager:(CLLocationManager*) manager didChangeAuthorizationStatus:(CLAuthorizationStatus) status;
-
-//- (void) askToChangeAuthorizationStatus:(CLAuthorizationStatus) status;
++ (EnableLocation*) sharedSingleton;
 
 @end
 
-#endif // LOCATIONSERVICE_H
+#endif // M_ENABLELOCATION_H

@@ -112,11 +112,11 @@ QtObject
     //INTERNET ACCESS FLAG
     property bool isConnected: true
 
-    //LOCATION ACCESS FLAG
-    property bool isLocated: false
-
     //USER CAME FROM SIGN UP PAGE FLAG
     property bool fromSignUp: false
+
+    //GUEST LOG IN
+    property bool isGuest: false
 
     //API REQUESTS
     readonly property string domen: "https://club.versality.ru"
@@ -140,6 +140,7 @@ QtObject
 
     //POPUP TEXT CONSTS
     readonly property string estabLocationMethodErr: "Ошибка установки метода определения геопозиции"
+    readonly property string functionalityIsNotAvailable: "Данный функционал не доступен в гостевом режиме.\nДля получения доступа выйдите из гостевого режима и зарегистрируйтесь или войдите в существующий аккаунт."
     readonly property string getCloserToProm: "Подойдите ближе к акции"
     readonly property string nmeaConnectionViaSocketErr: "Ошибка подключения к источнику NMEA через socket"
     readonly property string noFavouriteProms: "У Вас нет избранных акций"
@@ -179,9 +180,12 @@ QtObject
     readonly property string everythingIsClearStart: "Все понятно, начать работу!"
     readonly property string firstHelpText: "В самом начале рекомендуем\nперейти в настройки\nи выбрать интересные Вам акции"
     readonly property string forgetPass: "ЗАБЫЛ ПАРОЛЬ"
+    readonly property string guestLogIn: "ГОСТЕВОЙ ВХОД"
+    readonly property string guestHash: "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
     readonly property string incorrectEmail: "Некорректный E-mail"
     readonly property string login: "ВОЙТИ"
     readonly property string logout: "ВЫЙТИ ИЗ АККАУНТА"
+    readonly property string guestLogout: "ВЫЙТИ"
     readonly property string m_f: "М/Ж"
     readonly property string mapPageId: "mapPage"
     readonly property string more: "ПОДРОБНЕЕ"

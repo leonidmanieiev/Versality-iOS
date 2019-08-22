@@ -23,10 +23,10 @@
 #include "appreloader.h"
 #include "appsettings.h"
 #include "network.h"
-#include "geolocationinfo.h"
 #include "pagenameholder.h"
 #include "promotionClusters.h"
 #include "qlogger.h"
+#include "qenablelocation.h"
 
 #include <QQmlApplicationEngine>
 #include <QtWebView/QtWebView>
@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Network>("Network", 0, 9, "Network");
     qmlRegisterType<AppSettings>("org.versalityclub", 0, 8, "AppSettings");
-    qmlRegisterType<GeoLocationInfo>("GeoLocation", 0, 8, "GeoLocationInfo");
     qmlRegisterType<PageNameHolder>("org.versalityclub", 0, 8, "PageNameHolder");
     qmlRegisterType<PromotionClusters>("org.versalityclub", 0, 8, "PromotionClusters");
     qmlRegisterSingletonType<QLogger>("QLogger", 1, 0, "QLogger", &QLogger::singletonProvider);
+    qmlRegisterSingletonType<QEnableLocation>("QEnableLocation", 1, 0, "QEnableLocation", &QEnableLocation::singletonProvider);
 
     QQmlApplicationEngine engine;
     AppReloader::get_instance().setEngine(&engine);

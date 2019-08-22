@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.9.2, 2019-08-19T02:14:10. -->
+<!-- Written by QtCreator 4.9.2, 2019-08-23T00:13:58. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -8,7 +8,7 @@
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
-  <value type="int">0</value>
+  <value type="int">1</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.EditorSettings</variable>
@@ -588,8 +588,8 @@
      <value type="int">14</value>
     </valuelist>
     <valuemap type="QVariantMap" key="Ios.device_type">
-     <value type="QString" key="displayName">iPhone 7, com.apple.CoreSimulator.SimRuntime.iOS-12-4</value>
-     <value type="QString" key="identifier">330DFF27-3232-4529-B192-78183790DE1A</value>
+     <value type="QString" key="displayName">iPhone Xs Max, com.apple.CoreSimulator.SimRuntime.iOS-12-4</value>
+     <value type="QString" key="identifier">32549643-9033-4C2A-89E9-76A02660652E</value>
      <value type="int" key="type">1</value>
     </valuemap>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run on iOS Simulator</value>

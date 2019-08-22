@@ -41,6 +41,8 @@ Page
     height: Vars.pageHeight
     width: Vars.screenWidth
 
+    GuestToastMessage { id: guestToastMessage }
+
     StaticNotifier { id: notifier }
 
     background: Rectangle
@@ -52,35 +54,43 @@ Page
 
     Component.onCompleted:
     {
-        favouritePage.forceActiveFocus();
-
-        //making request for favourites when getting to this page by pressing back button
-        if(Vars.markedPromsData === '')
+        // functionality is disable if guest loged in
+        if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
         {
-            notifier.visible = false;
-            favouritePageLoader.setSource("xmlHttpRequest.qml",
-                                          { "api": Vars.userMarkedProms,
-                                            "functionalFlag": 'user/marked',
-                                            "isTilesApi": false});
-        }
-        else if(Vars.markedPromsData !== '[]')
-        {
-            try {
-                var promsJSON = JSON.parse(Vars.markedPromsData);
-                allGood = true;
-                notifier.visible = false;
-                //applying promotions at list model
-                Helper.promsJsonToListModel(promsJSON);
-            } catch (e) {
-                allGood = false;
-                notifier.notifierText = Vars.smthWentWrong;
-                notifier.visible = true;
-            }
+            guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
         }
         else
         {
-            notifier.notifierText = Vars.noFavouriteProms;
-            notifier.visible = true;
+            favouritePage.forceActiveFocus();
+
+            //making request for favourites when getting to this page by pressing back button
+            if(Vars.markedPromsData === '')
+            {
+                notifier.visible = false;
+                favouritePageLoader.setSource("xmlHttpRequest.qml",
+                                              { "api": Vars.userMarkedProms,
+                                                "functionalFlag": 'user/marked',
+                                                "isTilesApi": false});
+            }
+            else if(Vars.markedPromsData !== '[]')
+            {
+                try {
+                    var promsJSON = JSON.parse(Vars.markedPromsData);
+                    allGood = true;
+                    notifier.visible = false;
+                    //applying promotions at list model
+                    Helper.promsJsonToListModel(promsJSON);
+                } catch (e) {
+                    allGood = false;
+                    notifier.notifierText = Vars.smthWentWrong;
+                    notifier.visible = true;
+                }
+            }
+            else
+            {
+                notifier.notifierText = Vars.noFavouriteProms;
+                notifier.visible = true;
+            }
         }
     }
 

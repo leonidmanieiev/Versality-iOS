@@ -67,6 +67,8 @@ Page
         source: Vars.boldFont
     }
 
+    GuestToastMessage { id: guestToastMessage }
+
     ToastMessage { id: toastMessage }
 
     //checking internet connetion
@@ -114,23 +116,31 @@ Page
                                   "../icons/add_to_favourites_2_off.svg"
                 clickArea.onClicked:
                 {
-                    if(!p_is_marked)
+                    // functionality is disable if guest loged in
+                    if(Vars.isGuest || AppSettings.value("user/hash") === Vars.guestHash)
                     {
-                        p_is_marked = true;
-                        buttonIconSource = "../icons/add_to_favourites_2_on.svg";
-                        previewPromotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                             {"api": Vars.userMarkProm,
-                                                              "functionalFlag": "user/mark",
-                                                              "promo_id": p_id});
+                        guestToastMessage.setGuestText(Vars.functionalityIsNotAvailable);
                     }
                     else
                     {
-                        p_is_marked = false;
-                        buttonIconSource = "../icons/add_to_favourites_2_off.svg";
-                        previewPromotionPageLoader.setSource("xmlHttpRequest.qml",
-                                                             {"api": Vars.userUnmarkProm,
-                                                              "functionalFlag": "user/unmark",
-                                                              "promo_id": p_id});
+                        if(!p_is_marked)
+                        {
+                            p_is_marked = true;
+                            buttonIconSource = "../icons/add_to_favourites_2_on.svg";
+                            previewPromotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                                 {"api": Vars.userMarkProm,
+                                                                  "functionalFlag": "user/mark",
+                                                                  "promo_id": p_id});
+                        }
+                        else
+                        {
+                            p_is_marked = false;
+                            buttonIconSource = "../icons/add_to_favourites_2_off.svg";
+                            previewPromotionPageLoader.setSource("xmlHttpRequest.qml",
+                                                                 {"api": Vars.userUnmarkProm,
+                                                                  "functionalFlag": "user/unmark",
+                                                                  "promo_id": p_id});
+                        }
                     }
                 }
             }//addToFavourite
